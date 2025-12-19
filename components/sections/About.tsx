@@ -2,7 +2,6 @@
 
 import { Heart, Award, Users } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-
 const features = [
   {
     icon: Heart,
