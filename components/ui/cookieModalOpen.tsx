@@ -126,7 +126,7 @@ export default function CookieModal({ isOpen, onClose }: { isOpen: boolean; onCl
       aria-modal="true"
       aria-labelledby="cookie-modal-title"
     >
-      <div className="bg-white rounded-xl shadow-2xl max-w-xl w-full border-b-2 py-4 px-8 relative flex flex-col">
+      <div className="bg-white rounded-xl shadow-2xl max-w-xl w-full border-b-2 py-4 px-8 relative flex flex-col md:h-auto md:overflow-y-hidden h-[550px] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -155,7 +155,7 @@ export default function CookieModal({ isOpen, onClose }: { isOpen: boolean; onCl
           Manage Consent Preferences
         </h3>
 
-        <ul className="space-y-3 h-[200px] overflow-y-auto mb-8">
+        <ul className="space-y-3 md:h-[200px] md:overflow-y-auto mb-8">
           {COOKIE_CATEGORIES.map((cat, idx) => (
             <CookieCategory
               key={cat.name}

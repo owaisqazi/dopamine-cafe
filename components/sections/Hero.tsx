@@ -43,7 +43,7 @@ export default function Hero({ scrollToSection }: HeroProps) {
   }, [autoPlay]);
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative md:h-screen overflow-hidden">
       {/* Background Slider */}
       <div className="absolute inset-0">
         {bannerImages.map((image, index) => (
@@ -62,8 +62,8 @@ export default function Hero({ scrollToSection }: HeroProps) {
       </div>
 
       {/* CONTENT */}
-      <div className="relative z-10 container mx-auto h-full flex items-center px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full items-center">
+      <div className="relative z-10 container md:py-0 py-8 mx-auto h-full flex items-center px-6">
+        <div className="grid grid-cols-1 md:py-0 py-20 lg:grid-cols-2 gap-16 w-full items-center">
 
           {/* LEFT : TEXT */}
           <div className="text-left max-w-xl">
@@ -76,7 +76,7 @@ export default function Hero({ scrollToSection }: HeroProps) {
                     : 'opacity-0 translate-y-6 absolute'
                 }`}
               >
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
                   {image.title}
                 </h1>
 
@@ -167,7 +167,7 @@ export default function Hero({ scrollToSection }: HeroProps) {
         onClick={() =>
           setCurrent((prev) => (prev - 1 + bannerImages.length) % bannerImages.length)
         }
-        className="absolute left-6 top-1/2 -translate-y-1/2 text-white bg-white/20 p-3 rounded-full"
+        className="absolute  left-6 top-1/2 -translate-y-1/2 text-white bg-white/20 p-3 rounded-full"
       >
         <ChevronLeft />
       </button>
@@ -183,7 +183,7 @@ export default function Hero({ scrollToSection }: HeroProps) {
 
       <button
         onClick={() => scrollToSection('menu')}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-amber-400 animate-bounce"
+        className="absolute bottom-8 md:left-1/2 left-[48%] -translate-x-1/2 text-amber-400 animate-bounce"
       >
         <ChevronDown size={36} />
       </button>

@@ -70,7 +70,7 @@ export default function Footer() {
 
           {/* Center Text */}
           <div className="text-center">
-            <div className="flex justify-center items-center gap-2 text-gray-400">
+            <div className="flex md:text-lg text-sm justify-center items-center gap-2 text-gray-400">
               <span>Made with</span>
               <Heart className="w-4 h-4 text-red-500 animate-pulse" />
               <span>© 2024 Dopamine Cafe. All rights reserved.</span>
