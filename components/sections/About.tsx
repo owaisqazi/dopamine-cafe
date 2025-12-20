@@ -1,23 +1,28 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { Heart, Award, Users } from 'lucide-react';
-
+import { MapPin, Clock, Phone, Mail} from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-const features = [
+const contactInfo = [
   {
-    icon: Heart,
-    title: 'Made with Love',
-    description: 'Every drink and dish is crafted with passion and attention to detail',
+    icon: MapPin,
+    title: 'Location',
+    content: '123 Coffee Street, Cafe District, Mumbai - 400001',
   },
   {
-    icon: Award,
-    title: 'Premium Quality',
-    description: 'We source the finest ingredients to ensure exceptional taste',
+    icon: Clock,
+    title: 'Hours',
+    content: 'Mon - Sun: 8:00 AM - 11:00 PM',
   },
   {
-    icon: Users,
-    title: 'Community Vibe',
-    description: 'A welcoming space where connections are made over great coffee',
+    icon: Phone,
+    title: 'Phone',
+    content: '+91 98765 43210',
+  },
+  {
+    icon: Mail,
+    title: 'Email',
+    content: 'hello@dopaminecafe.com',
   },
 ];
 
@@ -32,25 +37,25 @@ export default function About() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <Card
-                key={index}
-                className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 bg-white border-none"
-              >
-                <CardContent className="p-8 text-center">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 text-amber-600 mb-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-                    <Icon className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                  {contactInfo.map((info, index) => {
+                    const Icon = info.icon;
+                    return (
+                      <Card
+                        key={index}
+                        className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+                      >
+                        <CardContent className="p-6 text-center">
+                          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-600 mb-4 group-hover:scale-110 transition-transform">
+                            <Icon className="w-6 h-6" />
+                          </div>
+                          <h3 className="font-semibold text-gray-800 mb-2">{info.title}</h3>
+                          <p className="text-gray-600 text-sm">{info.content}</p>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
@@ -68,7 +73,7 @@ export default function About() {
           </div>
           <div className="order-1 md:order-2 overflow-hidden rounded-2xl shadow-2xl group">
             <img
-              src="https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&w=800"
+              src="./about.png"
               alt="Cafe interior"
               className="w-full h-96 object-cover group-hover:scale-110 transition-transform duration-700"
             />

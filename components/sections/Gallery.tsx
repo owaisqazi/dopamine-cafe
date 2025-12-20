@@ -2,27 +2,27 @@
 
 const images = [
   {
-    url: 'https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=600',
+    url: './gellery1.png',
     alt: 'Latte art',
   },
   {
-    url: 'https://images.pexels.com/photos/1833399/pexels-photo-1833399.jpeg?auto=compress&cs=tinysrgb&w=600',
+    url: './gallery2.png',
     alt: 'Coffee beans',
   },
   {
-    url: 'https://images.pexels.com/photos/1228497/pexels-photo-1228497.jpeg?auto=compress&cs=tinysrgb&w=600',
+    url: './gallery3.png',
     alt: 'Cafe atmosphere',
   },
   {
-    url: 'https://images.pexels.com/photos/1775043/pexels-photo-1775043.jpeg?auto=compress&cs=tinysrgb&w=600',
+    url: './gallery4.png',
     alt: 'Desserts',
   },
   {
-    url: 'https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=600',
+    url: './gallery5.png',
     alt: 'Coffee cup',
   },
   {
-    url: 'https://images.pexels.com/photos/1030946/pexels-photo-1030946.jpeg?auto=compress&cs=tinysrgb&w=600',
+    url: './gallery6.png',
     alt: 'Breakfast',
   },
 ];

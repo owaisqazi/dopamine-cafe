@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { Coffee, MapPin, Clock, Phone, Mail, Instagram, Facebook, ChevronDown } from 'lucide-react';
 import Hero from '@/components/sections/Hero';
 import Menu from '@/components/sections/Menu';
 import About from '@/components/sections/About';

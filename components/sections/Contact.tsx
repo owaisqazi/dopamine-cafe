@@ -1,71 +1,126 @@
-'use client';
+"use client";
 
-import { MapPin, Clock, Phone, Mail, Instagram, Facebook, Twitter } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-
-const contactInfo = [
-  {
-    icon: MapPin,
-    title: 'Location',
-    content: '123 Coffee Street, Cafe District, Mumbai - 400001',
-  },
-  {
-    icon: Clock,
-    title: 'Hours',
-    content: 'Mon - Sun: 8:00 AM - 11:00 PM',
-  },
-  {
-    icon: Phone,
-    title: 'Phone',
-    content: '+91 98765 43210',
-  },
-  {
-    icon: Mail,
-    title: 'Email',
-    content: 'hello@dopaminecafe.com',
-  },
-];
-
-const socialLinks = [
-  { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: Facebook, href: '#', label: 'Facebook' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
-];
+import {
+  User,
+  Mail,
+  Phone,
+  Info,
+  Pencil,
+  Instagram,
+  Facebook,
+  Twitter,
+} from "lucide-react";
+import { Card } from "../ui/card";
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-20 px-4 bg-gradient-to-b from-amber-50 to-white">
-      <div className="container mx-auto">
+    <section id="contact" className="pt-14 bg-white">
+      <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-gray-800 mb-4">Visit Us</h2>
-          <p className="text-xl text-gray-600">We would love to see you!</p>
+          <h2 className="text-5xl font-bold text-gray-800 mb-4"> Contact Us</h2>
         </div>
+        <div className="grid pb-14 grid-cols-1 md:grid-cols-3 gap-16">
+          {/* LEFT : CONTACT DETAILS */}
+          <div>
+            <div className="space-y-4 text-gray-600">
+              <p>785 15h Street, Office 478</p>
+              <p>Berlin, De 81566</p>
+              <p className="pt-4">info@email.com</p>
+              <p className="text-gray-800 font-medium">+1 840 841 25 69</p>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {contactInfo.map((info, index) => {
-            const Icon = info.icon;
-            return (
-              <Card
-                key={index}
-                className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+            {/* Social Icons */}
+            <div className="flex gap-4 mt-10">
+              {[Facebook, Twitter, Instagram].map((Icon, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-amber-600 hover:text-white hover:border-amber-600 transition"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT : FORM */}
+          <form className="space-y-10 col-span-2">
+            {/* Name + Email */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="flex items-center gap-3 border-b border-gray-300 pb-3">
+                <User className="w-4 h-4 text-gray-500" />
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="w-full outline-none text-gray-700 placeholder-gray-500"
+                />
+              </div>
+
+              <div className="flex items-center gap-3 border-b border-gray-300 pb-3">
+                <Mail className="w-4 h-4 text-gray-500" />
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  className="w-full outline-none text-gray-700 placeholder-gray-500"
+                />
+              </div>
+            </div>
+
+            {/* Phone + Subject */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="flex items-center gap-3 border-b border-gray-300 pb-3">
+                <Phone className="w-4 h-4 text-gray-500" />
+                <input
+                  type="text"
+                  placeholder="Phone"
+                  className="w-full outline-none text-gray-700 placeholder-gray-500"
+                />
+              </div>
+
+              <div className="flex items-center gap-3 border-b border-gray-300 pb-3">
+                <Info className="w-4 h-4 text-gray-500" />
+                <input
+                  type="text"
+                  placeholder="Subject"
+                  className="w-full outline-none text-gray-700 placeholder-gray-500"
+                />
+              </div>
+            </div>
+
+            {/* Message */}
+            <div className="flex items-start gap-3 border-b border-gray-300 pb-16">
+              <Pencil className="w-4 h-4 text-gray-500 mt-1" />
+              <textarea
+                rows={1}
+                placeholder="How can we help you? Feel free to get in touch!"
+                className="w-full resize-none outline-none text-gray-700 placeholder-gray-500"
+              />
+            </div>
+
+            {/* Button + Checkbox */}
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <button
+                type="submit"
+                className="bg-[#c2671c] text-white px-10 py-3 rounded-full hover:opacity-90 transition flex items-center gap-2"
               >
-                <CardContent className="p-6 text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-600 mb-4 group-hover:scale-110 transition-transform">
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">{info.title}</h3>
-                  <p className="text-gray-600 text-sm">{info.content}</p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+                ✈ Get In Touch
+              </button>
 
-        <div className="max-w-4xl mx-auto">
+              <label className="flex items-center gap-2 text-sm text-gray-500">
+                <input type="checkbox" />I agree that my submitted data is{" "}
+                <span className="underline cursor-pointer">
+                  collected and stored
+                </span>
+              </label>
+            </div>
+          </form>
+        </div>
+      </div>
+        <div className=" mx-auto">
           <Card className="overflow-hidden shadow-2xl">
             <div className="aspect-video w-full">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.14571092415!2d72.71637696565174!3d19.08219783894024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5da4ed8f8d648c69!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115824.50396460664!2d66.9489125536689!3d24.88038354183107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e85a24caa7f%3A0x9716f7757ab105e0!2zTmV3IFlvcmsgQ29mZmVl25Qg2YbbjNmI24zYp9ix2qkg2qnYp9mB24w!5e0!3m2!1sen!2s!4v1766222723566!5m2!1sen!2s"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -75,24 +130,7 @@ export default function Contact() {
               />
             </div>
           </Card>
-
-          <div className="flex justify-center gap-6 mt-8">
-            {socialLinks.map((social, index) => {
-              const Icon = social.icon;
-              return (
-                <a
-                  key={index}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="flex items-center justify-center w-12 h-12 rounded-full bg-amber-600 text-white hover:bg-amber-700 hover:scale-110 transition-all duration-300 shadow-lg"
-                >
-                  <Icon className="w-5 h-5" />
-                </a>
-              );
-            })}
-          </div>
         </div>
-      </div>
     </section>
   );
 }
