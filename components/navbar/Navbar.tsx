@@ -12,7 +12,6 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ scrolled, scrollToSection }) => {
   const [cartOpen, setCartOpen] = useState(false)
 
-  // demo cart items (later connect real cart state)
   const cartItems = [
     { name: 'Cafe Latte', price: '$160', qty: 1 },
     { name: 'Mocha', price: '$180', qty: 2 },
