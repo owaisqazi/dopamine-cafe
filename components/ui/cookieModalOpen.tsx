@@ -135,13 +135,13 @@ export default function CookieModal({
       className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-start pt-20 pb-12 px-4 z-50"
       role="dialog"
       aria-modal="true"
-      data-aos="fade-left"
+      data-aos="flip-left"
       data-aos-duration="500"
       data-aos-easing="ease-out-cubic"
       data-aos-anchor-placement="top-bottom"
       aria-labelledby="cookie-modal-title"
     >
-      <div className="bg-white rounded-xl shadow-2xl max-w-xl w-full border-b-2 py-4 px-8 relative flex flex-col md:h-auto md:overflow-y-hidden h-[550px] overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-2xl max-w-xl w-full border-b-2 py-4 px-8 relative flex flex-col md:h-auto md:overflow-y-hidden h-[450px] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={onClose}

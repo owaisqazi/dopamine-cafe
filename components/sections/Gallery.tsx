@@ -12,8 +12,8 @@ const images = [
 
 export default function Gallery() {
   return (
-    <section id="gallery" className="py-20 px-4 bg-white">
-      <div className="container mx-auto">
+    <section id="gallery" className="py-20 px-4 bg-white ">
+      <div className="container mx-auto ">
         {/* Heading animation */}
         <div className="text-center mb-12">
           <h2 className="text-5xl font-bold text-gray-800 mb-4">Gallery</h2>

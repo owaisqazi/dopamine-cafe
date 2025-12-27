@@ -51,7 +51,7 @@ export default function About() {
                 data-aos-delay={index * 100}
                 data-aos-duration={3000}
                 data-aos-easing="ease-in-out"
-                className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+                className="group hover:shadow-xl  transition-all duration-300 hover:-translate-y-2"
               >
                 <CardContent className="p-6 text-center">
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-600 mb-4 group-hover:scale-110 transition-transform">
@@ -67,12 +67,11 @@ export default function About() {
           })}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-12 items-center ">
           <div
             className="order-2 md:order-1"
-            data-aos="fade-left"
+            data-aos="flip-left"
             data-aos-offset="300"
-            data-aos-easing="ease-in-sine"
           >
             <h3 className="text-3xl font-bold text-gray-800 mb-4">Our Story</h3>
             <p className="text-gray-600 mb-4 leading-relaxed">
@@ -89,10 +88,9 @@ export default function About() {
             </p>
           </div>
           <div
-            data-aos="fade-right"
+            data-aos="flip-right"
             data-aos-offset="300"
-            data-aos-easing="ease-in-sine"
-            className="order-1 md:order-2 overflow-hidden rounded-2xl shadow-2xl group"
+            className="order-1 md:order-2  overflow-hidden rounded-2xl shadow-2xl group"
           >
             <img
               src="./about.png"

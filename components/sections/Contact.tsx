@@ -14,16 +14,15 @@ import { Card } from "../ui/card";
 
 export default function Contact() {
   return (
-    <section id="contact" className="pt-14 bg-white">
-      <div className="container mx-auto max-w-6xl">
+    <section id="contact" className="pt-14 bg-white ">
+      <div className="container mx-auto max-w-6xl ">
         
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 ">
           <h2 className="text-5xl font-bold text-gray-800 mb-4"> Contact Us</h2>
         </div>
         <div className="grid md:px-0 px-6 pb-14 grid-cols-1 md:grid-cols-3 gap-16">
           {/* LEFT : CONTACT DETAILS */}
           <div
-          data-aos="zoom-in"
           >
             <div className="space-y-4 text-gray-600">
               <p>785 15h Street, Office 478</p>
@@ -48,8 +47,7 @@ export default function Contact() {
 
           {/* RIGHT : FORM */}
           <form
-            className="space-y-10 col-span-2"
-            data-aos="zoom-in"
+            className="space-y-10 col-span-2 "
           >
             {/* Name + Email */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
