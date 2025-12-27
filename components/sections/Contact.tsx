@@ -16,6 +16,7 @@ export default function Contact() {
   return (
     <section id="contact" className="pt-14 bg-white">
       <div className="container mx-auto max-w-6xl">
+        
         <div className="text-center mb-12">
           <h2 className="text-5xl font-bold text-gray-800 mb-4"> Contact Us</h2>
         </div>
