@@ -19,7 +19,7 @@ export default function Contact() {
         <div className="text-center mb-12">
           <h2 className="text-5xl font-bold text-gray-800 mb-4"> Contact Us</h2>
         </div>
-        <div className="grid pb-14 grid-cols-1 md:grid-cols-3 gap-16">
+        <div className="grid md:px-0 px-6 pb-14 grid-cols-1 md:grid-cols-3 gap-16">
           {/* LEFT : CONTACT DETAILS */}
           <div
           data-aos="zoom-in"
