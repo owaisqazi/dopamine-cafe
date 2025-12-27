@@ -1,110 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import { Coffee, Cake, Sandwich, IceCream, ShoppingCart } from "lucide-react";
+import {
+  Flame,
+  Pizza,
+  Soup,
+  Coffee,
+  Beef,
+  Utensils,
+  ShoppingCart,
+  LayoutGrid,
+} from "lucide-react";
 import Image from "next/image";
+import Categories from "../json/menuData.json";
+const iconMap = {
+  Flame: Flame,
+  Pizza: Pizza,
+  Soup: Soup,
+  Beef: Beef,
+  Utensils: Utensils,
+  Coffee: Coffee,
+};
 
-const categories = [
-  {
-    name: "Coffee",
-    icon: Coffee,
-    items: [
-      {
-        name: "Cafe Latte",
-        price: "$160",
-        description: "Fresh brewed coffee and steamed milk",
-        image:
-          "./manu1.png",
-      },
-      {
-        name: "Mocha",
-        price: "$180",
-        description: "Coffee with chocolate flavor",
-        image:
-          "./manu2.png",
-      },
-      {
-        name: "Ice Coffee",
-        price: "$140",
-        description: "Chilled brewed coffee",
-        image:
-          "./manu3.png",
-      },
-      {
-        name: "Espresso",
-        price: "$120",
-        description: "Strong and bold coffee shot",
-        image:
-          "./manu4.png",
-      },
-    ],
-  },
-  {
-    name: "Desserts",
-    icon: Cake,
-    items: [
-      {
-        name: "Chocolate Cake",
-        price: "$200",
-        description: "Rich chocolate layered cake",
-        image:
-          "./manu5.png",
-      },
-      {
-        name: "Cheesecake",
-        price: "$220",
-        description: "Creamy New York cheesecake",
-        image:
-          "./manu6.png",
-      },
-    ],
-  },
-  {
-    name: "Snacks",
-    icon: Sandwich,
-    items: [
-      {
-        name: "Veg Burger",
-        price: "$180",
-        description: "Grilled veggie patty burger",
-        image:
-          "./manu7.png",
-      },
-      {
-        name: "Pasta",
-        price: "$220",
-        description: "Creamy white sauce pasta",
-        image:
-          "./manu8.png",
-      },
-    ],
-  },
-  {
-    name: "Shakes",
-    icon: IceCream,
-    items: [
-      {
-        name: "Chocolate Shake",
-        price: "$180",
-        description: "Thick chocolate shake",
-        image:
-          "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=500&q=80",
-      },
-      {
-        name: "Oreo Shake",
-        price: "$200",
-        description: "Cookies and cream shake",
-        image:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1bDK2oaEb1Q-v7BGR5IBrTSHrt9gOCna8pw&s",
-      },
-    ],
-  },
-];
-
-const allItems = categories.flatMap((cat) => cat.items);
+const allItems = Categories.categories.flatMap((cat) => cat.items);
 const categoriesWithAll = [
-  { name: "All", icon: Coffee, items: allItems },
-  ...categories,
+  { name: "All", icon: "LayoutGrid", items: allItems },
+  ...Categories.categories,
 ];
 
 export default function Menu() {
@@ -122,7 +43,8 @@ export default function Menu() {
         {/* Tabs */}
         <div className="flex flex-wrap justify-center gap-4 mb-14">
           {categoriesWithAll.map((category, index) => {
-            const Icon = category.icon;
+            const iconName = category?.icon as keyof typeof iconMap;
+            const IconComponent = iconMap[iconName] || LayoutGrid;
             return (
               <button
                 key={index}
@@ -133,7 +55,7 @@ export default function Menu() {
                     : "bg-gray-100 text-gray-700 hover:bg-amber-100 hover:scale-105"
                 }`}
               >
-                <Icon className="w-5 h-5" />
+                <IconComponent className="w-5 h-5" />
                 {category.name}
               </button>
             );
@@ -145,18 +67,23 @@ export default function Menu() {
           {categoriesWithAll[activeCategory].items.map((item, index) => (
             <div
               key={index}
-              className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition overflow-hidden relative"
+              data-aos="fade-down"
+              data-aos-easing="ease-out-cubic"
+              data-aos-duration="1000"
+              data-aos-delay={index * 72}
+              data-aos-anchor-placement="top-bottom"
+              className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition overflow-hidden relative border border-gray-100"
             >
-              {/* Image */}
+              {/* Image Container */}
               <div className="relative h-52 overflow-hidden">
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
                   className="object-cover group-hover:scale-110 transition duration-500"
+                  sizes="(max-width: 768px) 100vw, 25vw"
                 />
 
-                {/* Small Cart Button (Top-Right Corner) */}
                 <button className="absolute top-3 right-3 w-10 h-10 bg-amber-600 hover:bg-amber-700 text-white rounded-full flex items-center justify-center shadow-lg transition transform hover:scale-110">
                   <ShoppingCart className="w-5 h-5" />
                 </button>
@@ -164,14 +91,22 @@ export default function Menu() {
 
               {/* Content */}
               <div className="p-5">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-lg font-semibold text-gray-800">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-lg font-bold text-gray-800 leading-tight">
                     {item.name}
                   </h3>
-                  <span className="font-bold text-amber-600">{item.price}</span>
+                  <span className="font-bold text-amber-600 whitespace-nowrap ml-2">
+                    {item.price}
+                  </span>
                 </div>
 
-                <p className="text-sm text-gray-600 mb-4">{item.description}</p>
+                <p className="text-sm text-gray-500 mb-4 line-clamp-2">
+                  {item.description}
+                </p>
+
+                <button className="w-full py-2 bg-gray-50 text-gray-800 text-sm font-semibold rounded-lg hover:bg-amber-600 hover:text-white transition-colors">
+                  Details
+                </button>
               </div>
             </div>
           ))}

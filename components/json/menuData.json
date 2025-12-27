@@ -1,0 +1,115 @@
+{
+  "categories": [
+    {
+      "name": "Starters",
+      "icon": "Flame",
+      "items": [
+        { "name": "Buffalo Wild Wings", "price": "Rs. 850", "description": "Authentic spicy wings", "image": "../../manu/Buffalo Wild Wings.jpeg" },
+        { "name": "BBQ Wing's", "price": "Rs. 850", "description": "Smoky BBQ glaze", "image": "../../manu/BBQ Wing's.jpeg" },
+        { "name": "Garlic Butter Wing's", "price": "Rs. 850", "description": "Rich garlic butter flavor", "image": "../../manu/Garlic Butter Wing's.jpeg" },
+        { "name": "Korean Wing's", "price": "Rs. 850", "description": "Sweet and spicy Korean style", "image": "../../manu/Korean Wing's.jpeg" },
+        { "name": "Fried Chicken Strips", "price": "Rs. 750", "description": "Crispy fried chicken strips", "image": "../../manu/Fried Chicken Strips.jpeg" },
+        { "name": "Chicken Tenderlion", "price": "Rs. 750", "description": "Soft chicken tenderloins", "image": "../../manu/Chicken Tenderlion.jpeg" },
+        { "name": "Chilli Cheese Bites", "price": "Rs. 650", "description": "Golden bites with melted cheese", "image": "../../manu/Chilli Cheese Bites.jpeg" },
+        { "name": "Potato Rind", "price": "Rs. 550", "description": "Crispy fried potato rinds", "image": "../../manu/Potato Rind.jpg" },
+        { "name": "Mozzarella Sticks", "price": "Rs. 750", "description": "Stretchy cheese sticks", "image": "../../manu/Mozzarella Sticks.jpeg" },
+        { "name": "Golden Onion Rings", "price": "Rs. 450", "description": "Crispy fried onion rings", "image": "../../manu/Golden Onion Rings.jpeg" },
+        { "name": "Garlic Bread", "price": "Rs. 350", "description": "Classic garlic bread", "image": "../../manu/Garlic Bread.jpeg" },
+        { "name": "Cheese Garlic Bread", "price": "Rs. 450", "description": "Garlic bread with cheese", "image": "../../manu/Cheese Garlic Bread.jpeg" },
+        { "name": "French Fries", "price": "Rs. 350", "description": "Classic crispy fries", "image": "../../manu/French Fries.jpeg" },
+        { "name": "Garlic Parm Fries", "price": "Rs. 450", "description": "Fries with garlic and parmesan", "image": "../../manu/Garlic Parm Fries.jpeg" },
+        { "name": "Dynammic Chicken", "price": "Rs. 950", "description": "Chef's special dynamic chicken", "image": "../../manu/Dynammic Chicken.jpeg" },
+        { "name": "Beef Nachos", "price": "Rs. 1150", "description": "Loaded with seasoned beef", "image": "../../manu/Beef Nachos.jpeg" },
+        { "name": "Chicken Nachos", "price": "Rs. 950", "description": "Loaded with chicken", "image": "../../manu/Chicken Nachos.jpeg" },
+        { "name": "Assorted Sliders", "price": "Rs. 850", "description": "Variety of mini burgers", "image": "../../manu/Assorted Sliders.jpeg" },
+        { "name": "Tacos", "price": "Rs. 750", "description": "Mexican style tacos", "image": "../../manu/Tacos.jpeg" },
+        { "name": "Loaded Fries", "price": "Rs. 850", "description": "Fries with everything", "image": "../../manu/Loaded Fries.jpeg" },
+        { "name": "Garlic Buns", "price": "Rs. 450", "description": "Soft garlic flavored buns", "image": "../../manu/Garlic Buns.jpeg" },
+        { "name": "Starter Platter", "price": "Rs. 1850", "description": "Complete variety of starters", "image": "../../manu/Starter Platter.jpeg" }
+      ]
+    },
+    {
+      "name": "Soups & Salads",
+      "icon": "Soup",
+      "items": [
+        { "name": "Corn Soup", "price": "Rs. 450", "description": "Classic sweet corn soup", "image": "../../manu/Corn Soup.jpeg" },
+        { "name": "Cream Mushroom Soup", "price": "Rs. 550", "description": "Rich mushroom cream", "image": "../../manu/Cream Mushroom Soup.jpeg" },
+        { "name": "Clear Chicken Soup", "price": "Rs. 450", "description": "Healthy chicken broth", "image": "../../manu/Clear Chicken Soup.jpeg" },
+        { "name": "Tomato Soup", "price": "Rs. 450", "description": "Classic tomato delight", "image": "../../manu/Tomato Soup.jpeg" },
+        { "name": "Minestrone Soup", "price": "Rs. 550", "description": "Hearty vegetable soup", "image": "../../manu/Minestrone Soup.jpg" },
+        { "name": "Mulligatawny Soup", "price": "Rs. 600", "description": "Spiced lentil soup", "image": "../../manu/Mulligatawny Soup.jpeg" },
+        { "name": "Cream of Spanich Soup", "price": "Rs. 550", "description": "Creamy spinach blend", "image": "../../manu/Cream of Spanich Soup.jpeg" },
+        { "name": "Signature Salad", "price": "Rs. 750", "description": "House special garden mix", "image": "../../manu/Signature Salad.jpeg" },
+        { "name": "Caesar Salad", "price": "Rs. 850", "description": "Lettuce with parmesan", "image": "../../manu/Caesar Salad.jpeg" },
+        { "name": "Feta Cheese Salad", "price": "Rs. 750", "description": "Garden salad with Feta cheese", "image": "../../manu/Feta Cheese Salad.jpeg" },
+        { "name": "Burrata", "price": "Rs. 1250", "description": "Premium burrata cheese salad", "image": "../../manu/Burrata.jpg" }
+      ]
+    },
+    {
+      "name": "Pizza",
+      "icon": "Pizza",
+      "items": [
+        { "name": "Philly Cheese Pizza", "price": "Rs. 1450", "description": "Steak slices and melted cheese", "image": "../../manu/Philly Cheese Pizza.jpeg" },
+        { "name": "Fajita Cheese", "price": "Rs. 1350", "description": "Grilled chicken fajita topping", "image": "../../manu/Fajita Cheese.jpeg" },
+        { "name": "Tikka Pizza", "price": "Rs. 1250", "description": "Desi spiced chicken tikka", "image": "../../manu/Tikka Pizza.jpeg" },
+        { "name": "Flaming Fury Pizza", "price": "Rs. 1550", "description": "Extra hot and spicy", "image": "../../manu/Flaming Fury Pizza.jpeg" },
+        { "name": "Supreme Pizza", "price": "Rs. 1650", "description": "Loaded with all toppings", "image": "../../manu/Supreme Pizza.jpeg" },
+        { "name": "Bufflo Pizza", "price": "Rs. 1450", "description": "Buffalo sauce and chicken", "image": "../../manu/Bufflo Pizza.jpeg" },
+        { "name": "Pepprone Pizza", "price": "Rs. 1550", "description": "Classic beef pepperoni", "image": "../../manu/Pepprone Pizza.jpeg" },
+        { "name": "Mexican Pizza", "price": "Rs. 1450", "description": "Spicy Mexican style pizza", "image": "../../manu/Mexican Pizza.jpeg" },
+        { "name": "Cheese Lover Pizza", "price": "Rs. 1250", "description": "Four cheese blend", "image": "../../manu/Cheese Lover Pizza.jpeg" }
+      ]
+    },
+    {
+      "name": "Burgers & Sandwiches",
+      "icon": "Beef",
+      "items": [
+        { "name": "Club Sandwich", "price": "Rs. 850", "description": "Classic double decker sandwich", "image": "../../manu/Club Sandwich.jpeg" },
+        { "name": "Turky Sandwich", "price": "Rs. 950", "description": "Turkey slices and cheese", "image": "../../manu/Turky Sandwich.jpeg" },
+        { "name": "Hunterbeef Sandwich", "price": "Rs. 950", "description": "Traditional hunter beef", "image": "../../manu/Hunterbeef Sandwich.jpeg" },
+        { "name": "Sriracha Beef Sandwich", "price": "Rs. 1050", "description": "Spicy sriracha beef", "image": "../../manu/Sriracha Beef Sandwich.jpeg" },
+        { "name": "Sriracha Chicken Sandwich", "price": "Rs. 950", "description": "Spicy sriracha chicken", "image": "../../manu/Sriracha Chicken Sandwich.jpeg" },
+        { "name": "Beef Panini Sandwich", "price": "Rs. 1150", "description": "Pressed beef panini", "image": "../../manu/Beef Panini Sandwich.jpeg" },
+        { "name": "Chicken Panini Sandwich", "price": "Rs. 1050", "description": "Pressed chicken panini", "image": "../../manu/Chicken Panini Sandwich.jpeg" },
+        { "name": "Philli Steak Baguette", "price": "Rs. 1150", "description": "Steak strips in a baguette", "image": "../../manu/Philli Steak Baguette.jpeg" },
+        { "name": "Steak & Cheese Baguette", "price": "Rs. 1150", "description": "Beef steak with cheese", "image": "../../manu/Steak & Cheese Baguette.jpeg" },
+        { "name": "Beef Burgar", "price": "Rs. 850", "description": "Juicy grilled beef patty", "image": "../../manu/Beef Burgar.jpeg" },
+        { "name": "Chicken Burgar", "price": "Rs. 750", "description": "Classic chicken burger", "image": "../../manu/Chicken Burgar.jpeg" },
+        { "name": "Mushroom Beef Burgar", "price": "Rs. 980", "description": "Beef with mushroom sauce", "image": "../../manu/Mushroom Beef Burgar.jpeg" },
+        { "name": "Jalopeno Beef Burgar", "price": "Rs. 880", "description": "Beef with spicy jalapenos", "image": "../../manu/Jalopeno Beef Burgar.jpeg" },
+        { "name": "Crispy Burgar", "price": "Rs. 750", "description": "Deep fried crispy burger", "image": "../../manu/Crispy Burgar.jpeg" }
+      ]
+    },
+    {
+      "name": "Main Course & Steaks",
+      "icon": "Utensils",
+      "items": [
+        { "name": "Alfredo Pasta", "price": "Rs. 1050", "description": "Creamy white sauce pasta", "image": "../../manu/Alfredo Pasta.jpeg" },
+        { "name": "Arribita Pasta", "price": "Rs. 1050", "description": "Spicy tomato sauce pasta", "image": "../../manu/Arribita Pasta.jpeg" },
+        { "name": "Maken Cheese", "price": "Rs. 950", "description": "Classic mac and cheese", "image": "../../manu/Maken Cheese.jpeg" },
+        { "name": "Lasanga Beef", "price": "Rs. 1250", "description": "Rich layered beef lasagna", "image": "../../manu/Lasanga Beef.jpeg" },
+        { "name": "Lasanga Chicken", "price": "Rs. 1150", "description": "Rich layered chicken lasagna", "image": "../../manu/Lasanga Chicken.jpeg" },
+        { "name": "Fish & Chips", "price": "Rs. 1450", "description": "Golden fried fish", "image": "../../manu/Fish & Chips.jpeg" },
+        { "name": "Tarragon Chicken", "price": "Rs. 1250", "description": "Grilled in tarragon cream", "image": "../../manu/Tarragon Chicken.jpeg" },
+        { "name": "Moroccan Chicken", "price": "Rs. 1250", "description": "Spiced Moroccan style", "image": "../../manu/Moroccan Chicken.jpeg" },
+        { "name": "Mushroom Sauce Steak", "price": "Rs. 1950", "description": "Beef steak with mushroom", "image": "../../manu/Mushroom Sauce Steak.jpeg" },
+        { "name": "Paper Sauce Steak", "price": "Rs. 1950", "description": "Beef steak with pepper sauce", "image": "../../manu/Paper Sauce Steak.jpg" },
+        { "id": 54, "name": "Crispy Beef", "price": "Rs. 1250", "description": "Tender and crispy beef strips", "image": "../../manu/Crispy Beef.jpeg" }
+      ]
+    },
+    {
+      "name": "Breakfast & Coffee",
+      "icon": "Coffee",
+      "items": [
+        { "name": "Egg Benedict", "price": "Rs. 850", "description": "Poached eggs", "image": "../../manu/Egg Benedict.jpeg" },
+        { "name": "Mushroom Omelette", "price": "Rs. 550", "description": "Spiced mushroom omelette", "image": "../../manu/Mushroom Omelette.jpeg" },
+        { "name": "Pakistani Omelette", "price": "Rs. 550", "description": "Traditional spiced omelette", "image": "../../manu/Pakistani Omelette.jpeg" },
+        { "name": "Breakfast Platter", "price": "Rs. 1150", "description": "Complete meal", "image": "../../manu/Breakfast Platter.jpeg" },
+        { "name": "Nutella Pancakes", "price": "Rs. 750", "description": "Sweet nutella pancakes", "image": "../../manu/Nutella Pancakes.jpeg" },
+        { "name": "Cafe Latte", "price": "Rs. 450", "description": "Espresso with steamed milk", "image": "../../manu/Cafe Latte.jpeg" },
+        { "name": "Cappuccino", "price": "Rs. 450", "description": "Frothy classic coffee", "image": "../../manu/Cappuccino.jpeg" },
+        { "name": "Oreo Shake", "price": "Rs. 600", "description": "Thick oreo milkshake", "image": "../../manu/Oreo Shake.jpeg" }
+      ]
+    }
+  ]
+}

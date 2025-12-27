@@ -66,7 +66,7 @@ export default function Hero({ scrollToSection }: HeroProps) {
         <div className="grid grid-cols-1 md:py-0 py-20 lg:grid-cols-2 gap-16 w-full items-center">
 
           {/* LEFT : TEXT */}
-          <div className="text-left max-w-xl">
+          <div className="text-left max-w-xl" data-aos="fade-up">
             {bannerImages.map((image, index) => (
               <div
                 key={index}
@@ -106,7 +106,7 @@ export default function Hero({ scrollToSection }: HeroProps) {
           </div>
 
           {/* RIGHT : LOGIN / SIGNUP */}
-          <div className="bg-[#fff] rounded-2xl shadow-2xl p-8 max-w-md w-full mx-auto">
+          <div data-aos="fade-up" className="bg-[#fff] rounded-2xl shadow-2xl p-8 max-w-md w-full mx-auto">
             <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
               {isSignup ? 'Create Account' : 'Welcome Back'}
             </h3>

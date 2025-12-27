@@ -6,7 +6,7 @@ import Image from 'next/image';
 import CookieModal from '../ui/cookieModalOpen';
 
 export default function Footer() {
-  const [cookieModalOpen, setCookieModalOpen] = useState(false);
+  const [cookieModalOpen, setCookieModalOpen] = useState(true);
 
   return (
     <>

@@ -21,7 +21,9 @@ export default function Contact() {
         </div>
         <div className="grid pb-14 grid-cols-1 md:grid-cols-3 gap-16">
           {/* LEFT : CONTACT DETAILS */}
-          <div>
+          <div
+          data-aos="zoom-in"
+          >
             <div className="space-y-4 text-gray-600">
               <p>785 15h Street, Office 478</p>
               <p>Berlin, De 81566</p>
@@ -44,7 +46,10 @@ export default function Contact() {
           </div>
 
           {/* RIGHT : FORM */}
-          <form className="space-y-10 col-span-2">
+          <form
+            className="space-y-10 col-span-2"
+            data-aos="zoom-in"
+          >
             {/* Name + Email */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="flex items-center gap-3 border-b border-gray-300 pb-3">
@@ -116,21 +121,21 @@ export default function Contact() {
           </form>
         </div>
       </div>
-        <div className=" mx-auto">
-          <Card className="overflow-hidden shadow-2xl">
-            <div className="aspect-video w-full">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115824.50396460664!2d66.9489125536689!3d24.88038354183107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e85a24caa7f%3A0x9716f7757ab105e0!2zTmV3IFlvcmsgQ29mZmVl25Qg2YbbjNmI24zYp9ix2qkg2qnYp9mB24w!5e0!3m2!1sen!2s!4v1766222723566!5m2!1sen!2s"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-          </Card>
-        </div>
+      <div className=" mx-auto">
+        <Card className="overflow-hidden shadow-2xl">
+          <div className="aspect-video w-full">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115824.50396460664!2d66.9489125536689!3d24.88038354183107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e85a24caa7f%3A0x9716f7757ab105e0!2zTmV3IFlvcmsgQ29mZmVl25Qg2YbbjNmI24zYp9ix2qkg2qnYp9mB24w!5e0!3m2!1sen!2s!4v1766222723566!5m2!1sen!2s"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </Card>
+      </div>
     </section>
   );
 }
