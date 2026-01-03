@@ -31,7 +31,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="py-20 px-4 bg-gradient-to-b from-amber-50 to-white"
+      className="py-20 px-4 relative z-20 bg-gradient-to-b from-amber-50 to-white"
     >
       <div className="container mx-auto">
 
