@@ -1,16 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Heart, Facebook, Instagram, Twitter, Cookie } from 'lucide-react';
 import Image from 'next/image';
 import CookieModal from '../ui/cookieModalOpen';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
-  const [cookieModalOpen, setCookieModalOpen] = useState(true);
+const pathname = usePathname();
+  const [cookieModalOpen, setCookieModalOpen] = useState(false);
+  useEffect(() => {
+    if (pathname === '/') {
+      setCookieModalOpen(true);
+    } else {
+      setCookieModalOpen(false);
+    }
+  }, [pathname]);
 
   return (
     <>
-      <footer className="bg-[#1C1C1A] text-white py-12 px-4 relative">
+      <footer className="bg-[#1C1C1A] text-white py-12 px-4 z-20 relative">
         <div className="container mx-auto">
           {/* Top Section */}
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 mb-10">

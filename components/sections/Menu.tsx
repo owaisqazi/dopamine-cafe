@@ -10,106 +10,191 @@ import {
   Utensils,
   ShoppingCart,
   LayoutGrid,
+  ChevronDown,
 } from "lucide-react";
 import Image from "next/image";
-import Categories from "../json/menuData.json";
+import CategoriesData from "../json/menuData.json";
+
+/* ---------------- ICON MAP ---------------- */
 const iconMap = {
-  Flame: Flame,
-  Pizza: Pizza,
-  Soup: Soup,
-  Beef: Beef,
-  Utensils: Utensils,
-  Coffee: Coffee,
-};
+  Flame,
+  Pizza,
+  Soup,
+  Beef,
+  Utensils,
+  Coffee,
+  LayoutGrid,
+} as const;
 
-const allItems = Categories.categories.flatMap((cat) => cat.items);
-const categoriesWithAll = [
-  { name: "All", icon: "LayoutGrid", items: allItems },
-  ...Categories.categories,
-];
+type IconKey = keyof typeof iconMap;
 
+/* ---------------- TYPES ---------------- */
+interface MenuItem {
+  name: string;
+  description: string;
+  price: string;
+  image: string;
+}
+
+interface Category {
+  name: string;
+  icon: IconKey;
+  items: MenuItem[];
+}
+
+interface CategoriesJson {
+  categories: Category[];
+}
+
+/* ---------------- DATA ---------------- */
+const Categories = CategoriesData as CategoriesJson;
+
+const mainSections = [
+  { id: "starters", label: "Dopamine Starters" },
+  { id: "main", label: "Dopamine" },
+] as const;
+
+/* ---------------- COMPONENT ---------------- */
 export default function Menu() {
-  const [activeCategory, setActiveCategory] = useState(0);
+  const [activeMain, setActiveMain] = useState<(typeof mainSections)[number]["id"]>("starters");
+  const [activeCat, setActiveCat] = useState(0);
+  const [open, setOpen] = useState(false);
+
+  const currentCategories = Categories.categories.filter((cat) =>
+    activeMain === "starters"
+      ? ["Starters", "Soups & Salads"].includes(cat.name)
+      : ["Pizza", "Burgers & Sandwiches", "Main Course & Steaks", "Breakfast & Coffee"].includes(cat.name)
+  );
+
+  const categories: Category[] = [
+    {
+      name: "All",
+      icon: "LayoutGrid",
+      items: currentCategories.flatMap((c) => c.items),
+    },
+    ...currentCategories,
+  ];
 
   return (
-    <section id="menu" className="py-20 px-4 bg-white">
+    <section id="menu" className="relative z-20 bg-white py-20 px-4">
       <div className="container mx-auto">
-        {/* Heading */}
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-gray-800 mb-4">Our Menu</h2>
-          <p className="text-xl text-gray-600">Order your favorites online</p>
-        </div>
+        <div className="grid lg:grid-cols-3 gap-12">
 
-        {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-4 mb-14">
-          {categoriesWithAll.map((category, index) => {
-            const iconName = category?.icon as keyof typeof iconMap;
-            const IconComponent = iconMap[iconName] || LayoutGrid;
-            return (
+          {/* LEFT */}
+          <header>
+            <h1 className="text-5xl font-extrabold text-gray-900 mb-6">
+              Our <span className="text-amber-600">Dopamine</span> Menu
+            </h1>
+            <p className="text-gray-600 text-lg mb-8">
+              Discover chef-crafted flavors designed to boost your dopamine levels.
+            </p>
+
+            {/* CUSTOM DROPDOWN */}
+            <div className="relative max-w-sm">
               <button
-                key={index}
-                onClick={() => setActiveCategory(index)}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 ${
-                  activeCategory === index
-                    ? "bg-amber-600 text-white shadow-lg scale-105"
-                    : "bg-gray-100 text-gray-700 hover:bg-amber-100 hover:scale-105"
-                }`}
+                aria-haspopup="listbox"
+                aria-expanded={open}
+                onClick={() => setOpen(!open)}
+                className="w-full flex justify-between items-center bg-amber-600 text-white px-6 py-4 rounded-2xl font-bold shadow-lg hover:bg-amber-700 transition"
               >
-                <IconComponent className="w-5 h-5" />
-                {category.name}
+                {mainSections.find((s) => s.id === activeMain)?.label}
+                <ChevronDown className={`w-5 h-5 transition ${open ? "rotate-180" : ""}`} />
               </button>
-            );
-          })}
-        </div>
 
-        {/* CARD GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {categoriesWithAll[activeCategory].items.map((item, index) => (
-            <div
-              key={index}
-              data-aos="fade-down"
-              data-aos-easing="ease-out-cubic"
-              data-aos-duration="1000"
-              data-aos-delay={index * 72}
-              data-aos-anchor-placement="top-bottom"
-              className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition overflow-hidden relative border border-gray-100"
-            >
-              {/* Image Container */}
-              <div className="relative h-52 overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-cover group-hover:scale-110 transition duration-500"
-                  sizes="(max-width: 768px) 100vw, 25vw"
-                />
-
-                <button className="absolute top-3 right-3 w-10 h-10 bg-amber-600 hover:bg-amber-700 text-white rounded-full flex items-center justify-center shadow-lg transition transform hover:scale-110">
-                  <ShoppingCart className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Content */}
-              <div className="p-5">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-lg font-bold text-gray-800 leading-tight">
-                    {item.name}
-                  </h3>
-                  <span className="font-bold text-amber-600 whitespace-nowrap ml-2">
-                    {item.price}
-                  </span>
-                </div>
-
-                <p className="text-sm text-gray-500 mb-4 line-clamp-2">
-                  {item.description}
-                </p>
-
-                <button className="w-full py-2 bg-gray-50 text-gray-800 text-sm font-semibold rounded-lg hover:bg-amber-600 hover:text-white transition-colors">
-                  Details
-                </button>
-              </div>
+              {open && (
+                <ul
+                  role="listbox"
+                  className="absolute mt-3 w-full bg-white rounded-2xl shadow-xl overflow-hidden z-30"
+                >
+                  {mainSections.map((s) => (
+                    <li
+                      key={s.id}
+                      role="option"
+                      aria-selected={activeMain === s.id}
+                      onClick={() => {
+                        setActiveMain(s.id);
+                        setActiveCat(0);
+                        setOpen(false);
+                      }}
+                      className={`px-6 py-4 cursor-pointer font-semibold transition ${
+                        activeMain === s.id
+                          ? "bg-amber-600 text-white"
+                          : "hover:bg-amber-100 text-gray-700"
+                      }`}
+                    >
+                      {s.label}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-          ))}
+          </header>
+
+          {/* RIGHT */}
+          <main className="lg:col-span-2">
+
+            {/* CATEGORY TABS */}
+            <nav className="flex flex-wrap gap-3 mb-10" aria-label="Menu Categories">
+              {categories.map((cat, i) => {
+                const Icon = iconMap[cat.icon];
+                return (
+                  <button
+                    key={i}
+                    onClick={() => setActiveCat(i)}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition ${
+                      activeCat === i
+                        ? "bg-amber-600 text-white"
+                        : "bg-gray-100 text-gray-600 hover:bg-amber-100"
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {cat.name}
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* MENU GRID */}
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {categories[activeCat]?.items.map((item, i) => (
+                <article
+                  key={i}
+                  itemScope
+                  itemType="https://schema.org/MenuItem"
+                  className="bg-white border rounded-2xl overflow-hidden hover:shadow-xl transition"
+                >
+                  <div className="relative h-48">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover"
+                      itemProp="image"
+                    />
+                    <button
+                      aria-label="Add to cart"
+                      className="absolute top-3 right-3 bg-amber-600 text-white p-2 rounded-full"
+                    >
+                      <ShoppingCart className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="p-4">
+                    <h2 itemProp="name" className="font-bold text-gray-800">
+                      {item.name}
+                    </h2>
+                    <p itemProp="description" className="text-sm text-gray-500 my-2">
+                      {item.description}
+                    </p>
+                    <span itemProp="price" className="text-amber-600 font-bold text-sm">
+                      {item.price}
+                    </span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </main>
+
         </div>
       </div>
     </section>

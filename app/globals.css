@@ -142,3 +142,12 @@
     animation: pulse-slow 4s ease-in-out infinite;
   }
 }
+
+/* phone input  */
+.react-tel-input .flag-dropdown.open .selected-flag{
+background:none !important;
+}
+select option:hover {
+  background: #f59e0b !important; /* amber-500 */
+  color: white;
+}

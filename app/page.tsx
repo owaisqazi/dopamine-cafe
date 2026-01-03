@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Hero from '@/components/sections/Hero';
-import Menu from '@/components/sections/Menu';
 import About from '@/components/sections/About';
-import Gallery from '@/components/sections/Gallery';
-import Contact from '@/components/sections/Contact';
+import Gallery from '@/components/sections/NewGallery';
 import Footer from '@/components/sections/Footer';
 import Navbar from '@/components/navbar/Navbar';
+import { Toaster } from "react-hot-toast";
+import HomeManu from '@/components/sections/HomeManu';
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
@@ -26,14 +26,13 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
-      
      <Navbar scrolled={scrolled} scrollToSection={scrollToSection} /> 
       <Hero scrollToSection={scrollToSection} />
-      <Menu />
-      <About />
+      <HomeManu />
       <Gallery />
-      <Contact />
+      <About />
       <Footer />
+      <Toaster position="top-right" reverseOrder={false} />
     </main>
   );
 }
