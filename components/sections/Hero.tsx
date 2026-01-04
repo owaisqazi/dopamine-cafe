@@ -1,8 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import AuthForm from "../forms/AuthForm";
+import { useGetByHomeImageQuery } from "@/store/api/authApi";
 
 interface HeroProps {
   scrollToSection: (id: string) => void;
@@ -22,10 +24,12 @@ const bannerImages = [
 ];
 
 export default function Hero({ scrollToSection }: HeroProps) {
+   const { data, isLoading } = useGetByHomeImageQuery();
+      const items = data?.data || [];
   const [current, setCurrent] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [isSignup, setIsSignup] = useState(false);
-
+  console.log(items, "Hero Image Data===>");
   /* AUTOPLAY */
   useEffect(() => {
     if (!autoPlay) return;

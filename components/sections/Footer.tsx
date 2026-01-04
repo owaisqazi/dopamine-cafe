@@ -1,21 +1,51 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Heart, Facebook, Instagram, Twitter, Cookie } from 'lucide-react';
-import Image from 'next/image';
-import CookieModal from '../ui/cookieModalOpen';
-import { usePathname } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { Heart, Facebook, Instagram, Twitter, Cookie } from "lucide-react";
+import Image from "next/image";
+import CookieModal from "../ui/cookieModalOpen";
+import { usePathname } from "next/navigation";
+import { useNewsletterMutation } from "@/store/api/authApi";
+import { toast } from "react-hot-toast";
+interface NewsletterData {
+  email: string;
+}
 
 export default function Footer() {
-const pathname = usePathname();
+  const pathname = usePathname();
   const [cookieModalOpen, setCookieModalOpen] = useState(false);
+
+  // 🔥 Newsletter
+  const [newsletter, { isLoading }] = useNewsletterMutation();
+  const [email, setEmail] = useState<string>("");
+
   useEffect(() => {
-    if (pathname === '/') {
+    if (pathname === "/") {
       setCookieModalOpen(true);
     } else {
       setCookieModalOpen(false);
     }
   }, [pathname]);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email) {
+      toast.error("Please enter your email");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("email", email);
+
+      await newsletter(formData).unwrap();
+      toast.success("Subscribed successfully 🎉");
+      setEmail("");
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Something went wrong");
+    }
+  };
 
   return (
     <>
@@ -25,7 +55,6 @@ const pathname = usePathname();
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 mb-10">
             {/* LEFT : Logo */}
             <div className="flex items-center gap-3">
-              {/* Logo Image */}
               <Image
                 width={150}
                 height={150}
@@ -35,8 +64,8 @@ const pathname = usePathname();
               />
             </div>
 
-            {/* RIGHT : Links + Social */}
-            <div className="flex flex-col items-center md:items-end gap-6">
+            {/* RIGHT : Links + Social + Newsletter */}
+            <div className="flex flex-col items-center md:items-end gap-6 w-full md:w-auto">
               {/* Links */}
               <div className="flex gap-6 text-gray-300 font-medium">
                 <a href="#menu" className="hover:text-amber-500 transition">
@@ -74,6 +103,28 @@ const pathname = usePathname();
                   <Twitter className="w-5 h-5" />
                 </a>
               </div>
+
+              {/* 🔥 Newsletter */}
+              <form
+                onSubmit={handleNewsletterSubmit}
+                className="flex flex-col sm:flex-row items-center gap-3 w-full"
+              >
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="w-full sm:w-64 px-4 py-2 rounded-full bg-[#2A2A28] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                />
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="px-6 py-2 rounded-full bg-amber-600 hover:bg-amber-700 transition text-white font-medium disabled:opacity-60"
+                >
+                  {isLoading ? "Subscribing..." : "Subscribe"}
+                </button>
+              </form>
             </div>
           </div>
 
@@ -93,13 +144,17 @@ const pathname = usePathname();
             aria-label="Cookie Preferences"
             title="Cookie Preferences"
           >
-            {/* You can replace Coffee icon with a cookie SVG/icon if you want */}
             <Cookie className="w-6 h-6" />
           </button>
         </div>
       </footer>
 
-      {cookieModalOpen && <CookieModal isOpen={cookieModalOpen} onClose={() => setCookieModalOpen(false)} />}
+      {cookieModalOpen && (
+        <CookieModal
+          isOpen={cookieModalOpen}
+          onClose={() => setCookieModalOpen(false)}
+        />
+      )}
     </>
   );
 }

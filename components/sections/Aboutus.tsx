@@ -1,7 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { useGetByHomeAboutQuery } from "@/store/api/authApi";
+
 export default function AboutUs() {
+  const { data, isLoading } = useGetByHomeAboutQuery();
+      const items = data?.data || [];
+      console.log(items, "About Us Data===>");
   return (
     <section
       id="about"

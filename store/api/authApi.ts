@@ -28,7 +28,39 @@ export const authApi = createApi({
         body: formData,
       }),
     }),
+    contact: builder.mutation<any, FormData>({
+      query: (formData) => ({
+        url: "/user/contactus",
+        method: "POST",
+        body: formData,
+      }),
+    }),
+    newsletter: builder.mutation<any, FormData>({
+      query: (formData) => ({
+        url: "/user/newsletter",
+        method: "POST",
+        body: formData,
+      }),
+    }),
+    getMenuByCategory: builder.query<any, string>({
+    query: (id) => `/user/category?${id}`,
+    }),
+    getByHomeSlider: builder.query<any, void>({
+    query: () => `/user/slider`,
+    }),
+    getByHomeAbout: builder.query<any, void>({
+    query: () => `/user/about`,
+    }),
+    getByHomeGallery: builder.query<any, void>({
+    query: () => `/user/gallery`,
+    }),
+    getByHomeProduct: builder.query<any, void>({
+    query: () => `/user/product`,
+    }),
+    getByHomeImage: builder.query<any, void>({
+    query: () => `/user/image`,
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation,useContactMutation,useNewsletterMutation, useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByHomeProductQuery} = authApi;

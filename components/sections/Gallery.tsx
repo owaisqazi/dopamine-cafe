@@ -1,94 +1,97 @@
-'use client';
+/* eslint-disable @next/next/no-img-element */
+"use client";
 
-import { useState } from 'react';
-import { Heart, Facebook, Instagram, Twitter, Cookie } from 'lucide-react';
-import Image from 'next/image';
-import CookieModal from '../ui/cookieModalOpen';
+import { useGetByHomeGalleryQuery } from "@/store/api/authApi";
+import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 
-export default function Footer() {
-  const [cookieModalOpen, setCookieModalOpen] = useState(true);
-
+export default function NewGallery() {
+  const { data, isLoading } = useGetByHomeGalleryQuery();
+  const items = data?.data || [];
+  console.log(items, "Gallery=====>");
   return (
-    <>
-      <footer className="bg-[#1C1C1A] text-white py-12 px-4 z-20 relative" aria-label="Footer">
-        <div className="container mx-auto">
-          {/* Top Section */}
-          <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 mb-10">
-
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <Image
-                width={150}
-                height={150}
-                src="/dopamine_cafe.png"
-                alt="Dopamine Cafe Logo"
-                className="w-32 h-32 rounded-full object-cover"
+    <section
+      id="gallery"
+      className="py-16 px-4 bg-[#ffffff]"
+      style={{ backgroundAttachment: "fixed" }}
+      aria-label="Gallery of Dopamine Cafe"
+    >
+      <div className="container mx-auto max-w-7xl">
+        {/* Heading */}
+        <header className="text-center mb-8">
+          <h2 className="text-5xl font-bold text-gray-800 mb-4">Gallery</h2>
+          <p className="text-xl text-gray-600">Moments that make us smile</p>
+        </header>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          {/* LEFT LARGE IMAGE */}
+          {items[0] && (
+            <div className="md:col-span-3 relative group overflow-hidden rounded-sm cursor-pointer">
+              <img
+                src={IMAGE_BASE_URL + items[0].image}
+                alt={items[0].caption}
+                className="w-full h-[400px] md:h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
               />
-            </div>
 
-            {/* Navigation Links + Social */}
-            <div className="flex flex-col items-center md:items-end gap-6">
-              {/* Navigation Links */}
-              <nav aria-label="Footer Navigation">
-                <ul className="flex gap-6 text-gray-300 font-medium">
-                  <li>
-                    <a href="#menu" className="hover:text-amber-500 transition">Menu</a>
-                  </li>
-                  <li>
-                    <a href="#about" className="hover:text-amber-500 transition">About</a>
-                  </li>
-                  <li>
-                    <a href="#gallery" className="hover:text-amber-500 transition">Gallery</a>
-                  </li>
-                  <li>
-                    <a href="#contact" className="hover:text-amber-500 transition">Contact</a>
-                  </li>
-                </ul>
-              </nav>
-
-              {/* Social Icons */}
-              <div className="flex gap-4">
-                <a href="#" aria-label="Facebook" className="text-gray-400 hover:text-amber-500 transition">
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a href="#" aria-label="Instagram" className="text-gray-400 hover:text-amber-500 transition">
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a href="#" aria-label="Twitter" className="text-gray-400 hover:text-amber-500 transition">
-                  <Twitter className="w-5 h-5" />
-                </a>
+              {/* Overlay — SAME AS BEFORE */}
+              <div className="absolute inset-0 bg-black/40 flex flex-col justify-center p-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-white text-2xl md:text-5xl font-black uppercase tracking-tighter leading-tight md:leading-snug">
+                    {items[0].caption}
+                  </h3>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Center Text */}
-          <div className="text-center">
-            <div className="flex flex-wrap justify-center items-center gap-2 text-gray-400 md:text-lg text-sm">
-              <span>Made with</span>
-              <Heart className="w-4 h-4 text-red-500 animate-pulse" />
-              <span>© 2024 Dopamine Cafe. All rights reserved.</span>
-            </div>
-          </div>
+          {/* RIGHT COLUMN — 2 IMAGES */}
+          <div className="md:col-span-2 flex flex-col gap-4">
+            {items?.slice(1, 3).map((item: any, index: number) => (
+              <div
+                key={index}
+                className="relative group overflow-hidden rounded-sm h-[200px] md:h-[292px] cursor-pointer"
+              >
+                <img
+                  src={IMAGE_BASE_URL + item.image}
+                  alt={item.caption}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
 
-          {/* Cookie Preferences Button */}
-          <button
-            onClick={() => setCookieModalOpen(true)}
-            className="fixed bottom-6 left-6 bg-amber-600 hover:bg-amber-700 p-3 rounded-full shadow-lg text-white transition transform hover:scale-110 z-50"
-            aria-label="Cookie Preferences"
-            title="Cookie Preferences"
-          >
-            <Cookie className="w-6 h-6" />
-          </button>
+                {/* Overlay — SAME AS BEFORE */}
+                <div className="absolute inset-0 bg-black/50 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h3 className="text-white text-2xl md:text-3xl font-bold uppercase">
+                      {item.caption}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </footer>
+        {items?.length > 3 && (
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {items?.slice(3).map((item: any, index: number) => (
+              <div
+                key={index}
+                className="relative group overflow-hidden rounded-sm h-[250px] cursor-pointer"
+              >
+                <img
+                  src={IMAGE_BASE_URL + item.image}
+                  alt={item.caption}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
 
-      {/* Cookie Modal */}
-      {cookieModalOpen && (
-        <CookieModal
-          isOpen={cookieModalOpen}
-          onClose={() => setCookieModalOpen(false)}
-        />
-      )}
-    </>
+                <div className="absolute inset-0 bg-black/50 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h3 className="text-white text-2xl md:text-3xl font-bold uppercase">
+                      {item.caption}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }

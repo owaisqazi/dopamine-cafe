@@ -3,48 +3,47 @@
 
 import { MapPin, Clock, Phone, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-
-const contactInfo = [
-  {
-    icon: MapPin,
-    title: "Location",
-    content: "123 Coffee Street, Cafe District, Mumbai - 400001",
-  },
-  {
-    icon: Clock,
-    title: "Hours",
-    content: "Mon - Sun: 8:00 AM - 11:00 PM",
-  },
-  {
-    icon: Phone,
-    title: "Phone",
-    content: "+91 98765 43210",
-  },
-  {
-    icon: Mail,
-    title: "Email",
-    content: "hello@dopaminecafe.com",
-  },
-];
+import { useGetByHomeAboutQuery } from "@/store/api/authApi";
 
 export default function About() {
+  const { data, isLoading } = useGetByHomeAboutQuery();
+  const items = data?.data || [];
+  const contactInfo = [
+    {
+      icon: MapPin,
+      title: "Location",
+      content: items?.address || "—",
+    },
+    {
+      icon: Phone,
+      title: "Phone",
+      content: items?.phone || "—",
+    },
+    {
+      icon: Mail,
+      title: "Email",
+      content: items?.email || "—",
+    },
+  ];
+
+  console.log(items, "About Us Data===>");
   return (
     <section
       id="about"
-      className="py-20 px-4 relative z-20 bg-gradient-to-b from-amber-50 to-white"
+      className="py-20 px-4 relative z-20 bg-white"
     >
       <div className="container mx-auto">
-
         {/* SECTION HEADING */}
         <header className="text-center mb-12" data-aos="flip-up">
           <h2 className="text-5xl font-bold text-gray-800 mb-4">About Us</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            More than just a cafe, we are a happiness hub where every visit boosts your mood.
+            More than just a cafe, we are a happiness hub where every visit
+            boosts your mood.
           </p>
         </header>
 
         {/* CONTACT CARDS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-12">
           {contactInfo.map((info, index) => {
             const Icon = info.icon;
             return (
@@ -60,7 +59,9 @@ export default function About() {
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-600 mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="w-6 h-6" aria-hidden="true" />
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">{info.title}</h3>
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    {info.title}
+                  </h3>
                   <p className="text-gray-600 text-sm">{info.content}</p>
                 </CardContent>
               </Card>
@@ -75,7 +76,7 @@ export default function About() {
             data-aos="flip-right"
             data-aos-offset="300"
           >
-            <h3 className="text-3xl font-bold text-gray-800 mb-4">Our Story</h3>
+            <h3 className="text-3xl font-bold text-gray-800 mb-4">{items?.name}</h3>
             <p className="text-gray-600 mb-4 leading-relaxed">
               Founded in 2024, Dopamine Cafe was born from a simple idea: create
               a space where people can escape the daily grind and find their
