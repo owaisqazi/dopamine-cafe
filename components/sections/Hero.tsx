@@ -6,10 +6,6 @@ import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import AuthForm from "../forms/AuthForm";
 import { useGetByHomeImageQuery } from "@/store/api/authApi";
 
-interface HeroProps {
-  scrollToSection: (id: string) => void;
-}
-
 const bannerImages = [
   {
     url: "/banner.jpeg",
@@ -23,7 +19,7 @@ const bannerImages = [
   },
 ];
 
-export default function Hero({ scrollToSection }: HeroProps) {
+export default function Hero() {
    const { data, isLoading } = useGetByHomeImageQuery();
       const items = data?.data || [];
   const [current, setCurrent] = useState(0);
@@ -133,7 +129,7 @@ export default function Hero({ scrollToSection }: HeroProps) {
       {/* SCROLL CTA */}
       <button
         aria-label="Scroll to menu"
-        onClick={() => scrollToSection("menu")}
+        // onClick={() => scrollToSection("menu")}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 text-amber-400 animate-bounce"
       >
         <ChevronDown size={36} />

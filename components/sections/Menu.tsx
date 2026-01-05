@@ -1,139 +1,161 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
+import {
+  Flame,
+  Pizza,
+  Soup,
+  Coffee,
+  Beef,
+  Utensils,
+  ShoppingCart,
+  LayoutGrid,
+} from "lucide-react";
+import Image from "next/image";
+import CategoriesData from "../json/menuData.json";
+import Link from "next/link";
 
-interface CartItem {
-  id: number;
+/* ---------- ICON MAP ---------- */
+const iconMap = {
+  Flame,
+  Pizza,
+  Soup,
+  Beef,
+  Utensils,
+  Coffee,
+  LayoutGrid,
+} as const;
+
+type IconKey = keyof typeof iconMap;
+
+/* ---------- TYPES ---------- */
+interface MenuItem {
   name: string;
+  description: string;
+  price: string;
   image: string;
-  price: number;
-  quantity: number;
 }
 
-export default function CoffeeCart() {
-  const [cart, setCart] = useState<CartItem[]>([
-    {
-      id: 1,
-      name: "Cappuccino",
-      image: "/images/coffee1.jpg",
-      price: 4.5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "Espresso",
-      image: "/images/coffee2.jpg",
-      price: 3.0,
-      quantity: 1,
-    },
-    {
-      id: 3,
-      name: "Latte",
-      image: "/images/coffee3.jpg",
-      price: 5.25,
-      quantity: 1,
-    },
-  ]);
+interface Category {
+  name: string;
+  icon: IconKey;
+  items: MenuItem[];
+}
 
-  const handleQuantity = (id: number, type: "increment" | "decrement") => {
-    setCart((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? {
-              ...item,
-              quantity:
-                type === "increment"
-                  ? item.quantity + 1
-                  : Math.max(item.quantity - 1, 1),
-            }
-          : item
-      )
-    );
-  };
+interface CategoriesJson {
+  categories: Category[];
+}
 
-  const totalPrice = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+const Categories = CategoriesData as CategoriesJson;
+
+/* ---------- DATA ---------- */
+const allItems = Categories.categories.flatMap((cat) => cat.items);
+
+const categoriesWithAll: Category[] = [
+  { name: "All", icon: "LayoutGrid", items: allItems },
+  ...Categories.categories,
+];
+
+/* ---------- COMPONENT ---------- */
+export default function Menu() {
+  const [activeCategory, setActiveCategory] = useState(0);
 
   return (
-    <section className="py-16 bg-white relative z-20">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Cart Items */}
-          <div className="md:col-span-2 bg-gray-50 p-6 rounded-xl shadow">
-            <h2 className="text-2xl font-bold mb-6">Your Coffee Cart</h2>
-            {cart.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between py-4 border-b last:border-b-0"
+    <section
+      id="menu"
+      className="relative z-20 bg-white py-20 px-4"
+      aria-labelledby="menu-heading"
+    >
+      <div className="container mx-auto">
+        {/* CATEGORY NAV */}
+        <nav
+          className="flex flex-wrap justify-center gap-4 mb-14"
+          aria-label="Menu Categories"
+        >
+          {categoriesWithAll.map((category, index) => {
+            const Icon = iconMap[category.icon];
+
+            return (
+              <button
+                key={index}
+                onClick={() => setActiveCategory(index)}
+                aria-pressed={activeCategory === index}
+                className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                  activeCategory === index
+                    ? "bg-amber-600 text-white shadow-lg scale-105"
+                    : "bg-gray-100 text-gray-700 hover:bg-amber-100 hover:scale-105"
+                }`}
               >
-                <div className="flex items-center space-x-4">
-                  <img
+                <Icon className="w-5 h-5" />
+                <span>{category.name}</span>
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* MENU GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {categoriesWithAll[activeCategory].items?.map((item, index) => (
+              <article
+                key={index}
+                itemScope
+                itemType="https://schema.org/MenuItem"
+                data-aos="fade-down"
+                data-aos-duration="1000"
+                data-aos-delay={index * 72}
+                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition overflow-hidden border border-gray-100"
+              >
+                {/* IMAGE */}
+                <div className="relative h-52 overflow-hidden">
+                  <Image
                     src={item.image}
                     alt={item.name}
-                    className="w-20 h-20 object-cover rounded-lg"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    className="object-cover group-hover:scale-110 transition duration-500"
+                    itemProp="image"
                   />
-                  <div>
-                    <h3 className="font-medium text-gray-800">{item.name}</h3>
-                    <p className="text-gray-500">${item.price.toFixed(2)}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => handleQuantity(item.id, "decrement")}
-                    className="px-2 py-1 border rounded hover:text-amber-500 transition"
-                  >
-                    -
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button
-                    onClick={() => handleQuantity(item.id, "increment")}
-                    className="px-2 py-1 border rounded hover:text-amber-500 transition"
-                  >
-                    +
-                  </button>
-                  <span className="ml-4 font-semibold">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </span>
-                </div>
-              </div>
-            ))}
-            <button className="mt-4 text-amber-500 hover:text-amber-600 transition">
-              + Continue Shopping
-            </button>
-          </div>
 
-          {/* Order Summary */}
-          <div className="bg-gray-50 p-6 rounded-xl shadow flex flex-col space-y-4">
-            <h2 className="text-2xl font-bold">Order Summary</h2>
-            <p className="flex justify-between text-gray-600">
-              Items <span>{cart.length}</span>
-            </p>
-            <p className="flex justify-between text-gray-600">
-              Standard Delivery <span>$2.50</span>
-            </p>
-            <div>
-              <label className="block text-gray-700 mb-2">Promo Code</label>
-              <div className="flex">
-                <input
-                  type="text"
-                  placeholder="Enter your code"
-                  className="flex-1 px-3 py-2 border rounded-l"
-                />
-                <button className="px-4 rounded-r text-amber-500 hover:text-amber-600 transition">
-                  Apply
-                </button>
-              </div>
-            </div>
-            <p className="flex justify-between font-bold text-gray-800 text-lg">
-              Total Cost <span>${(totalPrice + 2.5).toFixed(2)}</span>
-            </p>
-            <button className="py-3 rounded text-amber-500 hover:text-amber-600 transition border border-gray-300">
-              Checkout
-            </button>
-          </div>
+                  <button
+                    aria-label={`Add ${item.name} to cart`}
+                    className="absolute top-3 right-3 w-10 h-10 bg-amber-600 hover:bg-amber-700 text-white rounded-full flex items-center justify-center shadow-lg transition hover:scale-110"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* CONTENT */}
+                <div className="p-5">
+                  <div className="flex justify-between items-start mb-2">
+                    <h2
+                      itemProp="name"
+                      className="text-lg font-bold text-gray-800"
+                    >
+                      {item.name}
+                    </h2>
+                    <span
+                      itemProp="price"
+                      className="font-bold text-amber-600"
+                    >
+                      {item.price}
+                    </span>
+                  </div>
+
+                  <p
+                    itemProp="description"
+                    className="text-sm text-gray-500 mb-4 line-clamp-2"
+                  >
+                    {item.description}
+                  </p>
+
+                  <Link href="/menu-detail">
+                  <button className="w-full py-2 bg-gray-50 text-gray-800 text-sm font-semibold rounded-lg hover:bg-amber-600 hover:text-white transition-colors">
+                    View Details
+                  </button>
+                  </Link>
+                </div>
+              </article>
+            ))}
         </div>
       </div>
     </section>

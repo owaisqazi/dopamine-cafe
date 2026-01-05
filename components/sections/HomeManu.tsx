@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import CategoriesData from "../json/menuData.json";
+import Link from "next/link";
 
 /* ---------- ICON MAP ---------- */
 const iconMap = {
@@ -162,10 +163,11 @@ export default function HomeMenu() {
                   >
                     {item.description}
                   </p>
-
+                  <Link href="/menu-detail">
                   <button className="w-full py-2 bg-gray-50 text-gray-800 text-sm font-semibold rounded-lg hover:bg-amber-600 hover:text-white transition-colors">
                     View Details
                   </button>
+                  </Link>
                 </div>
               </article>
             ))}

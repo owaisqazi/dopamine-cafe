@@ -42,6 +42,9 @@ export const authApi = createApi({
         body: formData,
       }),
     }),
+    getMenuByMainCategory: builder.query<any, void>({
+    query: () => `/user/main-category`,
+    }),
     getMenuByCategory: builder.query<any, string>({
     query: (id) => `/user/category?${id}`,
     }),
@@ -54,7 +57,7 @@ export const authApi = createApi({
     getByHomeGallery: builder.query<any, void>({
     query: () => `/user/gallery`,
     }),
-    getByHomeProduct: builder.query<any, void>({
+    getByProduct: builder.query<any, void>({
     query: () => `/user/product`,
     }),
     getByHomeImage: builder.query<any, void>({
@@ -63,4 +66,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation,useContactMutation,useNewsletterMutation, useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByHomeProductQuery} = authApi;
+export const { useLoginMutation, useRegisterMutation,useContactMutation,useNewsletterMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery} = authApi;

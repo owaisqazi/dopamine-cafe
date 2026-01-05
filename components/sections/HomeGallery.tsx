@@ -4,7 +4,7 @@
 import { useGetByHomeGalleryQuery } from "@/store/api/authApi";
 import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 
-export default function NewGallery() {
+export default function HomeGallery() {
   const { data, isLoading } = useGetByHomeGalleryQuery();
   const items = data?.data || [];
   console.log(items, "Gallery=====>");
