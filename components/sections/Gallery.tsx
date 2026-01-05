@@ -7,7 +7,6 @@ import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 export default function Gallery() {
   const { data, isLoading } = useGetByHomeGalleryQuery();
   const items = data?.data || [];
-  console.log(items, "Gallery=====>");
   return (
     <section
       id="gallery"
@@ -17,10 +16,10 @@ export default function Gallery() {
     >
       <div className="container mx-auto max-w-7xl">
         {/* Heading */}
-        <header className="text-center mb-8">
+        {/* <header className="text-center mb-8">
           <h2 className="text-5xl font-bold text-gray-800 mb-4">Gallery</h2>
           <p className="text-xl text-gray-600">Moments that make us smile</p>
-        </header>
+        </header> */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           {/* LEFT LARGE IMAGE */}
           {items[0] && (

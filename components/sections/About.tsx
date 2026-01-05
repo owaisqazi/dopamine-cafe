@@ -34,13 +34,13 @@ export default function About() {
     >
       <div className="container mx-auto">
         {/* SECTION HEADING */}
-        <header className="text-center mb-12" data-aos="flip-up">
+        {/* <header className="text-center mb-12" data-aos="flip-up">
           <h2 className="text-5xl font-bold text-gray-800 mb-4">About Us</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             More than just a cafe, we are a happiness hub where every visit
             boosts your mood.
           </p>
-        </header>
+        </header> */}
 
         {/* CONTACT CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-12">

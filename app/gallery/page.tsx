@@ -8,7 +8,7 @@ export default function page() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
      <Navbar /> 
-      <PageHeader  title={"Detail"} backgroundImage = {"/gallery3.png"}/>
+      <PageHeader  title={"Gallery"} backgroundImage = {"/gallery3.png"}/>
       <Gallery />
       <Footer />
       <Toaster position="top-right" reverseOrder={false} />

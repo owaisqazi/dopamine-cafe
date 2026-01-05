@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface PageHeaderProps {
   title: string;
@@ -15,12 +15,16 @@ const PageHeader = ({
   backgroundVideo,
 }: PageHeaderProps) => {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const pathNodes = pathname.split("/").filter(Boolean);
+
+  // Get 'name' from query
+  const queryName = searchParams.get("name");
 
   return (
     <header
       role="banner"
-      className="relative h-[40vh] md:h-screen overflow-hidden flex items-center justify-center"
+      className="relative h-screen overflow-hidden flex items-center justify-center"
     >
       {/* BACKGROUND */}
       {backgroundVideo ? (
@@ -59,16 +63,23 @@ const PageHeader = ({
         >
           <ol className="flex gap-2">
             <li>
-              <Link href="/" className="hover:text-white transition-colors">
+              <Link href="/" className="hover:text-white uppercase transition-colors">
                 Home
               </Link>
             </li>
-            {pathNodes.map((node, index) => (
-              <li key={index} className="flex items-center gap-2">
-                <span className="text-white/50">/</span>
-                <span className="text-white capitalize">{node.replace(/-/g, " ")}</span>
-              </li>
-            ))}
+            {pathNodes.map((node, index) => {
+              const isLast = index === pathNodes.length - 1;
+
+              // Show query name for last breadcrumb if it exists
+              const displayName = isLast && queryName ? queryName : node.replace(/-/g, " ");
+
+              return (
+                <li key={index} className="flex items-center gap-2">
+                  <span className="text-white/50">/</span>
+                  <span className="text-white uppercase">{displayName}</span>
+                </li>
+              );
+            })}
           </ol>
         </nav>
 

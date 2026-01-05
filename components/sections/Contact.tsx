@@ -73,10 +73,10 @@ export default function Contact() {
     <section id="contact" className="pt-14 bg-white relative z-20">
       <div className="container mx-auto max-w-6xl">
         {/* Heading */}
-        <div className="text-center mb-12">
+        {/* <div className="text-center mb-12">
           <h2 className="text-5xl font-bold text-gray-800 mb-4">Contact Us</h2>
           <p className="text-xl text-gray-600">We’d love to hear from you!</p>
-        </div>
+        </div> */}
 
         <div className="grid md:px-0 px-6 pb-14 grid-cols-1 md:grid-cols-3 gap-16">
           {/* LEFT: Contact Info */}
