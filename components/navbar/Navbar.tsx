@@ -152,9 +152,9 @@ const Navbar: React.FC = () => {
             <ShoppingCart
               className={isWhiteBg ? "text-gray-700" : "text-white"}
             />
-            {product?.length > 0 && (
+            {cartItems?.length > 0 && (
               <span className="absolute -top-2 -right-2 bg-amber-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
-                {product.length}
+                {cartItems.length}
               </span>
             )}
           </Link>
