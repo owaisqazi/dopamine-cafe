@@ -64,10 +64,14 @@ export default function HomeMenu() {
       aria-labelledby="menu-heading"
     >
       <div className="container mx-auto py-20">
+        <header className="text-center mb-8">
+          <h2 className="text-5xl font-bold text-gray-800 mb-4">Our Menu</h2>
+          <p className="text-xl text-gray-600">Take a look at our menu and explore a variety of delicious dishes prepared fresh every day.</p>
+        </header>
         {/* CATEGORY TABS */}
         <nav className="flex flex-wrap justify-center gap-4 mb-14">
           {/* All tab */}
-          <button
+          {/* <button
             onClick={() => setActiveCategory({ id: "", name: "All" })}
             aria-pressed={activeCategory.id === ""}
             className={`px-6 py-3 rounded-full uppercase font-semibold transition-all duration-300 ${
@@ -77,7 +81,7 @@ export default function HomeMenu() {
             }`}
           >
             All
-          </button>
+          </button> */}
 
           {/* Dynamic category buttons */}
           {categories?.slice(0, 8)?.map((cat: any) => (

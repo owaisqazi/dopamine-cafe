@@ -1,15 +1,20 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import { useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import ThreeDImage from "../ThreeDImage/ThreeDImage";
-import { IMAGE_BASE_URL } from "../auth/axiosInstance";
+import ThreeDImageGallery from "../ThreeDImage/ThreeDImageGallery";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { addToCart } from "@/store/cartSlice";
+import toast from "react-hot-toast";
 
 interface MenuItem {
   id: string | number;
   name: string;
   description: string;
   image: string;
+  images: string[] | string;
   base_price: string;
   branch_price: number;
 }
@@ -18,6 +23,7 @@ export default function Detail() {
   const searchParams = useSearchParams();
   const dataParam = searchParams.get("data");
   const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch<AppDispatch>();
 
   const item: MenuItem | null = useMemo(() => {
     if (!dataParam) return null;
@@ -29,27 +35,52 @@ export default function Detail() {
   }, [dataParam]);
 
   if (!item) {
-    return <p className="text-center py-20">No item found</p>;
+    return <p className="text-center py-2 0">No item found</p>;
   }
 
   const price = Number(item.branch_price || item.base_price);
+  console.log(item, "item====>");
+  const parsedImages: string[] = useMemo(() => {
+    if (!item) return [];
+
+    if (Array.isArray(item.images) && item.images.length > 0) {
+      return item.images;
+    }
+
+    try {
+      const parsed = item.images ? JSON.parse(item.images as any) : [];
+      return parsed.length ? parsed : [item.image];
+    } catch {
+      return item.image ? [item.image] : [];
+    }
+  }, [item]);
+
+  const handleAddToCart = () => {
+    if (!item) return;
+
+    dispatch(
+      addToCart({
+        id: item.id,
+        name: item.name,
+        price: price,
+        quantity: quantity,
+        image: parsedImages[0] || item.image,
+      })
+    );
+     toast.success(`${item.name} added to cart! 🎉`);
+  };
 
   return (
     <section className="min-h-screen bg-[#ffffff] px-6 py-24">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-
         {/* IMAGE SIDE */}
         <div className="relative">
           <div className="absolute -top-6 -left-6 w-full h-full rounded-3xl -z-10" />
-          <ThreeDImage
-            src={IMAGE_BASE_URL + item.image}
-            alt={item.name}
-          />
+          <ThreeDImageGallery images={parsedImages} alt={item.name} />
         </div>
 
         {/* CONTENT CARD */}
         <div className="bg-white rounded-3xl hover:shadow-2xl p-10 relative">
-
           {/* TAG */}
           <span className="inline-block mb-4 text-xs font-semibold tracking-widest uppercase bg-amber-50 text-amber-700 px-4 py-1 rounded-full">
             Signature Item
@@ -68,7 +99,7 @@ export default function Detail() {
             <div>
               <p className="text-sm text-gray-400 mb-1">Price</p>
               <span className="text-4xl font-black text-gray-900">
-                Rs. {price * quantity}
+                $ {price * quantity}
               </span>
             </div>
 
@@ -91,7 +122,10 @@ export default function Detail() {
           </div>
 
           {/* CTA */}
-          <button className="w-full py-5 bg-black text-white text-sm font-semibold uppercase tracking-widest rounded-2xl hover:bg-amber-600 transition-all">
+          <button
+            onClick={handleAddToCart}
+            className="w-full py-5 bg-black text-white text-sm font-semibold uppercase tracking-widest rounded-2xl hover:bg-amber-600 transition-all"
+          >
             Add to Cart
           </button>
 

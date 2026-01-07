@@ -70,7 +70,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="pt-14 bg-white relative z-20">
+    <section id="contact" className="pt-20 bg-white relative z-20">
       <div className="container mx-auto max-w-6xl">
         {/* Heading */}
         {/* <div className="text-center mb-12">

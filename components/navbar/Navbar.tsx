@@ -10,12 +10,14 @@ import {
   useGetMenuByMainCategoryQuery,
   useGetByProductQuery,
 } from "@/store/api/authApi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
   const { data } = useGetMenuByMainCategoryQuery();
   const { data: product } = useGetByProductQuery();
-
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const items = data?.data || [];
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -47,7 +49,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-30 transition-all duration-300 ${
         isWhiteBg ? "bg-white shadow-lg py-3" : "bg-transparent py-5"
       }`}
     >
@@ -136,9 +138,9 @@ const Navbar: React.FC = () => {
                 isWhiteBg ? "text-gray-700" : "text-white"
               }`}
             />
-            {product?.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-amber-600 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
-                {product.length}
+            {cartItems.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-amber-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                {cartItems.length}
               </span>
             )}
           </Link>

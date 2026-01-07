@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Hero from '@/components/sections/Hero';
-import About from '@/components/sections/About';
+import HomeAbout from '@/components/sections/HomeAbout';
 import Gallery from '@/components/sections/HomeGallery';
 import Footer from '@/components/sections/Footer';
 import Navbar from '@/components/navbar/Navbar';
@@ -16,7 +16,7 @@ export default function Home() {
       <Hero />
       <HomeManu />
       <Gallery />
-      <About />
+      <HomeAbout />
       <Footer />
       <Toaster position="top-right" reverseOrder={false} />
     </main>

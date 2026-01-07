@@ -42,6 +42,13 @@
           body: formData,
         }),
       }),
+     order: builder.mutation<any, FormData>({
+        query: (formData) => ({
+          url: "/user/order",
+          method: "POST",
+          body: formData,
+        }),
+      }),
       getMenuByMainCategory: builder.query<any, void>({
       query: () => `/user/main-category`,
       }),
@@ -64,7 +71,10 @@
       getByHomeImage: builder.query<any, void>({
       query: () => `/user/image`,
       }),
+      getBybranch: builder.query<any, void>({
+      query: () => `/user/branch`,
+      }),
     }),
   });
 
-  export const { useLoginMutation, useRegisterMutation,useContactMutation,useNewsletterMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery} = authApi;
+  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery} = authApi;

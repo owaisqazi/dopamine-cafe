@@ -7,61 +7,79 @@ interface ThreeDImageProps {
   src: string;
   alt?: string;
   size?: number;
+
+  // ✅ FIX: add these
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
 }
 
 export default function ThreeDImage({
   src,
   alt = "",
   size = 520,
+  onDragStart,
+  onDragEnd,
 }: ThreeDImageProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const lastPos = useRef({ x: 0, y: 0 });
+  const [scale, setScale] = useState(1); // 🔥 ZOOM STATE
+
+  const dragging = useRef(false);
+  const last = useRef({ x: 0, y: 0 });
 
   const onMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    lastPos.current = { x: e.clientX, y: e.clientY };
+    dragging.current = true;
+    last.current = { x: e.clientX, y: e.clientY };
+    onDragStart?.(); // 🔥 disable swiper
   };
 
   const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
+    if (!dragging.current) return;
 
-    const deltaX = e.clientX - lastPos.current.x;
-    const deltaY = e.clientY - lastPos.current.y;
+    const dx = e.clientX - last.current.x;
+    const dy = e.clientY - last.current.y;
 
-    setRotation((prev) => ({
-      x: prev.x + deltaY * 0.5,
-      y: prev.y + deltaX * 0.5,
+    setRotation((r) => ({
+      x: r.x + dy * 0.5,
+      y: r.y + dx * 0.5,
     }));
 
-    lastPos.current = { x: e.clientX, y: e.clientY };
+    last.current = { x: e.clientX, y: e.clientY };
   };
 
-  const onMouseUp = () => setIsDragging(false);
-  const onMouseLeave = () => setIsDragging(false);
+  const stop = () => {
+    dragging.current = false;
+    onDragEnd?.(); // 🔥 enable swiper
+  };
+
+  // 🔥 ZOOM HANDLER
+  const onWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    setScale((s) =>
+      Math.min(2.2, Math.max(0.8, s - e.deltaY * 0.001))
+    );
+  };
 
   return (
     <div
-      ref={containerRef}
-      className="flex justify-center items-center perspective-[1400px]"
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseLeave}
+      onMouseUp={stop}
+      onMouseLeave={stop}
+      onWheel={onWheel}
+      className="flex justify-center items-center perspective-[1400px]"
     >
       <img
         src={src}
         alt={alt}
         draggable={false}
-        className="cursor-grab active:cursor-grabbing select-none transition-transform duration-100 ease-out drop-shadow-[0_40px_80px_rgba(0,0,0,0.35)]"
+        className="cursor-grab active:cursor-grabbing select-none transition-transform duration-75 ease-out drop-shadow-[0_40px_80px_rgba(0,0,0,0.35)]"
         style={{
           width: size,
           transform: `
+            scale(${scale})
             rotateX(${rotation.x}deg)
             rotateY(${rotation.y}deg)
-            translateZ(60px)
+            translateZ(70px)
           `,
         }}
       />
