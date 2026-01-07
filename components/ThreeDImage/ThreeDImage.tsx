@@ -1,14 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ThreeDImageProps {
   src: string;
   alt?: string;
   size?: number;
-
-  // ✅ FIX: add these
   onDragStart?: () => void;
   onDragEnd?: () => void;
 }
@@ -21,52 +19,116 @@ export default function ThreeDImage({
   onDragEnd,
 }: ThreeDImageProps) {
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
-  const [scale, setScale] = useState(1); // 🔥 ZOOM STATE
+  const [scale, setScale] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
 
   const dragging = useRef(false);
   const last = useRef({ x: 0, y: 0 });
+  const lastDistance = useRef<number | null>(null);
 
+  /* 🔍 detect mobile only once */
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
+  /* ---------------- DESKTOP (UNCHANGED) ---------------- */
   const onMouseDown = (e: React.MouseEvent) => {
+    if (isMobile) return;
     dragging.current = true;
     last.current = { x: e.clientX, y: e.clientY };
-    onDragStart?.(); // 🔥 disable swiper
+    onDragStart?.();
   };
 
   const onMouseMove = (e: React.MouseEvent) => {
-    if (!dragging.current) return;
+    if (isMobile || !dragging.current) return;
+    rotate(e.clientX, e.clientY);
+  };
 
-    const dx = e.clientX - last.current.x;
-    const dy = e.clientY - last.current.y;
+  const stopMouse = () => {
+    if (isMobile) return;
+    dragging.current = false;
+    onDragEnd?.();
+  };
+
+  const onWheel = (e: React.WheelEvent) => {
+    if (isMobile) return;
+    e.preventDefault();
+    zoom(-e.deltaY * 0.001);
+  };
+
+  /* ---------------- MOBILE ONLY ---------------- */
+  const onTouchStart = (e: React.TouchEvent) => {
+    if (!isMobile) return;
+
+    if (e.touches.length === 1) {
+      dragging.current = true;
+      last.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+      onDragStart?.();
+    }
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (!isMobile) return;
+
+    // rotate
+    if (e.touches.length === 1 && dragging.current) {
+      rotate(e.touches[0].clientX, e.touches[0].clientY);
+    }
+
+    // pinch zoom
+    if (e.touches.length === 2) {
+      const d = distance(e.touches);
+      if (lastDistance.current) {
+        zoom((d - lastDistance.current) * 0.005);
+      }
+      lastDistance.current = d;
+    }
+  };
+
+  const onTouchEnd = () => {
+    if (!isMobile) return;
+    lastDistance.current = null;
+    dragging.current = false;
+    onDragEnd?.();
+  };
+
+  /* ---------------- HELPERS ---------------- */
+  const rotate = (x: number, y: number) => {
+    const dx = x - last.current.x;
+    const dy = y - last.current.y;
 
     setRotation((r) => ({
       x: r.x + dy * 0.5,
       y: r.y + dx * 0.5,
     }));
 
-    last.current = { x: e.clientX, y: e.clientY };
+    last.current = { x, y };
   };
 
-  const stop = () => {
-    dragging.current = false;
-    onDragEnd?.(); // 🔥 enable swiper
+  const zoom = (delta: number) => {
+    setScale((s) => Math.min(2.2, Math.max(0.8, s + delta)));
   };
 
-  // 🔥 ZOOM HANDLER
-  const onWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-    setScale((s) =>
-      Math.min(2.2, Math.max(0.8, s - e.deltaY * 0.001))
-    );
+  const distance = (t: React.TouchList) => {
+    const dx = t[0].clientX - t[1].clientX;
+    const dy = t[0].clientY - t[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
   };
 
   return (
     <div
+      className="flex justify-center items-center perspective-[1400px] md:touch-auto touch-none"
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
-      onMouseUp={stop}
-      onMouseLeave={stop}
+      onMouseUp={stopMouse}
+      onMouseLeave={stopMouse}
       onWheel={onWheel}
-      className="flex justify-center items-center perspective-[1400px]"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       <img
         src={src}

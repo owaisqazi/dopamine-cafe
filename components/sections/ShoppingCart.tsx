@@ -126,7 +126,7 @@ export default function ShoppingCart() {
             </section>
 
             {/* Right: Sticky Summary */}
-            <aside className="lg:sticky lg:top-24 bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+            <aside className="lg:sticky lg:top-24 bg-gray-50 p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
               <h3 className="text-xl font-bold text-gray-800 border-b pb-4">Order Summary</h3>
               
               <div className="space-y-3">
