@@ -17,6 +17,7 @@ interface MenuItem {
   images: string[] | string;
   base_price: string;
   branch_price: number;
+  gl_file?: string;
 }
 
 export default function Detail() {
@@ -34,24 +35,20 @@ export default function Detail() {
     }
   }, [dataParam]);
 
-  if (!item) {
-    return <p className="text-center py-2 0">No item found</p>;
-  }
+  if (!item) return <p className="text-center py-20">No item found</p>;
 
-  const price = Number(item.branch_price || item.base_price);
-  console.log(item, "item====>");
+  const price = Number(item?.branch_price || item?.base_price);
+
   const parsedImages: string[] = useMemo(() => {
     if (!item) return [];
 
-    if (Array.isArray(item.images) && item.images.length > 0) {
-      return item.images;
-    }
+    if (Array.isArray(item?.images) && item?.images.length) return item?.images;
 
     try {
-      const parsed = item.images ? JSON.parse(item.images as any) : [];
-      return parsed.length ? parsed : [item.image];
+      const parsed = item?.images ? JSON.parse(item?.images as any) : [];
+      return parsed.length ? parsed : [item?.image];
     } catch {
-      return item.image ? [item.image] : [];
+      return item?.image ? [item?.image] : [];
     }
   }, [item]);
 
@@ -60,76 +57,76 @@ export default function Detail() {
 
     dispatch(
       addToCart({
-        id: item.id,
-        name: item.name,
+        id: item?.id,
+        name: item?.name,
         price: price,
         quantity: quantity,
-        image: parsedImages[0] || item.image,
+        image: parsedImages[0] || item?.image,
       })
     );
-     toast.success(`${item.name} added to cart! 🎉`);
+
+    toast.success(`${item?.name} added to cart! 🎉`);
   };
 
   return (
-    <section className="min-h-screen bg-[#ffffff] px-6 py-24">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-        {/* IMAGE SIDE */}
-        <div className="relative">
-          <div className="absolute -top-6 -left-6 w-full h-full rounded-3xl -z-10" />
-          <ThreeDImageGallery images={parsedImages} alt={item.name} />
+    <section className="min-h-screen bg-[#ffffff] px-4 md:px-6 py-12 md:py-24">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
+        {/* IMAGE / GALLERY */}
+        <div className="w-full">
+          <ThreeDImageGallery
+            images={parsedImages}
+            alt={item?.name}
+            gl_file={item?.gl_file}
+          />
         </div>
 
-        {/* CONTENT CARD */}
-        <div className="bg-white rounded-3xl hover:shadow-2xl p-10 relative">
-          {/* TAG */}
+        {/* CONTENT */}
+        <div className="w-full bg-white rounded-3xl p-6 md:p-10 shadow-md hover:shadow-2xl">
           <span className="inline-block mb-4 text-xs font-semibold tracking-widest uppercase bg-amber-50 text-amber-700 px-4 py-1 rounded-full">
             Signature Item
           </span>
 
-          <h1 className="text-3xl font-extrabold text-gray-900 leading-tight mb-6">
-            {item.name}
+          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-4 md:mb-6">
+            {item?.name}
           </h1>
 
-          <p className="text-gray-600 text-lg leading-relaxed mb-8">
-            {item.description}
+          <p className="text-gray-600 text-sm md:text-lg mb-8 leading-relaxed">
+            {item?.description}
           </p>
 
-          {/* PRICE ROW */}
-          <div className="flex items-center justify-between mb-10">
+          {/* PRICE + QUANTITY */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 mb-8 items-center">
             <div>
               <p className="text-sm text-gray-400 mb-1">Price</p>
-              <span className="text-4xl font-black text-gray-900">
+              <span className="text-2xl md:text-4xl font-black text-gray-900">
                 $ {price * quantity}
               </span>
             </div>
 
-            {/* QUANTITY */}
-            <div className="flex items-center bg-gray-100 rounded-full px-5 py-3">
+            <div className="flex items-center bg-gray-100 rounded-full px-4 py-2 md:px-5 md:py-3 justify-center">
               <button
                 onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                className="text-2xl font-bold px-3 text-gray-600 hover:text-black"
+                className="text-lg md:text-2xl font-bold px-3 text-gray-600 hover:text-black"
               >
                 −
               </button>
-              <span className="px-6 font-bold text-lg">{quantity}</span>
+              <span className="px-4 md:px-6 font-bold text-lg md:text-xl">{quantity}</span>
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                className="text-2xl font-bold px-3 text-gray-600 hover:text-black"
+                className="text-lg md:text-2xl font-bold px-3 text-gray-600 hover:text-black"
               >
                 +
               </button>
             </div>
           </div>
 
-          {/* CTA */}
           <button
             onClick={handleAddToCart}
-            className="w-full py-5 bg-black text-white text-sm font-semibold uppercase tracking-widest rounded-2xl hover:bg-amber-600 transition-all"
+            className="w-full py-3 md:py-5 bg-black text-white text-sm md:text-base font-semibold uppercase tracking-widest rounded-2xl hover:bg-amber-600 transition-all"
           >
             Add to Cart
           </button>
 
-          {/* FOOTER INFO */}
           <p className="text-xs text-gray-400 text-center mt-6">
             Freshly prepared • Best quality guaranteed
           </p>

@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
      <Navbar /> 
-      <PageHeader title={"Our Manu"} backgroundVideo = {"/manus.mp4"}/>
+      <PageHeader title={"Our Menu"} backgroundVideo = {"/manus.mp4"}/>
       <Menu />
       <Footer />
       <Toaster position="top-right" reverseOrder={false} />
