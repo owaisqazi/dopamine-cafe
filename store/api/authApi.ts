@@ -76,5 +76,4 @@
       }),
     }),
   });
-
   export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery} = authApi;

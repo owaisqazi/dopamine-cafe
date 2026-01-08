@@ -19,11 +19,14 @@ const Navbar: React.FC = () => {
   const { data: product } = useGetByProductQuery();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const items = data?.data || [];
+  const [token, setToken] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    const t = localStorage.getItem("token");
+    setToken(t);
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -31,6 +34,11 @@ const Navbar: React.FC = () => {
 
   const isActive = (path: string) => pathname === path;
   const isMenuActive = pathname.startsWith("/menu");
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = "/";
+  };
 
   const handleNavClick = () => {
     setMobileMenuOpen(false);
@@ -132,7 +140,7 @@ const Navbar: React.FC = () => {
             Contact
           </Link>
 
-          <Link href="/shoping" className="relative ml-4">
+          <Link href="/shoping" className="relative">
             <ShoppingCart
               className={`w-6 h-6 ${
                 isWhiteBg ? "text-gray-700" : "text-white"
@@ -144,6 +152,16 @@ const Navbar: React.FC = () => {
               </span>
             )}
           </Link>
+          {token && (
+            <button
+              onClick={handleLogout}
+              className={`bg-amber-400 hover:bg-amber-500 text-whit p-2 rounded-md font-medium transition ${
+                isWhiteBg ? "text-white" : "text-white bg-amber-500"
+              }`}
+            >
+              Logout
+            </button>
+          )}
         </div>
 
         {/* MOBILE BUTTONS */}
@@ -158,7 +176,6 @@ const Navbar: React.FC = () => {
               </span>
             )}
           </Link>
-
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="focus:outline-none"
@@ -233,6 +250,14 @@ const Navbar: React.FC = () => {
           >
             Contact
           </Link>
+          {token && (
+            <button
+              onClick={handleLogout}
+              className="text-gray-800 font-semibold text-lg"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </nav>

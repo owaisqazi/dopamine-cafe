@@ -1,11 +1,12 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Thumbs, FreeMode } from "swiper/modules";
 import Image from "next/image";
-import ThreeDModel from "./ThreeDModel";
+import dynamic from "next/dynamic";
+const ThreeDModel = dynamic(() => import("./ThreeDModel"), { ssr: false });
+
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/thumbs";
@@ -26,7 +27,14 @@ export default function ThreeDImageGallery({ images, alt, gl_file }: Props) {
 
   const slides: { type: "3d" | "image"; src: string }[] = [];
 
-  if (gl_file) slides.push({ type: "3d", src: IMAGE_BASE_URL + gl_file });
+  // ✅ Only push GLB if it exists
+  if (gl_file) {
+    slides.push({
+      type: "3d",
+      src: IMAGE_BASE_URL + gl_file,
+    });
+  }
+
   images.forEach((img) =>
     slides.push({
       type: "image",
@@ -46,16 +54,17 @@ export default function ThreeDImageGallery({ images, alt, gl_file }: Props) {
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            {slide?.type === "3d" ? (
+            {slide.type === "3d" ? (
               <ThreeDModel
-                url={slide?.src}
+                glbUrl={slide.src}
                 onDragStart={() => mainSwiper?.disable()}
                 onDragEnd={() => mainSwiper?.enable()}
+                fallback={FALLBACK_IMAGE}
               />
             ) : (
               <div className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[400px]">
                 <Image
-                  src={slide?.src}
+                  src={slide.src}
                   alt={alt}
                   fill
                   className="object-contain"
@@ -70,15 +79,15 @@ export default function ThreeDImageGallery({ images, alt, gl_file }: Props) {
       <Swiper
         onSwiper={setThumbsSwiper}
         spaceBetween={8}
-        slidesPerView={4} // 4 per row
+        slidesPerView={4}
         freeMode
         watchSlidesProgress
         modules={[FreeMode, Thumbs]}
-        className="mb-4 w-full"
+        className="w-full"
       >
-        {slides?.map((slide, index) => (
+        {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative h-20 w-w-full rounded-xl overflow-hidden border hover:border-amber-500">
+            <div className="relative h-20 w-full rounded-xl overflow-hidden border hover:border-amber-500">
               <Image
                 src={slide.type === "3d" ? FALLBACK_IMAGE : slide.src}
                 alt={alt}

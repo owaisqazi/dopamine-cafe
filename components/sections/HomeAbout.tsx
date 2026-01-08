@@ -4,10 +4,13 @@
 import { MapPin, Clock, Phone, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetByHomeAboutQuery } from "@/store/api/authApi";
+import SkeletonLoader from "@/components/Skeleton/SkeletonLoader";
 
 export default function HomeAbout() {
   const { data, isLoading } = useGetByHomeAboutQuery();
   const items = data?.data || [];
+
+  // Contact info
   const contactInfo = [
     {
       icon: MapPin,
@@ -26,12 +29,10 @@ export default function HomeAbout() {
     },
   ];
 
-  console.log(items, "About Us Data===>");
+  if (isLoading) return <SkeletonLoader type="about" count={3} />;
+
   return (
-    <section
-      id="about"
-      className="py-20 px-4 relative z-20 bg-white"
-    >
+    <section id="about" className="py-20 px-4 relative z-20 bg-white">
       <div className="container mx-auto">
         {/* SECTION HEADING */}
         <header className="text-center mb-12" data-aos="flip-up">
@@ -59,9 +60,7 @@ export default function HomeAbout() {
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-600 mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="w-6 h-6" aria-hidden="true" />
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">
-                    {info.title}
-                  </h3>
+                  <h3 className="font-semibold text-gray-800 mb-2">{info.title}</h3>
                   <p className="text-gray-600 text-sm">{info.content}</p>
                 </CardContent>
               </Card>
@@ -70,7 +69,7 @@ export default function HomeAbout() {
         </div>
 
         {/* ABOUT STORY */}
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 py-8 gap-12 items-center">
           <div
             className="order-2 md:order-1"
             data-aos="flip-right"

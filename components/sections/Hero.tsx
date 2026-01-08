@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import AuthForm from "../forms/AuthForm";
 import { useGetByHomeImageQuery } from "@/store/api/authApi";
+import SkeletonLoader from "../Skeleton/SkeletonLoader";
 
 const bannerImages = [
   {
@@ -35,7 +36,9 @@ export default function Hero() {
     );
     return () => clearInterval(timer);
   }, [autoPlay]);
-
+if (isLoading) {
+    return <SkeletonLoader type="hero" />; 
+  }
   return (
     <section
       id="home"
