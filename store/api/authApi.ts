@@ -49,6 +49,13 @@
           body: formData,
         }),
       }),
+     applyPromo: builder.mutation<any, FormData>({
+        query: (formData) => ({
+          url: "/user/promo-code",
+          method: "POST",
+          body: formData,
+        }),
+      }),
       getMenuByMainCategory: builder.query<any, void>({
       query: () => `/user/main-category`,
       }),
@@ -76,4 +83,4 @@
       }),
     }),
   });
-  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery} = authApi;
+  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery} = authApi;

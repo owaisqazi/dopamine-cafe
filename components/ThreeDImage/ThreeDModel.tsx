@@ -3,32 +3,22 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Image from "next/image";
 
 function Model({ url, onError }: { url: string; onError: () => void }) {
-  try {
-    const { scene } = useGLTF(url, true, undefined, () => {
-      console.warn("GLB load failed (onError callback):", url);
-      onError();
-    });
+  const { scene } = useGLTF(url, true);
 
+  useEffect(() => {
     if (!scene) {
+      console.error("GLB load failed");
       onError();
-      return null;
     }
+  }, [scene, onError]);
 
-    return (
-      <primitive
-        object={scene}
-        scale={1.2} 
-      />
-    );
-  } catch (err) {
-    console.error("GLB loader caught error:", err);
-    onError();
-    return null;
-  }
+  if (!scene) return null;
+
+  return <primitive object={scene} scale={1.5} />;
 }
 
 export default function ThreeDModel({
@@ -46,36 +36,31 @@ export default function ThreeDModel({
 
   if (!glbUrl || error) {
     return (
-      <div className="relative w-full h-[400px] rounded-xl bg-gray-100">
-        <Image
-          src={fallback}
-          alt="Fallback"
-          fill
-          className="object-contain"
-        />
+      <div className="relative w-full h-[500px] rounded-xl bg-gray-100 flex items-center justify-center">
+        <Image src={fallback} alt="Fallback" fill className="object-contain" />
+        <div className="absolute bg-white/80 p-2 rounded text-xs text-red-500">
+          Model Load Failed
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full h-[400px] rounded-xl bg-gray-100">
+    <div className="relative w-full h-[500px] rounded-xl bg-gray-200 shadow-inner">
       <Canvas
-        gl={{ preserveDrawingBuffer: true }}
-        onCreated={({ gl }) => gl.setPixelRatio(window.devicePixelRatio)}
+        camera={{ position: [0, 0, 5], fov: 45 }}
         onPointerDown={onDragStart}
         onPointerUp={onDragEnd}
       >
-        {/* Lights */}
-        <ambientLight intensity={0.8} />
-        <directionalLight intensity={1} position={[5, 5, 5]} />
-        <directionalLight intensity={0.5} position={[-5, 5, 5]} />
+        <ambientLight intensity={1.5} />
+        <directionalLight position={[5, 5, 5]} intensity={1} />
 
-        <Suspense fallback={<div />}>
+        {/* ✅ Skeleton Loader */}
+        <Suspense fallback={null}>
           <Model url={glbUrl} onError={() => setError(true)} />
         </Suspense>
 
-        {/* Controls */}
-        <OrbitControls enableZoom target={[0, 0, 0]} />
+        <OrbitControls enableZoom minDistance={2} maxDistance={100} />
       </Canvas>
     </div>
   );

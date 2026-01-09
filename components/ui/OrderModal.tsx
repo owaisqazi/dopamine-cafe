@@ -43,10 +43,20 @@ const OrderModal: React.FC<OrderModalProps> = ({
   discountData,
   branch,
 }) => {
-    const router = useRouter();
+  const router = useRouter();
   const dispatch = useDispatch();
   const [placeOrder, { isLoading }] = useOrderMutation();
+  const calculateDiscount = () => {
+    if (!discountData) return 0;
+    if (discountData?.type === "percentage") {
+      const percentValue = (totalPrice * discountData.amount) / 100;
+      return Math.min(percentValue, totalPrice);
+    }
+    return Math.min(discountData.amount, totalPrice);
+  };
 
+  const discountAmount = calculateDiscount();
+  const safeFinalTotal = Math.max(totalPrice - discountAmount, 0);
   const initialValues = {
     name: "",
     email: "",
@@ -70,8 +80,9 @@ const OrderModal: React.FC<OrderModalProps> = ({
     });
 
     formData.append("subtotal", totalPrice.toString());
-    formData.append("discount", (discountData?.amount || 0).toString());
-    formData.append("total_amount", finalTotal.toString());
+   formData.append("discount", discountAmount.toString());
+formData.append("total_amount", safeFinalTotal.toString());
+
 
     cartItems.forEach((item, index) => {
       formData.append(`products[${index}][product_id]`, item.id.toString());
@@ -92,7 +103,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
       // Clear Cart & Close
       dispatch(clearCart());
       setIsModalOpen(false);
-       router.push("/");
+      router.push("/");
     } catch (err: any) {
       const errorMsg =
         err?.data?.message || err?.message || "Order failed. Please try again.";
@@ -100,6 +111,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
       console.error("Order Error:", err);
     }
   };
+
 
   return (
     <>
@@ -288,15 +300,15 @@ const OrderModal: React.FC<OrderModalProps> = ({
                   <div className="border-t pt-4 space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
-                      <span>${totalPrice.toFixed(2)}</span>
+                      <span>${totalPrice?.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-red-500">
                       <span>Discount</span>
-                      <span>-${discountData?.amount}</span>
+                      <span>-${discountAmount.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between font-bold text-lg pt-2 border-t mt-2">
                       <span>Total</span>
-                      <span>${finalTotal.toFixed(2)}</span>
+                      <span>${safeFinalTotal?.toFixed(2)}</span>
                     </div>
                   </div>
 

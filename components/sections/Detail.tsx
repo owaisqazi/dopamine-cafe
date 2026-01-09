@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { addToCart } from "@/store/cartSlice";
 import toast from "react-hot-toast";
+import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 
 interface MenuItem {
   id: string | number;
@@ -76,7 +77,7 @@ export default function Detail() {
           <ThreeDImageGallery
             images={parsedImages}
             alt={item?.name}
-            gl_file={item?.gl_file}
+            gl_file={IMAGE_BASE_URL + item?.gl_file}
           />
         </div>
 
