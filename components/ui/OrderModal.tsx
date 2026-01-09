@@ -314,7 +314,7 @@ formData.append("total_amount", safeFinalTotal.toString());
 
                   <button
                     type="submit"
-                    disabled={isLoading} // Loading ke waqt button disable karein
+                    disabled={isLoading} 
                     className={`mt-6 w-full py-3.5 text-white rounded-xl font-bold uppercase shadow-md transition-all active:scale-95 flex justify-center items-center ${
                       isLoading
                         ? "bg-gray-400 cursor-not-allowed"
