@@ -79,14 +79,6 @@ export default function ThreeDImageGallery({ images, alt, gl_file }: Props) {
   if (isGlbLoading) {
     return (
       <div className="relative h-[450px] w-full flex flex-col items-center justify-center gap-2 rounded-2xl border bg-gray-100 animate-pulse">
-        <div className="relative w-40 h-40">
-          <Image
-            src="/3dmodal-image.gif"
-            alt="Loading 3D Model..."
-            fill
-            className="object-contain"
-          />
-        </div>
         <span className="text-sm text-gray-500">Loading...</span>
       </div>
     );
