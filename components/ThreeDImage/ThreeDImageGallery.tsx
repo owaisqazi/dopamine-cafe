@@ -102,7 +102,7 @@ export default function ThreeDImageGallery({ images, alt, gl_file }: Props) {
             {slide.type === "3d" ? (
               <ThreeDModel glbUrl={slide.src} fallback={FALLBACK_IMAGE} />
             ) : (
-              <div className="relative w-full h-full">
+              <div className="relative w-full h-full min-h-[320px]">
                 <Image
                   src={slide.src}
                   alt={alt}

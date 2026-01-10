@@ -8,6 +8,7 @@ import { clearCart } from "@/store/cartSlice"; // Apna sahi path check karein
 import toast from "react-hot-toast";
 import PhoneField from "../forms/PhoneField";
 import { useRouter } from "next/navigation";
+import axiosInstance from "../auth/axiosInstance";
 
 interface OrderModalProps {
   isModalOpen: boolean;
@@ -72,7 +73,6 @@ const OrderModal: React.FC<OrderModalProps> = ({
   const handleSubmit = async (values: typeof initialValues) => {
     const formData = new FormData();
 
-    // Append Fields
     Object.entries(values).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, value.toString());
@@ -80,9 +80,8 @@ const OrderModal: React.FC<OrderModalProps> = ({
     });
 
     formData.append("subtotal", totalPrice.toString());
-   formData.append("discount", discountAmount.toString());
-formData.append("total_amount", safeFinalTotal.toString());
-
+    formData.append("discount", discountAmount.toString());
+    formData.append("total_amount", safeFinalTotal.toString());
 
     cartItems.forEach((item, index) => {
       formData.append(`products[${index}][product_id]`, item.id.toString());
@@ -95,23 +94,18 @@ formData.append("total_amount", safeFinalTotal.toString());
     });
 
     try {
-      const response = await placeOrder(formData).unwrap();
-
-      // Dynamic Success Message
-      toast.success(response?.data?.message || "Order placed successfully!");
-
-      // Clear Cart & Close
-      dispatch(clearCart());
-      setIsModalOpen(false);
-      router.push("/");
+      const res = await axiosInstance.post("/user/order", formData, {
+        responseType: "text",
+      });
+      const win = window.open("", "_self");
+      win?.document.open();
+      win?.document.write(res.data);
+      win?.document.close();
     } catch (err: any) {
-      const errorMsg =
-        err?.data?.message || err?.message || "Order failed. Please try again.";
-      toast.error(errorMsg);
-      console.error("Order Error:", err);
+      console.error("Payment Error", err);
+      toast.error("Payment gateway open nahi ho saka");
     }
   };
-
 
   return (
     <>
@@ -314,7 +308,7 @@ formData.append("total_amount", safeFinalTotal.toString());
 
                   <button
                     type="submit"
-                    disabled={isLoading} 
+                    disabled={isLoading}
                     className={`mt-6 w-full py-3.5 text-white rounded-xl font-bold uppercase shadow-md transition-all active:scale-95 flex justify-center items-center ${
                       isLoading
                         ? "bg-gray-400 cursor-not-allowed"

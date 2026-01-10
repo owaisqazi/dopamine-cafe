@@ -235,7 +235,13 @@ const Navbar: React.FC = () => {
               </div>
             )}
           </div>
-
+          <Link
+            href="/gallery"
+            onClick={handleNavClick}
+            className="text-gray-800 font-semibold text-lg"
+          >
+            Gallery
+          </Link>
           <Link
             href="/about-us"
             onClick={handleNavClick}
