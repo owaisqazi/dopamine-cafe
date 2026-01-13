@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import { addToCart, removeFromCart } from "@/store/cartSlice";
@@ -10,42 +10,76 @@ import OrderModal from "../../components/ui/OrderModal";
 import {
   useGetBybranchQuery,
   useApplyPromoMutation,
+  useGetByOrderQuery,
 } from "@/store/api/authApi";
 import toast from "react-hot-toast";
+//@ts-ignore
+import Cookies from "js-cookie";
 
-export default function ShoppingCart() {
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+interface User {
+  id: string;
+  name?: string;
+  email?: string;
+}
+
+export default function ShoppingCartTabs() {
   const dispatch = useDispatch<AppDispatch>();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
-  // RTK Query
-  const [applyPromo, { isLoading }] = useApplyPromoMutation();
-  const { data } = useGetBybranchQuery();
-  const branch = data?.data || [];
+  const [user, setUser] = useState<User | null>(null);
+  const { data: branchData } = useGetBybranchQuery();
+  const branch = branchData?.data || [];
 
-  // Local state
+  const [applyPromo, { isLoading: promoLoading }] = useApplyPromoMutation();
+  const { data: orderData, isLoading: orderLoading } = useGetByOrderQuery(user?.id || "");
+
+  const [activeTab, setActiveTab] = useState<"shoping cart" | "unpaid" | "paid">("shoping cart");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [discountData, setDiscountData] = useState<any>(null);
 
-  // ===============================
-  // Price Calculations (SAFE)
-  // ===============================
+  // Get user from cookie
+  useEffect(() => {
+    const userStr = Cookies.get("user");
+    const user = userStr ? JSON.parse(userStr) : null;
+    setUser(user);
+  }, []);
+
+  // -------------------------
+  // DATA PER TAB
+  // -------------------------
+  const displayedOrders = useMemo(() => {
+    if (activeTab === "shoping cart") return cartItems;
+    if (!orderData?.status) return [];
+    return activeTab === "unpaid"
+      ? orderData.unpaid_orders
+      : orderData.paid_orders;
+  }, [activeTab, cartItems, orderData]);
+
+  // -------------------------
+  // PRICE CALCULATION
+  // -------------------------
   const { totalPrice, finalTotal, safeDiscount } = useMemo(() => {
-    const total =
-      cartItems?.reduce(
-        (acc, item) => acc + item?.price * item?.quantity,
-        0
-      ) || 0;
+    let total = 0;
+
+    if (activeTab === "shoping cart") {
+      total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0) || 0;
+    } else {
+      total = displayedOrders.reduce((acc: number, item: any) => {
+        const price = Number(item.price || item.products?.[0]?.pivot?.price);
+        const qty = item.quantity || item.products?.[0]?.pivot?.quantity || 1;
+        return acc + price * qty;
+      }, 0);
+    }
 
     const delivery = 2.5;
-    let discount = 0;
 
+    let discount = 0;
     if (discountData) {
-      if (discountData?.type === "percentage") {
-        discount = (total * Number(discountData?.amount)) / 100;
-      } else {
-        discount = Number(discountData?.amount);
-      }
+      discount =
+        discountData.type === "percentage"
+          ? (total * Number(discountData.amount)) / 100
+          : Number(discountData.amount);
     }
 
     return {
@@ -53,22 +87,19 @@ export default function ShoppingCart() {
       safeDiscount: discount,
       finalTotal: total > 0 ? total + delivery - discount : 0,
     };
-  }, [cartItems, discountData]);
+  }, [cartItems, displayedOrders, discountData, activeTab]);
 
-  // ===============================
-  // Quantity Handler
-  // ===============================
-  const handleQuantity = (
-    id: number | string,
-    type: "increment" | "decrement"
-  ) => {
-    const item = cartItems?.find((i) => i.id === id);
+  // -------------------------
+  // QUANTITY HANDLER
+  // -------------------------
+  const handleQuantity = (id: number | string, type: "inc" | "dec") => {
+    const item = cartItems.find((i) => i.id === id);
     if (!item) return;
 
-    if (type === "increment") {
+    if (type === "inc") {
       dispatch(addToCart({ ...item, quantity: 1 }));
     } else {
-      if (item?.quantity > 1) {
+      if (item.quantity > 1) {
         dispatch(addToCart({ ...item, quantity: -1 }));
       } else {
         dispatch(removeFromCart(id));
@@ -76,158 +107,156 @@ export default function ShoppingCart() {
     }
   };
 
-  // ===============================
-  // Apply Promo Code (VERCEL SAFE)
-  // ===============================
+  // -------------------------
+  // APPLY PROMO
+  // -------------------------
   const applyPromoCode = async () => {
-     if (!promoCode.trim()) return;
+    if (!promoCode.trim()) return;
     const formData = new FormData();
-    formData.append("promo_code", promoCode?.trim());
+    formData.append("promo_code", promoCode.trim());
     try {
       const res = await applyPromo(formData).unwrap();
-
       setDiscountData(res?.data);
-      toast.success(res?.message || "Promo code applied!");
+      toast.success(res?.message || "Promo applied!");
     } catch (err: any) {
-      console.error("Promo Error:", err);
       setDiscountData(null);
       toast.error(err?.data?.message || "Invalid promo code");
     }
   };
 
-  // ===============================
-  // UI
-  // ===============================
-  return (
-    <main className="py-8 md:py-16 relative z-20 bg-white min-h-screen">
-      <div className="container mx-auto px-4 max-w-7xl">
-        <header className="mb-10">
-          <h1 className="text-4xl font-extrabold text-gray-900">
-            Review Your Cart
-          </h1>
-          <p className="text-gray-500 mt-2">
-            You have {cartItems?.length} items in your coffee bag.
-          </p>
-        </header>
+  if (orderLoading) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-xl">Loading your orders...</p>
+      </div>
+    );
+  }
 
-        {cartItems?.length === 0 ? (
+  return (
+    <main className="py-16 relative z-20 bg-white min-h-screen">
+      <div className="container mx-auto px-4 max-w-7xl">
+        {/* TABS */}
+        <div className="flex justify-center gap-4 mb-10">
+          {["shoping cart", "unpaid", "paid"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab as any)}
+              className={`px-6 py-2 rounded-full font-semibold capitalize ${
+                activeTab === tab
+                  ? "bg-amber-600 text-white shadow-lg"
+                  : "bg-gray-100 text-gray-700 hover:bg-amber-100"
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* NO DATA */}
+        {displayedOrders.length === 0 ? (
           <div className="text-center py-20 border-2 border-dashed rounded-3xl">
-            <p className="text-xl text-gray-400">
-              Your cart feels lonely. Add some coffee!
-            </p>
+            <p className="text-xl text-gray-400">No Data Found</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* LEFT */}
+            {/* LEFT SECTION */}
             <section className="lg:col-span-2 space-y-6">
-              {cartItems?.map((item) => (
-                <article
-                  key={item?.id}
-                  className="flex justify-between items-center p-4 border rounded-2xl"
-                >
-                  <div className="flex items-center gap-6">
-                    <img
-                      src={IMAGE_BASE_URL + item?.image}
-                      className="w-24 h-24 rounded-xl object-cover"
-                      alt={item?.name}
-                    />
-                    <div>
-                      <h2 className="font-bold capitalize">{item?.name}</h2>
-                      <p className="text-amber-600 font-semibold">
-                        ${item?.price.toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
+              {displayedOrders.map((item: any) => {
+                const name = item.name || item.product_name || item.products?.[0]?.name;
+                const price = item.price || item.products?.[0]?.pivot?.price;
+                const quantity = item.quantity || item.products?.[0]?.pivot?.quantity || 1;
+                const image = item.image || item.products?.[0]?.image;
 
-                  <div className="flex items-center gap-6">
-                    <div className="flex items-center border rounded-full">
-                      <button
-                        onClick={() =>
-                          handleQuantity(item?.id, "decrement")
-                        }
-                        className="px-3"
-                      >
-                        -
-                      </button>
-                      <span className="px-4 font-bold">
-                        {item?.quantity}
-                      </span>
-                      <button
-                        onClick={() =>
-                          handleQuantity(item?.id, "increment")
-                        }
-                        className="px-3"
-                      >
-                        +
-                      </button>
+                return (
+                  <article
+                    key={item.id}
+                    className="flex justify-between items-center p-4 border rounded-2xl"
+                  >
+                    <div className="flex items-center gap-6">
+                      <img
+                        src={IMAGE_BASE_URL + (image || "")}
+                        className="w-24 h-24 rounded-xl object-cover"
+                        alt={name}
+                      />
+                      <div>
+                        <h2 className="font-bold">{name}</h2>
+                        <p className="text-amber-600 font-semibold">
+                          ${Number(price).toFixed(2)}
+                        </p>
+                      </div>
                     </div>
 
-                    <span className="font-black">
-                      ${(item?.price * item?.quantity).toFixed(2)}
-                    </span>
-                  </div>
-                </article>
-              ))}
+                    {activeTab === "shoping cart" && (
+                      <div className="flex items-center gap-6">
+                        <div className="flex items-center border rounded-full">
+                          <button
+                            onClick={() => handleQuantity(item.id, "dec")}
+                            className="px-3"
+                          >
+                            -
+                          </button>
+                          <span className="px-4 font-bold">{quantity}</span>
+                          <button
+                            onClick={() => handleQuantity(item.id, "inc")}
+                            className="px-3"
+                          >
+                            +
+                          </button>
+                        </div>
+                        <span className="font-black">
+                          ${(Number(price) * quantity).toFixed(2)}
+                        </span>
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
             </section>
 
-            {/* RIGHT */}
+            {/* RIGHT SUMMARY SECTION (Always Visible) */}
             <aside className="bg-gray-50 p-6 rounded-3xl space-y-6">
-              <h3 className="text-xl font-bold border-b pb-4">
-                Order Summary
-              </h3>
+              <h3 className="text-xl font-bold">Order Summary</h3>
 
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>${totalPrice?.toFixed(2)}</span>
+                  <span>${totalPrice.toFixed(2)}</span>
                 </div>
-
                 <div className="flex justify-between">
                   <span>Delivery</span>
                   <span>$2.50</span>
                 </div>
-
                 {safeDiscount > 0 && (
                   <div className="flex justify-between text-green-600">
-                    <span>
-                      Discount
-                      {discountData?.type === "percentage"
-                        ? ` (${discountData?.amount}%)`
-                        : ""}
-                    </span>
-                    <span>- ${safeDiscount?.toFixed(2)}</span>
+                    <span>Discount</span>
+                    <span>- ${safeDiscount.toFixed(2)}</span>
                   </div>
                 )}
               </div>
 
-              {/* Promo */}
-              <div>
-                <input
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value)}
-                  placeholder="Enter promo code"
-                  className="w-full border px-4 py-3 rounded-xl"
-                />
-                <button
-                  onClick={applyPromoCode}
-                  disabled={isLoading}
-                  className="w-full mt-3 py-3 bg-amber-500 text-white rounded-xl font-bold"
-                >
-                  {isLoading ? "Applying..." : "Apply Promo"}
-                </button>
-              </div>
+              <input
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value)}
+                placeholder="Promo Code"
+                className="w-full border px-4 py-3 rounded-xl"
+              />
 
-              <div className="border-t pt-6">
-                <div className="flex justify-between text-xl font-black">
+              <button
+                onClick={applyPromoCode}
+                disabled={promoLoading}
+                className="w-full py-3 bg-amber-600 text-white rounded-xl"
+              >
+                {promoLoading ? "Applying..." : "Apply Promo"}
+              </button>
+
+              <div className="border-t pt-4">
+                <div className="flex justify-between font-black text-xl">
                   <span>Total</span>
-                  <span className="text-amber-600">
-                    ${finalTotal?.toFixed(2)}
-                  </span>
+                  <span>${finalTotal.toFixed(2)}</span>
                 </div>
-
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="w-full mt-6 py-4 bg-amber-600 text-white rounded-2xl font-black"
+                  className="w-full mt-6 py-4 bg-amber-600 text-white rounded-xl"
                 >
                   Checkout
                 </button>

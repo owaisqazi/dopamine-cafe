@@ -4,139 +4,132 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import AuthForm from "../forms/AuthForm";
-import { useGetByHomeImageQuery } from "@/store/api/authApi";
 import SkeletonLoader from "../Skeleton/SkeletonLoader";
+//@ts-ignore
+import Cookies from "js-cookie"; 
 
-const bannerImages = [
+const slides = [
   {
-    url: "/banner.jpeg",
+    image: "/banner.jpeg",
     title: "Your Daily Dose of Join Now",
     subtitle: "Dopamine Cafe",
   },
   {
-    url: "/banner2.png",
+    image: "/banner2.png",
     title: "Happiness Starts With a Cup",
     subtitle: "Dopamine Cafe",
   },
 ];
 
 export default function Hero() {
-   const { data, isLoading } = useGetByHomeImageQuery();
-      const items = data?.data || [];
   const [current, setCurrent] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
   const [isSignup, setIsSignup] = useState(false);
-  console.log(items, "Hero Image Data===>");
-  /* AUTOPLAY */
-  useEffect(() => {
-    if (!autoPlay) return;
-    const timer = setInterval(
-      () => setCurrent((c) => (c + 1) % bannerImages.length),
-      9000
-    );
-    return () => clearInterval(timer);
-  }, [autoPlay]);
-if (isLoading) {
-    return <SkeletonLoader type="hero" />; 
-  }
-  return (
-    <section
-      id="home"
-      className="relative md:h-screen overflow-hidden"
-      aria-label="Hero Section"
-    >
-      {/* SEO IMAGES (hidden but indexable) */}
-      <div className="sr-only">
-        {bannerImages.map((img, i) => (
-          <img key={i} src={img.url} alt={`${img.subtitle} banner`} />
-        ))}
-      </div>
+  const [loading, setLoading] = useState(true);
 
-      {/* BACKGROUND SLIDER */}
-      <div className="absolute inset-0">
-        {bannerImages.map((image, index) => (
+  useEffect(() => {
+    const t = Cookies.get("token");
+    setToken(t);
+    setLoading(false);
+  }, []);
+
+  /* Autoplay */
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((c) => (c + 1) % slides?.length);
+    }, 9000);
+    return () => clearInterval(timer);
+  }, []);
+
+  if (loading) return <SkeletonLoader type="hero" />;
+
+  return (
+    <section className="relative h-screen overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {slides?.map((slide, index) => (
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ${
               index === current ? "opacity-100" : "opacity-0"
             }`}
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)), url(${image.url})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(${slide?.image})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              backgroundAttachment: "fixed",
             }}
           />
         ))}
       </div>
 
-      {/* CONTENT */}
-      <main className="relative z-10 container mx-auto h-full flex items-center px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full items-center py-20">
-
-          {/* TEXT */}
-          <header className="max-w-xl">
-            {bannerImages.map((image, index) => (
+      {/* Content */}
+      <main className="relative z-10 w-full h-full flex items-center justify-center px-6">
+        <div
+          className={`w-full md:flex items-center ${
+            token ? "justify-center" : "justify-between md:mx-20 max-w-7xl"
+          }`}
+        >
+          {/* Text */}
+          <div
+            className={`relative ${
+              token ? "text-center w-full" : "md:w-full max-w-xl min-h-[260px]"
+            }`}
+          >
+            {slides?.map((slide, index) => (
               <div
                 key={index}
-                className={`transition-all duration-700 ${
+                className={`absolute inset-0 transition-all duration-700 ${
                   index === current
                     ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-6 absolute"
+                    : "opacity-0 translate-y-6"
                 }`}
               >
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white">
-                  {image.title}
+                <h1 className="text-4xl md:text-6xl md:pt-0 pt-20 lg:text-7xl font-bold text-white leading-tight">
+                  {slide?.title}
                 </h1>
-                <p className="mt-4 text-xl text-amber-200">
-                  {image.subtitle}
+                <p className="mt-4 text-xl text-amber-300">
+                  {slide?.subtitle}
                 </p>
               </div>
             ))}
-          </header>
+          </div>
 
-          {/* AUTH FORM */}
-          <aside className="bg-white shadow-[0px_-3px_14px_4px_gray] rounded-2xl p-8 max-w-md w-full mx-auto">
-            <h2 className="text-2xl font-bold text-center mb-6">
-              {isSignup ? "Create Account" : "Welcome Back"}
-            </h2>
-            <AuthForm
-              isSignup={isSignup}
-              toggleSignup={() => setIsSignup(!isSignup)}
-            />
-          </aside>
+          {/* Auth Form */}
+          {!token && (
+            <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
+              <h2 className="text-2xl font-bold text-center mb-6">
+                {isSignup ? "Create Account" : "Welcome Back"}
+              </h2>
+              <AuthForm
+                isSignup={isSignup}
+                toggleSignup={() => setIsSignup(!isSignup)}
+              />
+            </div>
+          )}
         </div>
       </main>
 
-      {/* SLIDER CONTROLS */}
+      {/* Controls */}
       <button
-        aria-label="Previous banner"
         onClick={() =>
-          setCurrent((c) => (c - 1 + bannerImages.length) % bannerImages.length)
+          setCurrent((c) => (c - 1 + slides?.length) % slides?.length)
         }
-        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full"
+        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full z-20"
       >
-        <ChevronLeft />
+        <ChevronLeft className="text-white" />
       </button>
 
       <button
-        aria-label="Next banner"
-        onClick={() =>
-          setCurrent((c) => (c + 1) % bannerImages.length)
-        }
-        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full"
+        onClick={() => setCurrent((c) => (c + 1) % slides?.length)}
+        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full z-20"
       >
-        <ChevronRight />
+        <ChevronRight className="text-white" />
       </button>
 
-      {/* SCROLL CTA */}
-      <button
-        aria-label="Scroll to menu"
-        // onClick={() => scrollToSection("menu")}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-amber-400 animate-bounce"
-      >
+      {/* Scroll icon */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-amber-400 animate-bounce z-20">
         <ChevronDown size={36} />
-      </button>
+      </div>
     </section>
   );
 }

@@ -1,6 +1,8 @@
 import AOSProvider from "@/components/aos/AOSProvider";
 import ReduxProvider from "@/store/provider";
 import "./globals.css";
+import "swiper/css";
+import "swiper/css/pagination";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 

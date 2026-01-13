@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import PhoneField, { formatPhoneForApi } from "./PhoneField";
 import { useLoginMutation, useRegisterMutation } from "@/store/api/authApi";
+//@ts-ignore
+import Cookies from "js-cookie";
 
 export interface AuthFormValues {
   name: string;
@@ -53,10 +55,15 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
       const res = isSignup
         ? await register(formData).unwrap()
         : await login(formData).unwrap();
+      // Store token and user in cookies
+      if (res?.token) {
+      Cookies.set("token", res.token, { expires: 7 }); // 7 days expiry 
+    }
 
-      // Token store
-      if (res?.token) localStorage.setItem("token", res.token);
-
+    if (res?.data) {
+      Cookies.set("user", JSON.stringify(res.data), { expires: 7 });
+    }
+    console.log("Auth Response:", res);
       toast.success(isSignup ? "Account created 🎉" : "Login successful 👋", { id: toastId });
       resetForm();
       window.location.reload();

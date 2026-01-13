@@ -8,15 +8,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   useGetMenuByMainCategoryQuery,
-  useGetByProductQuery,
 } from "@/store/api/authApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+//@ts-ignore
+import Cookies from "js-cookie";
 
 const Navbar: React.FC = () => {
   const pathname = usePathname();
   const { data } = useGetMenuByMainCategoryQuery();
-  const { data: product } = useGetByProductQuery();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const items = data?.data || [];
   const [token, setToken] = useState<string | null>(null);
@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const t = localStorage.getItem("token");
+   const t = Cookies.get("token");
     setToken(t);
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
@@ -35,10 +35,11 @@ const Navbar: React.FC = () => {
   const isActive = (path: string) => pathname === path;
   const isMenuActive = pathname.startsWith("/menu");
 
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = "/";
-  };
+const handleLogout = () => {
+  Cookies.remove("token");
+  Cookies.remove("user");
+  window.location.href = "/";
+};
 
   const handleNavClick = () => {
     setMobileMenuOpen(false);
@@ -69,7 +70,7 @@ const Navbar: React.FC = () => {
             alt="Dopamine Cafe"
             width={70}
             height={70}
-            className="h-14 w-14 md:h-16 md:w-16 rounded-full object-contain"
+            className="h-14 w-14 md:h-20 md:w-20 rounded-full object-contain"
             priority
           />
         </Link>
@@ -193,7 +194,7 @@ const Navbar: React.FC = () => {
 
       {/* MOBILE MENU DRAWER */}
       <div
-        className={`md:hidden absolute w-full bg-white transition-all duration-300 ease-in-out overflow-hidden shadow-xl border-t ${
+        className={`md:hidden absolute w-full bg-white transition-all duration-300 ease-in-out overflow-hidden shadow-xl ${
           mobileMenuOpen ? "max-h-[500px] py-8" : "max-h-0 py-0"
         }`}
       >

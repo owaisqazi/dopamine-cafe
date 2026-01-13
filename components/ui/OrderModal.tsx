@@ -94,7 +94,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
     });
 
     try {
-      const res = await axiosInstance.post("/user/order", formData, {
+      const res = await axiosInstance.post("/user/user/order", formData, {
         responseType: "text",
       });
       const win = window.open("", "_self");

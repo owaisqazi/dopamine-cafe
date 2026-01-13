@@ -34,8 +34,12 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
     },
+    // ✅ NEW: overwrite cart items (used when syncing with server)
+    setCartItems: (state, action: PayloadAction<CartItem[]>) => {
+      state.items = action.payload;
+    },
   },
 });
 
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, setCartItems } = cartSlice.actions;
 export default cartSlice.reducer;

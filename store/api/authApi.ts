@@ -1,16 +1,17 @@
   import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+  //@ts-ignore
+  import Cookies from "js-cookie";
   export const authApi = createApi({
     reducerPath: "authApi",
     baseQuery: fetchBaseQuery({
       baseUrl: "https://practice.devssh.xyz/api",
       prepareHeaders: (headers) => {
-        const token = localStorage.getItem("token");
+        const token = Cookies.get("token");
         if (token) {
           headers.set("authorization", `Bearer ${token}`);
         }
         return headers;
-      },
+      }
     }),
     endpoints: (builder) => ({
       login: builder.mutation<any, FormData>({
@@ -60,7 +61,7 @@
       query: () => `/user/main-category`,
       }),
       getMenuByCategory: builder.query<any, string>({
-      query: (id) => `/user/category?id=${id}`,
+      query: (id) => `/user/category?main_category_id=${id}`,
       }),
       getByHomeSlider: builder.query<any, void>({
       query: () => `/user/slider`,
@@ -71,16 +72,37 @@
       getByHomeGallery: builder.query<any, void>({
       query: () => `/user/gallery`,
       }),
-      getByProduct: builder.query<any, string | void>({
-      query: (categoryId) =>
-      categoryId ? `/user/product?id=${categoryId}` : `/user/product`,
-      }),
+      getByProduct: builder.query<any, { main_category_id?: string; category_id?: string } | void>({
+      query: (ids) => {
+        if (ids?.main_category_id || ids?.category_id) {
+          const params = new URLSearchParams();
+          if (ids.main_category_id) params.append("main_category_id", ids.main_category_id);
+          if (ids.category_id) params.append("category_id", ids.category_id);
+          return `/user/product?${params.toString()}`;
+        }
+        return `/user/product`;
+      },
+    }),
+
       getByHomeImage: builder.query<any, void>({
       query: () => `/user/image`,
       }),
       getBybranch: builder.query<any, void>({
       query: () => `/user/branch`,
       }),
+      getByOrder: builder.query<any, string|void>({
+      query: (id) => `/user/order?user_id=${id}`,
+      }),
+      ratingReview: builder.mutation<any, FormData>({
+        query: (formData) => ({
+          url: "/user/product/rating-review",
+          method: "POST",
+          body: formData,
+        }),
+      }),
+      getRatingReviews: builder.query<any, void>({
+        query: (id) => `/user/rating-review?user_id=${id}`,
+      }),
     }),
   });
-  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery} = authApi;
+  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery} = authApi;

@@ -8,6 +8,7 @@ import Footer from '@/components/sections/Footer';
 import Navbar from '@/components/navbar/Navbar';
 import { Toaster } from "react-hot-toast";
 import HomeManu from '@/components/sections/HomeManu';
+import ReviewTestimonials from '@/components/ui/ReviewTestimonials';
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <HomeManu />
       <Gallery />
       <HomeAbout />
+      <ReviewTestimonials />
       <Footer />
       <Toaster position="top-right" reverseOrder={false} />
     </main>
