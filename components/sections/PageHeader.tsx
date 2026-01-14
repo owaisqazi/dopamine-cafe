@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
@@ -7,19 +7,28 @@ interface PageHeaderProps {
   title: string;
   backgroundImage?: string;
   backgroundVideo?: string;
+  isLoading?: boolean; // NEW
 }
 
 const PageHeader = ({
   title,
   backgroundImage = "/gellery1.png",
   backgroundVideo,
+  isLoading = false,
 }: PageHeaderProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const pathNodes = pathname.split("/").filter(Boolean);
 
-  // Get 'name' from query
   const queryName = searchParams.get("name");
+
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
+  // If there is a video, consider it loaded once metadata is ready
+  useEffect(() => {
+    if (!backgroundVideo) setVideoLoaded(true);
+    else setVideoLoaded(false);
+  }, [backgroundVideo]);
 
   return (
     <header
@@ -29,17 +38,25 @@ const PageHeader = ({
       {/* BACKGROUND */}
       {backgroundVideo ? (
         <div className="fixed inset-0 z-10 overflow-hidden" aria-label="Background video">
+          {!videoLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+              {/* Skeleton Loader */}
+              <div className="animate-pulse w-48 h-48 bg-white/20 rounded-full" />
+            </div>
+          )}
           <video
+            preload="auto"
             className="w-full h-full object-cover"
             autoPlay
             muted
             loop
             playsInline
+            onLoadedData={() => setVideoLoaded(true)}
           >
             <source src={backgroundVideo} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/60" aria-hidden="true" />
         </div>
       ) : (
         <div
@@ -63,16 +80,16 @@ const PageHeader = ({
         >
           <ol className="flex gap-2">
             <li>
-              <Link href="/" className="hover:text-white uppercase transition-colors">
+              <Link
+                href="/"
+                className="hover:text-white uppercase transition-colors"
+              >
                 Home
               </Link>
             </li>
             {pathNodes.map((node, index) => {
               const isLast = index === pathNodes.length - 1;
-
-              // Show query name for last breadcrumb if it exists
               const displayName = isLast && queryName ? queryName : node.replace(/-/g, " ");
-
               return (
                 <li key={index} className="flex items-center gap-2">
                   <span className="text-white/50">/</span>

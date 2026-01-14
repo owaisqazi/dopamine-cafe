@@ -10,7 +10,7 @@ import SkeletonLoader from "../Skeleton/SkeletonLoader";
 export default function About() {
   const { data, isLoading } = useGetByHomeAboutQuery();
   const items = data?.data || [];
-  const video = IMAGE_BASE_URL + items?.video || "";
+
   const contactInfo = [
     {
       icon: MapPin,
@@ -28,7 +28,7 @@ export default function About() {
       content: items?.email || "—",
     },
   ];
-if (isLoading) return <SkeletonLoader type="about" count={3} />;
+  if (isLoading) return <SkeletonLoader type="about" count={3} />;
   return (
     <section id="about" className="py-20 px-4 relative z-20 bg-white">
       <div className="container mx-auto">
@@ -97,20 +97,11 @@ if (isLoading) return <SkeletonLoader type="about" count={3} />;
             data-aos="flip-left"
             data-aos-offset="300"
           >
-            {video ? (
-              <video
-                src={video}
-                className="w-full h-96 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
-            ) : (
-              <div className="w-full h-96 bg-gray-200 flex items-center justify-center rounded-2xl">
-                <span className="text-gray-400">No video available</span>
-              </div>
-            )}
+            <img
+              src={"/about.png"}
+              alt={items?.name || "About Image"}
+              className="w-full h-96 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+            />
           </div>
         </div>
       </div>

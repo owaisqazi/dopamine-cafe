@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { MapPin, Clock, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetByHomeAboutQuery } from "@/store/api/authApi";
 import SkeletonLoader from "@/components/Skeleton/SkeletonLoader";
@@ -10,7 +10,7 @@ import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 export default function HomeAbout() {
   const { data, isLoading } = useGetByHomeAboutQuery();
   const items = data?.data || [];
- const video = IMAGE_BASE_URL + items?.video || "";
+
   // Contact info
   const contactInfo = [
     {
@@ -61,7 +61,9 @@ export default function HomeAbout() {
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-600 mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="w-6 h-6" aria-hidden="true" />
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">{info.title}</h3>
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    {info.title}
+                  </h3>
                   <p className="text-gray-600 text-sm">{info.content}</p>
                 </CardContent>
               </Card>
@@ -76,7 +78,9 @@ export default function HomeAbout() {
             data-aos="flip-right"
             data-aos-offset="300"
           >
-            <h3 className="text-3xl font-bold text-gray-800 mb-4">{items?.name}</h3>
+            <h3 className="text-3xl font-bold text-gray-800 mb-4">
+              {items?.name}
+            </h3>
             <p className="text-gray-600 mb-4 leading-relaxed">
               Founded in 2024, Dopamine Cafe was born from a simple idea: create
               a space where people can escape the daily grind and find their
@@ -91,25 +95,16 @@ export default function HomeAbout() {
             </p>
           </div>
 
-          <div
+         <div
             className="order-1 md:order-2 overflow-hidden rounded-2xl shadow-2xl group"
             data-aos="flip-left"
             data-aos-offset="300"
           >
-            {video ? (
-              <video
-                src={video}
-                className="w-full h-96 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
-            ) : (
-              <div className="w-full h-96 bg-gray-200 flex items-center justify-center rounded-2xl">
-                <span className="text-gray-400">No video available</span>
-              </div>
-            )}
+            <img
+              src={"/about.png"}
+              alt={items?.name || "About Image"}
+              className="w-full h-96 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+            />
           </div>
         </div>
       </div>
