@@ -1,13 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { MapPin, Clock, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetByHomeAboutQuery } from "@/store/api/authApi";
+import { IMAGE_BASE_URL } from "../auth/axiosInstance";
+import SkeletonLoader from "../Skeleton/SkeletonLoader";
 
 export default function About() {
   const { data, isLoading } = useGetByHomeAboutQuery();
   const items = data?.data || [];
+  const video = IMAGE_BASE_URL + items?.video || "";
   const contactInfo = [
     {
       icon: MapPin,
@@ -25,13 +28,9 @@ export default function About() {
       content: items?.email || "—",
     },
   ];
-
-  console.log(items, "About Us Data===>");
+if (isLoading) return <SkeletonLoader type="about" count={3} />;
   return (
-    <section
-      id="about"
-      className="py-20 px-4 relative z-20 bg-white"
-    >
+    <section id="about" className="py-20 px-4 relative z-20 bg-white">
       <div className="container mx-auto">
         {/* SECTION HEADING */}
         {/* <header className="text-center mb-12" data-aos="flip-up">
@@ -44,8 +43,8 @@ export default function About() {
 
         {/* CONTACT CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-12">
-          {contactInfo.map((info, index) => {
-            const Icon = info.icon;
+          {contactInfo?.map((info, index) => {
+            const Icon = info?.icon;
             return (
               <Card
                 key={index}
@@ -60,9 +59,9 @@ export default function About() {
                     <Icon className="w-6 h-6" aria-hidden="true" />
                   </div>
                   <h3 className="font-semibold text-gray-800 mb-2">
-                    {info.title}
+                    {info?.title}
                   </h3>
-                  <p className="text-gray-600 text-sm">{info.content}</p>
+                  <p className="text-gray-600 text-sm">{info?.content}</p>
                 </CardContent>
               </Card>
             );
@@ -76,7 +75,9 @@ export default function About() {
             data-aos="flip-right"
             data-aos-offset="300"
           >
-            <h3 className="text-3xl font-bold text-gray-800 mb-4">{items?.name}</h3>
+            <h3 className="text-3xl font-bold text-gray-800 mb-4">
+              {items?.name}
+            </h3>
             <p className="text-gray-600 mb-4 leading-relaxed">
               Founded in 2024, Dopamine Cafe was born from a simple idea: create
               a space where people can escape the daily grind and find their
@@ -96,11 +97,20 @@ export default function About() {
             data-aos="flip-left"
             data-aos-offset="300"
           >
-            <img
-              src="./about.png"
-              alt="Interior of Dopamine Cafe"
-              className="w-full h-96 object-cover group-hover:scale-110 transition-transform duration-700"
-            />
+            {video ? (
+              <video
+                src={video}
+                className="w-full h-96 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <div className="w-full h-96 bg-gray-200 flex items-center justify-center rounded-2xl">
+                <span className="text-gray-400">No video available</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

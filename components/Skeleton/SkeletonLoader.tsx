@@ -4,7 +4,7 @@
 import React from "react";
 
 interface Props {
-  type: "category" | "product" | "gallery" | "about" | "hero";
+  type: "category" | "product" | "gallery" | "about" | "hero" | "blog";
   count?: number;
 }
 
@@ -24,7 +24,7 @@ const SkeletonLoader: React.FC<Props> = ({ type, count = 6 }) => {
     );
   }
 
-  if (type === "product") {
+  if (type === "product" || type === "blog") {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {Array(count)
@@ -34,13 +34,15 @@ const SkeletonLoader: React.FC<Props> = ({ type, count = 6 }) => {
               key={i}
               className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse"
             >
+              {/* Image placeholder */}
               <div className="relative h-52 bg-gray-200"></div>
-              <div className="p-5">
-                <div className="h-6 bg-gray-200 w-3/4 mb-2 rounded"></div>
-                <div className="h-4 bg-gray-200 w-1/4 mb-4 rounded"></div>
-                <div className="h-4 bg-gray-200 w-full mb-2 rounded"></div>
-                <div className="h-4 bg-gray-200 w-full mb-2 rounded"></div>
-                <div className="h-8 bg-gray-200 w-full rounded"></div>
+
+              {/* Content placeholder */}
+              <div className="p-5 space-y-2">
+                <div className="h-6 bg-gray-200 w-3/4 rounded"></div>
+                <div className="h-4 bg-gray-200 w-full rounded"></div>
+                <div className="h-4 bg-gray-200 w-full rounded"></div>
+                <div className="h-8 bg-gray-200 w-full rounded mt-2"></div>
               </div>
             </div>
           ))}
@@ -108,13 +110,10 @@ const SkeletonLoader: React.FC<Props> = ({ type, count = 6 }) => {
   if (type === "hero") {
     return (
       <div className="relative h-[600px] md:h-screen bg-gray-200 animate-pulse flex items-center justify-center">
-        {/* Left text placeholder */}
         <div className="absolute left-10 md:left-20 space-y-4 w-1/2">
           <div className="h-10 w-3/4 bg-gray-300 rounded animate-pulse"></div>
           <div className="h-6 w-1/2 bg-gray-300 rounded animate-pulse"></div>
         </div>
-
-        {/* Right auth form placeholder */}
         <div className="absolute right-10 md:right-20 w-80 h-96 bg-gray-300 rounded-2xl animate-pulse"></div>
       </div>
     );

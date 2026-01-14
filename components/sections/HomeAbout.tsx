@@ -5,11 +5,12 @@ import { MapPin, Clock, Phone, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetByHomeAboutQuery } from "@/store/api/authApi";
 import SkeletonLoader from "@/components/Skeleton/SkeletonLoader";
+import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 
 export default function HomeAbout() {
   const { data, isLoading } = useGetByHomeAboutQuery();
   const items = data?.data || [];
-
+ const video = IMAGE_BASE_URL + items?.video || "";
   // Contact info
   const contactInfo = [
     {
@@ -95,11 +96,20 @@ export default function HomeAbout() {
             data-aos="flip-left"
             data-aos-offset="300"
           >
-            <img
-              src="./about.png"
-              alt="Interior of Dopamine Cafe"
-              className="w-full h-96 object-cover group-hover:scale-110 transition-transform duration-700"
-            />
+            {video ? (
+              <video
+                src={video}
+                className="w-full h-96 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <div className="w-full h-96 bg-gray-200 flex items-center justify-center rounded-2xl">
+                <span className="text-gray-400">No video available</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

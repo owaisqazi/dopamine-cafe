@@ -123,6 +123,15 @@ const handleLogout = () => {
             Gallery
           </Link>
           <Link
+            href="/blog"
+            onClick={handleNavClick}
+            className={`font-medium transition ${getLinkColor(
+              isActive("/blog")
+            )}`}
+          >
+            Blog
+          </Link>
+          <Link
             href="/about-us"
             onClick={handleNavClick}
             className={`font-medium transition ${getLinkColor(
@@ -249,6 +258,13 @@ const handleLogout = () => {
             className="text-gray-800 font-semibold text-lg"
           >
             About
+          </Link>
+          <Link
+            href="/blog"
+            onClick={handleNavClick}
+            className="text-gray-800 font-semibold text-lg"
+          >
+            Blog
           </Link>
           <Link
             href="/contact"

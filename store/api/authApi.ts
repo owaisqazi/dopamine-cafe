@@ -90,6 +90,9 @@
       getBybranch: builder.query<any, void>({
       query: () => `/user/branch`,
       }),
+      getByBlog: builder.query<any, void>({
+      query: () => `/user/blogs`,
+      }),
       getByOrder: builder.query<any, string|void>({
       query: (id) => `/user/order?user_id=${id}`,
       }),
@@ -105,4 +108,4 @@
       }),
     }),
   });
-  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery} = authApi;
+  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery} = authApi;

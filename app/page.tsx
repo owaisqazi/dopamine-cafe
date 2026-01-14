@@ -8,7 +8,7 @@ import Footer from '@/components/sections/Footer';
 import Navbar from '@/components/navbar/Navbar';
 import { Toaster } from "react-hot-toast";
 import HomeManu from '@/components/sections/HomeManu';
-import ReviewTestimonials from '@/components/ui/ReviewTestimonials';
+import ReviewTestimonials from '@/components/sections/ReviewTestimonials';
 
 export default function Home() {
   return (

@@ -9,6 +9,8 @@ import toast from "react-hot-toast";
 import PhoneField from "../forms/PhoneField";
 import { useRouter } from "next/navigation";
 import axiosInstance from "../auth/axiosInstance";
+//@ts-ignore
+import Cookies from "js-cookie";
 
 interface OrderModalProps {
   isModalOpen: boolean;
@@ -71,6 +73,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
   };
 
   const handleSubmit = async (values: typeof initialValues) => {
+    const token = Cookies.get("token");
     const formData = new FormData();
 
     Object.entries(values).forEach(([key, value]) => {
@@ -94,7 +97,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
     });
 
     try {
-      const res = await axiosInstance.post("/user/user/order", formData, {
+      const res = await axiosInstance.post(token ? "/user/user/order" : "/user/order", formData, {
         responseType: "text",
       });
       const win = window.open("", "_self");
