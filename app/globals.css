@@ -151,3 +151,12 @@ select option:hover {
   background: #f59e0b !important; /* amber-500 */
   color: white;
 }
+
+/* Only hide scrollbar for the mini menu */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

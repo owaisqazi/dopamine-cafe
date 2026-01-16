@@ -6,6 +6,12 @@ export interface CartItem {
   price: number;
   quantity: number;
   image: string;
+  description: string;
+  options: {
+    id: number;
+    name: string;
+    price_modifier: number;
+  }[];
 }
 
 interface CartState {
@@ -21,25 +27,38 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      const existingItem = state.items.find(i => i.id === action.payload.id);
+      const existingItem = state.items.find(
+        (i) => String(i.id) === String(action.payload.id)
+      );
+
       if (existingItem) {
         existingItem.quantity += action.payload.quantity;
       } else {
         state.items.push(action.payload);
       }
     },
+
     removeFromCart: (state, action: PayloadAction<string | number>) => {
-      state.items = state.items.filter(i => i.id !== action.payload);
+      state.items = state.items.filter(
+        (i) => String(i.id) !== String(action.payload)
+      );
     },
+
     clearCart: (state) => {
       state.items = [];
     },
-    // ✅ NEW: overwrite cart items (used when syncing with server)
+
     setCartItems: (state, action: PayloadAction<CartItem[]>) => {
       state.items = action.payload;
     },
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, setCartItems } = cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  clearCart,
+  setCartItems,
+} = cartSlice.actions;
+
 export default cartSlice.reducer;

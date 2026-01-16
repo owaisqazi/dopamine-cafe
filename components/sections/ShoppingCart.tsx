@@ -4,7 +4,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
-import { addToCart, removeFromCart } from "@/store/cartSlice";
+import { addToCart, removeFromCart, CartItem } from "@/store/cartSlice";
 import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 import OrderModal from "../../components/ui/OrderModal";
 import {
@@ -17,27 +17,107 @@ import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { TrashIcon } from "lucide-react";
 
-/* ---------------- TYPES ---------------- */
 interface User {
   id: string;
 }
 
-interface ApiProduct {
-  id: number;
-  name: string;
-  image: string;
-  pivot: {
-    price: number;
-    quantity: number;
-  };
+interface CartItemProps {
+  item: CartItem | any;
+  handleQuantity?: (item: CartItem, type: "inc" | "dec") => void;
+  readOnly?: boolean;
+  isUnpaid?: boolean;
+}
+
+function CartItemCard({
+  item,
+  handleQuantity,
+  readOnly,
+  isUnpaid,
+}: CartItemProps) {
+  console.log(item, "unpaid===?");
+  return (
+    <article className="grid grid-cols-1 sm:grid-cols-12 gap-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition">
+      {/* LEFT: Image */}
+      <div className="sm:col-span-2 w-full">
+        <img
+          src={IMAGE_BASE_URL + (item?.image || item?.product?.image)}
+          alt={item?.name || item?.product?.name || "Product"}
+          className="w-full h-24 sm:h-24 rounded-xl object-cover"
+        />
+      </div>
+
+      {/* CENTER: Name + Price */}
+      <div className="sm:col-span-6 flex flex-col justify-center">
+        <h3 className="font-bold text-gray-800 text-lg">
+          {item?.name || item?.product?.name}
+        </h3>
+        <p className="text-amber-600 font-semibold mt-1">
+          Rs.{(item?.price * item?.quantity).toFixed(2)}
+        </p>
+      </div>
+
+      {/* RIGHT: Quantity + Remove */}
+      {!readOnly && handleQuantity && (
+        <div className="sm:col-span-4 flex items-center justify-end gap-4">
+          <div className="flex items-center justify-end border rounded-full overflow-hidden">
+            <button
+              onClick={() => handleQuantity(item, "dec")}
+              className="px-3 py-1 hover:bg-gray-200 transition"
+            >
+              −
+            </button>
+            <span className="px-4 font-semibold">{item?.quantity}</span>
+            <button
+              onClick={() => handleQuantity(item, "inc")}
+              className="px-3 py-1 hover:bg-gray-200 transition"
+            >
+              +
+            </button>
+          </div>
+          <button
+            //@ts-ignore
+            onClick={() => handleQuantity(item, "remove")}
+            className="text-red-500 hover:text-red-600 flex items-center gap-1"
+          >
+            <TrashIcon className="w-5 h-5" />
+          </button>
+        </div>
+      )}
+
+      {/* Quantity display only for readOnly */}
+      {readOnly && (
+        <div className="sm:col-span-4 flex items-center justify-end gap-4">
+          <span className="px-4 font-semibold">{item?.quantity}</span>
+        </div>
+      )}
+
+      {/* Options */}
+      {item?.options?.length > 0 && (
+        <div className="sm:col-span-12 mt-4 grid grid-cols-1 gap-4 bg-gray-50 p-2 rounded-lg border border-gray-100">
+          {item?.options.map((opt: any, index: number) => (
+            <div
+              key={index}
+              className="flex justify-between text-gray-700 text-sm"
+            >
+              <span>{opt.name}</span>
+              <span className="font-semibold">
+                Rs.{Number(opt.price_modifier)}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </article>
+  );
 }
 
 export default function ShoppingCartTabs() {
   const dispatch = useDispatch<AppDispatch>();
   const cartItems = useSelector((state: RootState) => state.cart.items);
-
   const [user, setUser] = useState<User | null>(null);
-  const [activeTab, setActiveTab] = useState<"cart" | "paid">("cart");
+  const [activeTab, setActiveTab] = useState<"cart" | "unpaid" | "paid">(
+    "cart"
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [discountData, setDiscountData] = useState<any>(null);
@@ -51,64 +131,68 @@ export default function ShoppingCartTabs() {
     { skip: !user?.id }
   );
 
-  /* ---------------- USER FROM COOKIE ---------------- */
+  // Get user from cookie
   useEffect(() => {
     const userStr = Cookies.get("user");
     if (userStr) setUser(JSON.parse(userStr));
   }, []);
 
-  /* ---------------- UNPAID ORDERS → CART ---------------- */
+  // Load unpaid orders into cart
   useEffect(() => {
     if (!orderData?.unpaid_orders || activeTab !== "cart") return;
-
     orderData.unpaid_orders.forEach((order: any) => {
-      order.products?.forEach((product: ApiProduct) => {
-        const exists = cartItems.find((i) => i.id === product.id);
+      order?.items?.forEach((item: any) => {
+        const exists = cartItems.find((i) => String(i.id) === String(item.id));
         if (!exists) {
           dispatch(
             addToCart({
-              id: product.id,
-              name: product.name,
-              image: product.image,
-              price: Number(product.pivot.price),
-              quantity: Number(product.pivot.quantity),
+              id: item.id,
+              name: item?.product?.name || item?.name || order?.name,
+              image: item?.product?.image || item?.image,
+              description:
+                item?.description || item?.product?.description || "",
+              price: Number(item.price),
+              quantity: Number(item.quantity),
+              options: item.options || [],
             })
           );
         }
       });
     });
-  }, [orderData, cartItems, dispatch, activeTab]);
+  }, [orderData, activeTab]);
 
-  /* ---------------- SPLIT CART ITEMS ---------------- */
+  // Split cart items
   const unpaidProductIds = useMemo(() => {
     if (!orderData?.unpaid_orders) return [];
     return orderData.unpaid_orders.flatMap((order: any) =>
-      order.products?.map((p: ApiProduct) => p.id) || []
+      order?.items?.map((item: any) => item.id)
     );
   }, [orderData]);
 
   const unpaidCartItems = useMemo(
-    () => cartItems.filter((item) => unpaidProductIds.includes(item.id)),
+    () => cartItems.filter((item) => unpaidProductIds.includes(item?.id)),
     [cartItems, unpaidProductIds]
   );
 
   const normalCartItems = useMemo(
-    () => cartItems.filter((item) => !unpaidProductIds.includes(item.id)),
+    () => cartItems.filter((item) => !unpaidProductIds.includes(item?.id)),
     [cartItems, unpaidProductIds]
   );
 
-  /* ---------------- PRICE CALC ---------------- */
+  // Price calculations
   const subtotal = useMemo(
     () =>
-      cartItems.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0
-      ),
+      cartItems.reduce((acc, item) => {
+        const optionsTotal = item?.options?.reduce(
+          (sum: number, opt: any) => sum + Number(opt.price_modifier),
+          0
+        );
+        return acc + item?.price * item?.quantity + optionsTotal;
+      }, 0),
     [cartItems]
   );
 
-  const delivery = subtotal > 0 ? 2.5 : 0;
-
+  const delivery = subtotal > 0 ? 200 : 0;
   const discount = useMemo(() => {
     if (!discountData) return 0;
     return discountData.type === "percentage"
@@ -116,23 +200,24 @@ export default function ShoppingCartTabs() {
       : Number(discountData.amount);
   }, [discountData, subtotal]);
 
-  const finalTotal =
-    subtotal > 0 ? subtotal + delivery - discount : 0;
+  const finalTotal = subtotal + delivery - discount;
 
-  /* ---------------- QTY HANDLER ---------------- */
-  const handleQuantity = (item: any, type: "inc" | "dec") => {
+  // Quantity handler
+  const handleQuantity = (item: CartItem, type: "inc" | "dec" | "remove") => {
     if (type === "inc") {
       dispatch(addToCart({ ...item, quantity: 1 }));
-    } else {
+    } else if (type === "dec") {
       if (item.quantity > 1) {
         dispatch(addToCart({ ...item, quantity: -1 }));
       } else {
         dispatch(removeFromCart(item.id));
       }
+    } else if (type === "remove") {
+      dispatch(removeFromCart(item.id));
     }
   };
 
-  /* ---------------- PROMO ---------------- */
+  // Promo
   const applyPromoCode = async () => {
     if (!promoCode.trim()) return;
     try {
@@ -149,7 +234,7 @@ export default function ShoppingCartTabs() {
 
   if (orderLoading) {
     return (
-      <div className="py-16 bg-white relative z-20 text-center text-xl">
+      <div className="py-16 bg-white text-center text-xl">
         Loading your orders...
       </div>
     );
@@ -158,215 +243,157 @@ export default function ShoppingCartTabs() {
   return (
     <main className="py-16 bg-white relative z-20 min-h-screen">
       <div className="container mx-auto px-4 max-w-7xl">
-
-        {/* -------- TABS -------- */}
+        {/* Tabs */}
         <div className="flex justify-center gap-4 mb-10">
-          {["cart", "paid"].map((tab) => (
+          {["cart", "unpaid", "paid"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as any)}
               className={`px-6 py-2 rounded-full font-semibold capitalize ${
-                activeTab === tab
-                  ? "bg-amber-600 text-white"
-                  : "bg-gray-100"
+                activeTab === tab ? "bg-amber-600 text-white" : "bg-gray-100"
               }`}
             >
-              {tab === "cart" ? "Shopping Cart" : "Paid Orders"}
+              {tab === "cart"
+                ? "Shopping Cart"
+                : tab === "unpaid"
+                ? "Unpaid Orders"
+                : "Paid Orders"}
             </button>
           ))}
         </div>
 
-        {/* -------- PAID ORDERS -------- */}
-        {activeTab === "paid" && (
-          <div className="space-y-6">
-            {orderData?.paid_orders?.length ? (
-              orderData.paid_orders.map((order: any) => (
-                <article
-                  key={order.id}
-                  className="p-4 border rounded-2xl"
-                >
-                  <h3 className="font-bold mb-2">
-                    Order #{order.id}
-                  </h3>
-                  {order.products?.map((p: ApiProduct) => (
-                    <div
-                      key={p.id}
-                      className="flex justify-between py-2"
-                    >
-                      <span>{p.name}</span>
-                      <span>
-                        $ {(p.pivot.price * p.pivot.quantity).toFixed(
-                          2
-                        )}
-                      </span>
-                    </div>
-                  ))}
-                </article>
-              ))
-            ) : (
-              <p className="text-center text-gray-400">
-                No paid orders
-              </p>
-            )}
-          </div>
-        )}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          {/* LEFT: Items */}
+          <section className="lg:col-span-2 space-y-6">
+            {/* Cart */}
+            {activeTab === "cart" &&
+              (normalCartItems.length > 0 ? (
+                normalCartItems.map((item) => (
+                  <CartItemCard
+                    key={`cart-${item.id}`}
+                    item={item}
+                    handleQuantity={handleQuantity}
+                  />
+                ))
+              ) : (
+                <p className="text-gray-400 italic">Your cart is empty</p>
+              ))}
 
-        {/* -------- CART -------- */}
-        {activeTab === "cart" && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-
-            {/* LEFT */}
-            <section className="lg:col-span-2 space-y-6">
-
-              {/* UNPAID ORDERS */}
-              {unpaidCartItems.length > 0 && (
-                <>
-                  <h2 className="text-red-600 font-bold text-lg">
-                    Unpaid Orders
-                  </h2>
-                  {unpaidCartItems.map((item) => (
-                    <article
-                      key={`unpaid-${item.id}`}
-                      className="flex justify-between items-center p-4 border border-gray rounded-2xl bg-white"
-                    >
-                      <div className="flex items-center gap-4">
-                        <img
-                          src={IMAGE_BASE_URL + item.image}
-                          className="w-20 h-20 rounded-lg object-cover"
-                          alt={item.name}
+            {/* Unpaid Orders */}
+            {activeTab === "unpaid" &&
+              (orderData?.unpaid_orders?.length > 0 ? (
+                orderData.unpaid_orders.map((order: any) => (
+                  <div key={order?.id} className="space-y-4">
+                    <h2 className="text-amber-600 font-bold text-xl mb-4">
+                      Order Number:{order?.order_number}
+                    </h2>
+                    {order?.products.map((product: any) => {
+                      // Find the matching item to get options
+                      const item = order?.items.find(
+                        (i: any) => i.product_id === product?.id
+                      );
+                      return (
+                        <CartItemCard
+                          key={product?.id}
+                          item={{
+                            ...product,
+                            quantity: item?.quantity || 1,
+                            price: Number(item?.price || product?.base_price),
+                            options: item?.options || [],
+                          }}
+                          handleQuantity={handleQuantity}
                         />
-                        <div>
-                          <h3 className="font-bold">{item.name}</h3>
-                          <p className="text-red-600">${item.price}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-6">
-                        <span className="font-bold">Qty {item.quantity}</span>
-                        <button
-                          onClick={() => dispatch(removeFromCart(item.id))}
-                          className="text-red-500 text-sm"
-                        >
-                          <TrashIcon className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </article>
-                  ))}
-                </>
-              )}
-
-              {/* NORMAL CART ITEMS */}
-              {normalCartItems.length > 0 && (
-                <>
-                  <h2 className="font-bold text-lg">
-                    Shopping Cart
-                  </h2>
-                  {normalCartItems.map((item) => (
-                    <article
-                      key={`cart-${item.id}`}
-                      className="flex justify-between items-center p-4 border rounded-2xl"
-                    >
-                      <div className="flex items-center gap-4">
-                        <img
-                          src={IMAGE_BASE_URL + item.image}
-                          className="w-20 h-20 rounded-lg object-cover"
-                          alt={item.name}
-                        />
-                        <div>
-                          <h3 className="font-bold">{item.name}</h3>
-                          <p className="text-amber-600">${item.price}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-6">
-                        <div className="flex items-center border rounded-full">
-                          <button
-                            onClick={() => handleQuantity(item, "dec")}
-                            className="px-3"
-                          >
-                            -
-                          </button>
-                          <span className="px-4 font-bold">{item.quantity}</span>
-                          <button
-                            onClick={() => handleQuantity(item, "inc")}
-                            className="px-3"
-                          >
-                            +
-                          </button>
-                        </div>
-                        <button
-                          onClick={() => dispatch(removeFromCart(item.id))}
-                          className="text-red-500 text-sm"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </article>
-                  ))}
-                </>
-              )}
-
-              {/* EMPTY */}
-              {unpaidCartItems.length === 0 && normalCartItems.length === 0 && (
-                <p className="text-gray-400 italic">
-                  Your cart is empty
-                </p>
-              )}
-            </section>
-
-            {/* RIGHT */}
-            <aside className="bg-gray-50 p-6 rounded-3xl h-fit">
-              <h3 className="text-xl font-bold mb-4">
-                Order Summary
-              </h3>
-
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Delivery</span>
-                  <span>${delivery.toFixed(2)}</span>
-                </div>
-                {discount > 0 && (
-                  <div className="flex justify-between text-green-600">
-                    <span>Discount</span>
-                    <span>- ${discount.toFixed(2)}</span>
+                      );
+                    })}
                   </div>
-                )}
-              </div>
+                ))
+              ) : (
+                <p className="text-gray-400 italic">No unpaid orders</p>
+              ))}
 
-              <input
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value)}
-                placeholder="Promo code"
-                className="w-full border p-3 rounded-xl mt-4"
-              />
+            {/* Paid Orders */}
+            {activeTab === "paid" &&
+              (orderData?.paid_orders?.length > 0 ? (
+                orderData.paid_orders.map((order: any) => (
+                  <div key={order?.id} className="space-y-4">
+                    <h2 className="text-green-600 font-bold text-xl mb-4">
+                      Paid Order Number:{order?.order_number}
+                    </h2>
+                    {order?.products.map((product: any) => {
+                      const item = order?.items.find(
+                        (i: any) => i?.product_id === product?.id
+                      );
+                      return (
+                        <CartItemCard
+                          key={product?.id}
+                          item={{
+                            ...product,
+                            quantity: item?.quantity || 1,
+                            price: Number(item?.price || product?.base_price),
+                            options: item?.options || [],
+                          }}
+                          readOnly
+                        />
+                      );
+                    })}
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-400 italic">No paid orders</p>
+              ))}
+          </section>
+
+          {/* RIGHT: Summary */}
+          <aside className="bg-gray-50 p-6 rounded-3xl h-fit">
+            <h3 className="text-xl font-bold mb-4">Order Summary</h3>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <span>Rs.{subtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Delivery</span>
+                <span>Rs.{delivery.toFixed(2)}</span>
+              </div>
+              {discount > 0 && (
+                <div className="flex justify-between text-green-600">
+                  <span>Discount</span>
+                  <span>- Rs.{discount.toFixed(2)}</span>
+                </div>
+              )}
+            </div>
+
+            <input
+              value={promoCode}
+              onChange={(e) => setPromoCode(e.target.value)}
+              placeholder="Promo code"
+              className="w-full border p-3 rounded-xl mt-4"
+            />
+            <button
+              onClick={applyPromoCode}
+              disabled={promoLoading}
+              className="w-full mt-3 py-3 bg-black text-white rounded-xl"
+            >
+              {promoLoading ? "Applying..." : "Apply Promo"}
+            </button>
+
+            <div className="border-t mt-4 pt-4">
+              <div className="flex justify-between font-bold text-xl">
+                <span>Total</span>
+                <span>Rs.{finalTotal.toFixed(2)}</span>
+              </div>
 
               <button
-                onClick={applyPromoCode}
-                disabled={promoLoading}
-                className="w-full mt-3 py-3 bg-black text-white rounded-xl"
+                onClick={() => setIsModalOpen(true)}
+                className="w-full mt-6 py-4 bg-amber-600 text-white rounded-xl"
               >
-                {promoLoading ? "Applying..." : "Apply Promo"}
+                Checkout
               </button>
+            </div>
+          </aside>
+        </div>
 
-              <div className="border-t mt-4 pt-4">
-                <div className="flex justify-between font-bold text-xl">
-                  <span>Total</span>
-                  <span>${finalTotal.toFixed(2)}</span>
-                </div>
-
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="w-full mt-6 py-4 bg-amber-600 text-white rounded-xl"
-                >
-                  Checkout
-                </button>
-              </div>
-            </aside>
-          </div>
-        )}
-
+        {/* Order Modal */}
         <OrderModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}

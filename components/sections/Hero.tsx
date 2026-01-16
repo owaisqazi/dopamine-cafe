@@ -6,7 +6,7 @@ import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import AuthForm from "../forms/AuthForm";
 import SkeletonLoader from "../Skeleton/SkeletonLoader";
 //@ts-ignore
-import Cookies from "js-cookie"; 
+import Cookies from "js-cookie";
 
 const slides = [
   {
@@ -19,6 +19,10 @@ const slides = [
     title: "Happiness Starts With a Cup",
     subtitle: "Dopamine Cafe",
   },
+];
+const sideImages = [
+  { id: 1, image: "/banner-image-hero.png" },
+  { id: 2, image: "/banner-image-hero2.png" },
 ];
 
 export default function Hero() {
@@ -65,14 +69,18 @@ export default function Hero() {
       {/* Content */}
       <main className="relative z-10 w-full h-full flex items-center justify-center px-6">
         <div
-          className={`w-full md:flex items-center ${
-            token ? "justify-center" : "justify-between md:mx-20 max-w-7xl"
+          className={`w-full md:flex items-center mt-10 md:mt-20 ${
+            token
+              ? "justify-between md:mx-20 max-w-7xl"
+              : "justify-between md:mx-20 max-w-7xl"
           }`}
         >
           {/* Text */}
           <div
             className={`relative ${
-              token ? "text-center w-full" : "md:w-full max-w-xl min-h-[260px]"
+              token
+                ? "md:w-full max-w-xl min-h-[260px]"
+                : "md:w-full max-w-xl min-h-[260px]"
             }`}
           >
             {slides?.map((slide, index) => (
@@ -87,15 +95,13 @@ export default function Hero() {
                 <h1 className="text-4xl md:text-6xl md:pt-0 pt-20 lg:text-7xl font-bold text-white leading-tight">
                   {slide?.title}
                 </h1>
-                <p className="mt-4 text-xl text-amber-300">
-                  {slide?.subtitle}
-                </p>
+                <p className="mt-4 text-xl text-amber-300">{slide?.subtitle}</p>
               </div>
             ))}
           </div>
 
           {/* Auth Form */}
-          {!token && (
+          {!token ? (
             <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
               <h2 className="text-2xl font-bold text-center mb-6">
                 {isSignup ? "Create Account" : "Welcome Back"}
@@ -105,6 +111,12 @@ export default function Hero() {
                 toggleSignup={() => setIsSignup(!isSignup)}
               />
             </div>
+          ) : (
+            <img
+              src={sideImages[current]?.image} 
+              alt={`Side Image ${current + 1}`}
+              className="rounded-2xl object-cover w-full max-w-md h-auto shadow-lg"
+            />
           )}
         </div>
       </main>

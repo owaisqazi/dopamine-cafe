@@ -6,7 +6,6 @@ import { useGetRatingReviewsQuery } from "@/store/api/authApi";
 export default function ReviewTestimonials() {
   const { data, isLoading } = useGetRatingReviewsQuery();
     const items = data?.data || [];
-    console.log(items,'items===?')
   return (
     <section className="py-10 px-4">
       <div className="w-full mx-auto px-4">

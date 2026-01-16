@@ -68,16 +68,19 @@ export default function Footer() {
             <div className="flex flex-col items-center md:items-end gap-6 w-full md:w-auto">
               {/* Links */}
               <div className="flex gap-6 text-gray-300 font-medium">
-                <a href="#menu" className="hover:text-amber-500 transition">
-                  Menu
+                <a href="/gallery" className="hover:text-amber-500 transition">
+                  home
                 </a>
-                <a href="#about" className="hover:text-amber-500 transition">
-                  About
-                </a>
-                <a href="#gallery" className="hover:text-amber-500 transition">
+                <a href="/gallery" className="hover:text-amber-500 transition">
                   Gallery
                 </a>
-                <a href="#contact" className="hover:text-amber-500 transition">
+                <a href="/blog" className="hover:text-amber-500 transition">
+                  Blog
+                </a>
+                <a href="/about" className="hover:text-amber-500 transition">
+                  About
+                </a>
+                <a href="/contact" className="hover:text-amber-500 transition">
                   Contact
                 </a>
               </div>

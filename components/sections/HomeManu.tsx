@@ -9,14 +9,14 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { IMAGE_BASE_URL } from "../auth/axiosInstance";
-import { ShoppingCart } from "lucide-react";
+import { Plus } from "lucide-react";
 import SkeletonLoader from "@/components/Skeleton/SkeletonLoader";
 
 interface MenuItem {
   id: string | number;
   name: string;
   description: string;
-  price: string;
+  base_price: string;
   image: string;
   average_rating: string | number;
   reviews: string[];
@@ -34,19 +34,20 @@ export default function HomeMenu() {
   const categories: Category[] = categoriesData?.data || [];
 
   const [activeCategory, setActiveCategory] = useState<{
-    id: string;
+    id: string | number;
     name: string;
-  }>({ id: "", name: "All" });
+  }>({ id: categories[0]?.id || "", name: categories[0]?.name || "All" });
 
   const activeCategoryId = activeCategory?.id || undefined;
 
-  const { data: productsData, isLoading: productsLoading } = useGetByProductQuery(
-    { main_category_id: categoryId, category_id: activeCategoryId },
-    { skip: false, refetchOnMountOrArgChange: true }
-  );
- 
+  const { data: productsData, isLoading: productsLoading } =
+    useGetByProductQuery(
+      //@ts-ignore
+      { main_category_id: categoryId, category_id: activeCategoryId },
+      { skip: false, refetchOnMountOrArgChange: true }
+    );
+
   const [products, setProducts] = useState<MenuItem[]>([]);
-  console.log("Products Data:", productsData,products);
   useEffect(() => {
     if (productsData?.data) {
       setProducts(productsData.data);
@@ -65,9 +66,9 @@ export default function HomeMenu() {
       className="relative z-20 bg-white md:py-20 px-4"
       aria-labelledby="menu-heading"
     >
-      <div className="container mx-auto py-20">
+      <div className="container mx-auto">
         {/* HEADER */}
-        <header className="text-center mb-8">
+        <header className="text-center my-8">
           <h2 className="text-5xl font-bold text-gray-800 mb-4">Our Menu</h2>
           <p className="text-xl text-gray-600">
             Take a look at our menu and explore a variety of delicious dishes
@@ -79,7 +80,7 @@ export default function HomeMenu() {
         {categoriesLoading ? (
           <SkeletonLoader type="category" count={6} />
         ) : (
-          <nav className="flex flex-wrap justify-center gap-4 mb-14">
+          <nav className="flex flex-wrap justify-center gap-4 mb-10">
             {categories?.slice(0, 8)?.map((cat: any) => (
               <button
                 key={cat?.id}
@@ -101,91 +102,78 @@ export default function HomeMenu() {
         {productsLoading ? (
           <SkeletonLoader type="product" count={8} />
         ) : products?.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
             {products?.slice(0, 8)?.map((item, index) => (
-              <article
+              <Link
+              href={{
+                    pathname: "/menu-detail",
+                    query: { data: encodeURIComponent(JSON.stringify(item)) },
+                  }}
                 key={item?.id}
                 itemScope
                 itemType="https://schema.org/MenuItem"
                 data-aos="fade-down"
                 data-aos-duration="1000"
                 data-aos-delay={index * 72}
-                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition overflow-hidden border border-gray-100"
+                className="group relative cursor-pointer bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all flex h-44 overflow-hidden"
               >
-                {/* IMAGE */}
-                <div className="relative h-52 overflow-hidden">
-                  <Image
-                    src={IMAGE_BASE_URL + item?.image}
-                    alt={item?.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 25vw"
-                    className="object-cover group-hover:scale-110 transition duration-500"
-                    itemProp="image"
-                  />
-                  <Link
-                    href={{
-                      pathname: "/menu-detail",
-                      query: { data: encodeURIComponent(JSON.stringify(item)) },
-                    }}
+                {/* LEFT CONTENT AREA */}
+                <div className="flex-[1.5] p-4 flex flex-col justify-start">
+                  <h2
+                    itemProp="name"
+                    className="text-[17px] font-bold text-gray-800 leading-tight mb-1"
                   >
-                    <button
-                      aria-label={`Add ${item?.name} to cart`}
-                      className="absolute top-3 right-3 w-10 h-10 bg-amber-600 hover:bg-amber-700 text-white rounded-full flex items-center justify-center shadow-lg transition hover:scale-110"
-                    >
-                      <ShoppingCart className="w-5 h-5" />
-                    </button>
-                  </Link>
-                </div>
-
-                {/* CONTENT */}
-                <div className="p-5">
-                  <div className="flex justify-between items-center mb-2">
-                    <h2
-                      itemProp="name"
-                      className="text-lg font-bold text-gray-800"
-                    >
-                      {item?.name}
-                    </h2>
-
-                    {/* Foodpanda style rating */}
-                    {item?.average_rating !== 0 && (
-                      <div className="flex items-center gap-1 px-2 py-1 text-sm font-semibold text-gray-700">
-                        <svg
-                          className={`w-4 h-4 fill-current ${
-                            Number(item?.average_rating || 0) > 0
-                              ? "text-yellow-400"
-                              : "text-gray-300"
-                          }`}
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.756 4.635 1.122 6.545z" />
-                        </svg>
-                        <span>
-                          {Number(item?.average_rating || 0).toFixed(1)}
-                        </span>
-                      </div>
-                    )}
-                  </div>
+                    {item?.name}
+                  </h2>
 
                   <p
                     itemProp="description"
-                    className="text-sm text-gray-500 mb-4 line-clamp-2"
+                    className="text-[13px] text-gray-400 line-clamp-3 mb-2 leading-snug"
                   >
                     {item?.description}
                   </p>
 
-                  <Link
-                    href={{
-                      pathname: "/menu-detail",
-                      query: { data: encodeURIComponent(JSON.stringify(item)) },
-                    }}
-                  >
-                    <button className="w-full py-2 bg-gray-50 text-gray-800 text-sm font-semibold rounded-lg hover:bg-amber-600 hover:text-white transition-colors">
-                      View Details
-                    </button>
-                  </Link>
+                  <div className="mt-auto">
+                    <span className="text-lg font-medium text-gray-600">
+                      <span>
+                        Rs.
+                        {Number(item?.base_price ?? 0) % 1 === 0
+                          ? Number(item?.base_price ?? 0)
+                          : Number(item?.base_price ?? 0).toFixed(2)}
+                      </span>
+                    </span>
+                  </div>
                 </div>
-              </article>
+
+                {/* RIGHT IMAGE AREA */}
+                <div className="flex-1 relative flex items-center justify-center pr-4">
+                  <div className="relative w-28 h-28 rounded-full overflow-hidden">
+                    <Image
+                      src={IMAGE_BASE_URL + item?.image}
+                      alt={item?.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition duration-500"
+                      itemProp="image"
+                    />
+                  </div>
+                </div>
+
+                {/* PLUS ICON */}
+                <Link
+                  className="absolute bottom-3 right-3 z-10"
+                  href={{
+                    pathname: "/menu-detail",
+                    query: { data: encodeURIComponent(JSON.stringify(item)) },
+                  }}
+                >
+                  <button
+                    aria-label={`Add ${item?.name} to cart`}
+                    className="w-9 h-9 bg-[#d97706] hover:bg-[#945003] text-white rounded-full flex items-center justify-center shadow-lg transition-transform active:scale-95"
+                  >
+                    <Plus className="w-6 h-6 font-bold" />
+                  </button>
+                </Link>
+              </Link>
             ))}
           </div>
         ) : (

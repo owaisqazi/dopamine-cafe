@@ -24,7 +24,7 @@ const SkeletonLoader: React.FC<Props> = ({ type, count = 6 }) => {
     );
   }
 
-  if (type === "product" || type === "blog") {
+  if (type === "blog") {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {Array(count)
@@ -49,6 +49,37 @@ const SkeletonLoader: React.FC<Props> = ({ type, count = 6 }) => {
       </div>
     );
   }
+  if (type === "product") {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+      {Array(count)
+        .fill(0)
+        .map((_, i) => (
+          <div
+            key={i}
+            className="group relative bg-white rounded-xl border border-gray-200 shadow-sm flex h-44 overflow-hidden animate-pulse"
+          >
+            {/* LEFT CONTENT AREA */}
+            <div className="flex-[1.5] p-4 flex flex-col justify-start">
+              <div className="h-6 w-3/4 bg-gray-200 rounded mb-2"></div>
+              <div className="h-4 w-full bg-gray-200 rounded mb-1"></div>
+              <div className="h-4 w-full bg-gray-200 rounded mb-1"></div>
+              <div className="mt-auto h-6 w-16 bg-gray-200 rounded"></div>
+            </div>
+
+            {/* RIGHT IMAGE AREA */}
+            <div className="flex-1 relative flex items-center justify-center pr-4">
+              <div className="relative w-28 h-28 rounded-full bg-gray-200"></div>
+            </div>
+
+            {/* PLUS ICON PLACEHOLDER */}
+            <div className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-gray-200"></div>
+          </div>
+        ))}
+    </div>
+  );
+}
+
 
   if (type === "gallery") {
     return (

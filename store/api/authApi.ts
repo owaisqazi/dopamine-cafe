@@ -82,8 +82,7 @@
         }
         return `/user/product`;
       },
-    }),
-
+      }),
       getByHomeImage: builder.query<any, void>({
       query: () => `/user/image`,
       }),
@@ -106,6 +105,12 @@
       getRatingReviews: builder.query<any, void>({
         query: (id) => `/user/rating-review?user_id=${id}`,
       }),
+      getCity: builder.query({
+        query: (country) => `/user/cities?country=${country}`,
+      }),
+      getArea: builder.query({
+        query: (cityName) => `/user/areas?city=${cityName}`,
+      }),
     }),
   });
-  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery} = authApi;
+  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery} = authApi;

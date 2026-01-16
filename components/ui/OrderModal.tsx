@@ -1,8 +1,8 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Modal from "./Modal";
-import { useOrderMutation } from "@/store/api/authApi";
 import { useDispatch } from "react-redux";
 import { clearCart } from "@/store/cartSlice"; // Apna sahi path check karein
 import toast from "react-hot-toast";
@@ -48,7 +48,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [placeOrder, { isLoading }] = useOrderMutation();
+  const [isLoading, setIsLoading] = useState(false);
   const calculateDiscount = () => {
     if (!discountData) return 0;
     if (discountData?.type === "percentage") {
@@ -73,6 +73,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
   };
 
   const handleSubmit = async (values: typeof initialValues) => {
+    setIsLoading(true);
     const token = Cookies.get("token");
     const formData = new FormData();
 
@@ -86,29 +87,49 @@ const OrderModal: React.FC<OrderModalProps> = ({
     formData.append("discount", discountAmount.toString());
     formData.append("total_amount", safeFinalTotal.toString());
 
-    cartItems.forEach((item, index) => {
-      formData.append(`products[${index}][product_id]`, item.id.toString());
-      formData.append(`products[${index}][quantity]`, item.quantity.toString());
-      formData.append(`products[${index}][price]`, item.price.toString());
+    cartItems.forEach((item, itemIndex) => {
+      formData.append(`products[${itemIndex}][product_id]`, item.id.toString());
       formData.append(
-        `products[${index}][total_price]`,
+        `products[${itemIndex}][quantity]`,
+        item.quantity.toString()
+      );
+      formData.append(`products[${itemIndex}][price]`, item.price.toString());
+      formData.append(
+        `products[${itemIndex}][description]`,
+        item.description || ""
+      );
+      formData.append(
+        `products[${itemIndex}][total_price]`,
         (item.price * item.quantity).toString()
       );
+      item.options?.forEach((opt: any, optIndex: number) => {
+        formData.append(
+          `products[${itemIndex}][options][${optIndex}]`,
+          opt.id.toString()
+        );
+      });
     });
 
     try {
-      const res = await axiosInstance.post(token ? "/user/user/order" : "/user/order", formData, {
-        responseType: "text",
-      });
+      const res = await axiosInstance.post(
+        token ? "/user/user/order" : "/user/order",
+        formData,
+        {
+          responseType: "text",
+        }
+      );
       const win = window.open("", "_self");
       win?.document.open();
       win?.document.write(res.data);
       win?.document.close();
+      setIsLoading(false);
     } catch (err: any) {
       console.error("Payment Error", err);
+      setIsLoading(false);
       toast.error("Payment gateway open nahi ho saka");
     }
   };
+  console.log("Payment cartItems", cartItems);
 
   return (
     <>
@@ -312,38 +333,34 @@ const OrderModal: React.FC<OrderModalProps> = ({
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className={`mt-6 w-full py-3.5 text-white rounded-xl font-bold uppercase shadow-md transition-all active:scale-95 flex justify-center items-center ${
+                    className={`mt-6 w-full py-3.5 text-white rounded-xl font-bold uppercase shadow-md transition-all flex justify-center items-center gap-2 ${
                       isLoading
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-amber-500 hover:bg-amber-600"
                     }`}
                   >
-                    {isLoading ? (
-                      <>
-                        <svg
-                          className="animate-spin h-5 w-5 mr-2 text-white"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                            fill="none"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Processing...
-                      </>
-                    ) : (
-                      "Place Order"
+                    {isLoading && (
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
                     )}
+                    {isLoading ? "Processing..." : "Place Order"}
                   </button>
                 </div>
               </Form>
