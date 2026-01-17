@@ -78,7 +78,7 @@ export default function ThreeDImageGallery({ images, alt, gl_file }: Props) {
 
   if (isGlbLoading) {
     return (
-      <div className="relative h-[450px] w-full flex flex-col items-center justify-center gap-2 rounded-2xl border bg-gray-100 animate-pulse">
+      <div className="relative h-[500px] w-full flex flex-col items-center justify-center gap-2 rounded-2xl border bg-gray-100 animate-pulse">
         <span className="text-sm text-gray-500">Loading...</span>
       </div>
     );
@@ -95,14 +95,14 @@ export default function ThreeDImageGallery({ images, alt, gl_file }: Props) {
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
         modules={[FreeMode, Thumbs]}
-        className="sm:h-80 md:h-[450px] w-full rounded-2xl border bg-white overflow-hidden shadow-sm"
+        className="sm:h-80 h-[400px] md:h-[520px] w-full rounded-2xl border bg-white overflow-hidden shadow-sm"
       >
         {allSlides.map((slide, i) => (
           <SwiperSlide key={i}>
             {slide.type === "3d" ? (
               <ThreeDModel glbUrl={slide.src} fallback={FALLBACK_IMAGE} />
             ) : (
-              <div className="relative w-full h-full min-h-[320px]">
+              <div className="relative w-full h-full min-h-[410px]">
                 <Image
                   src={slide.src}
                   alt={alt}

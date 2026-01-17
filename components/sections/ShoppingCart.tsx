@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -23,18 +24,11 @@ interface User {
 
 interface CartItemProps {
   item: CartItem | any;
-  handleQuantity?: (item: CartItem, type: "inc" | "dec") => void;
+  handleQuantity?: (item: CartItem, type: "inc" | "dec" | "remove") => void;
   readOnly?: boolean;
-  isUnpaid?: boolean;
 }
 
-function CartItemCard({
-  item,
-  handleQuantity,
-  readOnly,
-  isUnpaid,
-}: CartItemProps) {
-  console.log(item, "unpaid===?");
+function CartItemCard({ item, handleQuantity, readOnly }: CartItemProps) {
   return (
     <article className="grid grid-cols-1 sm:grid-cols-12 gap-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition">
       {/* LEFT: Image */}
@@ -51,8 +45,19 @@ function CartItemCard({
         <h3 className="font-bold text-gray-800 text-lg">
           {item?.name || item?.product?.name}
         </h3>
-        <p className="text-amber-600 font-semibold mt-1">
+        {/* <p className="text-amber-600 font-semibold mt-1">
           Rs.{(item?.price * item?.quantity).toFixed(2)}
+        </p> */}
+        <p className="text-amber-600 font-semibold mt-1">
+          Rs.
+          {(
+            item?.price * item?.quantity +
+            (item?.options?.reduce(
+              (sum: number, opt: any) =>
+                sum + Number(opt.price_modifier) * item.quantity,
+              0,
+            ) || 0)
+          ).toFixed(2)}
         </p>
       </div>
 
@@ -75,7 +80,6 @@ function CartItemCard({
             </button>
           </div>
           <button
-            //@ts-ignore
             onClick={() => handleQuantity(item, "remove")}
             className="text-red-500 hover:text-red-600 flex items-center gap-1"
           >
@@ -101,12 +105,25 @@ function CartItemCard({
             >
               <span>{opt.name}</span>
               <span className="font-semibold">
-                Rs.{Number(opt.price_modifier)}
+                Rs.{(Number(opt.price_modifier) * item.quantity).toFixed(2)}{" "}
               </span>
             </div>
           ))}
         </div>
       )}
+      <div className="col-span-12">
+        <h2>
+          Total product Rs.
+          {(
+            item?.price * item?.quantity +
+            (item?.options?.reduce(
+              (sum: number, opt: any) =>
+                sum + Number(opt.price_modifier) * item.quantity,
+              0,
+            ) || 0)
+          ).toFixed(2)}
+        </h2>
+      </div>
     </article>
   );
 }
@@ -116,7 +133,7 @@ export default function ShoppingCartTabs() {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [user, setUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState<"cart" | "unpaid" | "paid">(
-    "cart"
+    "cart",
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [promoCode, setPromoCode] = useState("");
@@ -128,7 +145,7 @@ export default function ShoppingCartTabs() {
   const [applyPromo, { isLoading: promoLoading }] = useApplyPromoMutation();
   const { data: orderData, isLoading: orderLoading } = useGetByOrderQuery(
     user?.id || "",
-    { skip: !user?.id }
+    { skip: !user?.id },
   );
 
   // Get user from cookie
@@ -137,62 +154,97 @@ export default function ShoppingCartTabs() {
     if (userStr) setUser(JSON.parse(userStr));
   }, []);
 
-  // Load unpaid orders into cart
   useEffect(() => {
-    if (!orderData?.unpaid_orders || activeTab !== "cart") return;
-    orderData.unpaid_orders.forEach((order: any) => {
-      order?.items?.forEach((item: any) => {
-        const exists = cartItems.find((i) => String(i.id) === String(item.id));
-        if (!exists) {
-          dispatch(
-            addToCart({
-              id: item.id,
-              name: item?.product?.name || item?.name || order?.name,
-              image: item?.product?.image || item?.image,
-              description:
-                item?.description || item?.product?.description || "",
-              price: Number(item.price),
-              quantity: Number(item.quantity),
-              options: item.options || [],
-            })
-          );
+    if (!orderData) return;
+
+    const unpaidIds =
+      orderData.unpaid_orders?.flatMap((order: any) =>
+        order?.items?.map((item: any) => item.id),
+      ) || [];
+
+    if (activeTab === "cart") {
+      // Remove unpaid items from cart
+      cartItems.forEach((item) => {
+        if (unpaidIds.includes(item.id)) {
+          dispatch(removeFromCart(item.id));
         }
       });
-    });
-  }, [orderData, activeTab]);
-
+    } else if (activeTab === "unpaid") {
+      // Add unpaid items to cart for easy quantity management
+      orderData.unpaid_orders.forEach((order: any) => {
+        order?.items?.forEach((item: any) => {
+          const exists = cartItems.find(
+            (i) => String(i.id) === String(item.id),
+          );
+          if (!exists) {
+            dispatch(
+              addToCart({
+                id: item.id,
+                name: item?.product?.name || item?.name || order?.name,
+                image: item?.product?.image || item?.image,
+                description:
+                  item?.description || item?.product?.description || "",
+                price: Number(item.price),
+                quantity: Number(item.quantity),
+                options: item.options || [],
+              }),
+            );
+          }
+        });
+      });
+    }
+  }, [activeTab, orderData]);
   // Split cart items
   const unpaidProductIds = useMemo(() => {
     if (!orderData?.unpaid_orders) return [];
     return orderData.unpaid_orders.flatMap((order: any) =>
-      order?.items?.map((item: any) => item.id)
+      order?.items?.map((item: any) => item.id),
     );
   }, [orderData]);
 
   const unpaidCartItems = useMemo(
     () => cartItems.filter((item) => unpaidProductIds.includes(item?.id)),
-    [cartItems, unpaidProductIds]
+    [cartItems, unpaidProductIds],
   );
 
   const normalCartItems = useMemo(
     () => cartItems.filter((item) => !unpaidProductIds.includes(item?.id)),
-    [cartItems, unpaidProductIds]
+    [cartItems, unpaidProductIds],
   );
 
-  // Price calculations
+const activeCartItems = useMemo(() => {
+  if (activeTab === "cart") return cartItems.filter(item => !unpaidProductIds.includes(item.id));
+  if (activeTab === "unpaid") return cartItems.filter(item => unpaidProductIds.includes(item.id));
+  if (activeTab === "paid") return orderData?.paid_orders?.flatMap((order: any) =>
+    order?.products.map((product: any) => {
+      const item = order?.items.find((i: any) => i.product_id === product?.id);
+      return {
+        ...product,
+        quantity: item?.quantity || 1,
+        price: Number(item?.price || product?.base_price),
+        options: item?.options || [],
+      };
+    })
+  ) || [];
+  return [];
+}, [activeTab, cartItems, unpaidProductIds, orderData]);
+
   const subtotal = useMemo(
     () =>
-      cartItems.reduce((acc, item) => {
-        const optionsTotal = item?.options?.reduce(
-          (sum: number, opt: any) => sum + Number(opt.price_modifier),
-          0
-        );
-        return acc + item?.price * item?.quantity + optionsTotal;
+      activeCartItems.reduce((acc: number, item: any) => {
+        const optionsTotal =
+          item?.options?.reduce(
+            (sum: number, opt: any) =>
+              sum + Number(opt.price_modifier) * item.quantity,
+            0,
+          ) || 0;
+        return acc + item.price * item.quantity + optionsTotal;
       }, 0),
-    [cartItems]
+    [activeCartItems],
   );
 
   const delivery = subtotal > 0 ? 200 : 0;
+
   const discount = useMemo(() => {
     if (!discountData) return 0;
     return discountData.type === "percentage"
@@ -265,7 +317,6 @@ export default function ShoppingCartTabs() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* LEFT: Items */}
           <section className="lg:col-span-2 space-y-6">
-            {/* Cart */}
             {activeTab === "cart" &&
               (normalCartItems.length > 0 ? (
                 normalCartItems.map((item) => (
@@ -279,18 +330,16 @@ export default function ShoppingCartTabs() {
                 <p className="text-gray-400 italic">Your cart is empty</p>
               ))}
 
-            {/* Unpaid Orders */}
             {activeTab === "unpaid" &&
               (orderData?.unpaid_orders?.length > 0 ? (
                 orderData.unpaid_orders.map((order: any) => (
                   <div key={order?.id} className="space-y-4">
                     <h2 className="text-amber-600 font-bold text-xl mb-4">
-                      Order Number:{order?.order_number}
+                      Order Number: {order?.order_number}
                     </h2>
                     {order?.products.map((product: any) => {
-                      // Find the matching item to get options
                       const item = order?.items.find(
-                        (i: any) => i.product_id === product?.id
+                        (i: any) => i.product_id === product?.id,
                       );
                       return (
                         <CartItemCard
@@ -311,17 +360,16 @@ export default function ShoppingCartTabs() {
                 <p className="text-gray-400 italic">No unpaid orders</p>
               ))}
 
-            {/* Paid Orders */}
             {activeTab === "paid" &&
               (orderData?.paid_orders?.length > 0 ? (
                 orderData.paid_orders.map((order: any) => (
                   <div key={order?.id} className="space-y-4">
                     <h2 className="text-green-600 font-bold text-xl mb-4">
-                      Paid Order Number:{order?.order_number}
+                      Paid Order Number: {order?.order_number}
                     </h2>
                     {order?.products.map((product: any) => {
                       const item = order?.items.find(
-                        (i: any) => i?.product_id === product?.id
+                        (i: any) => i?.product_id === product?.id,
                       );
                       return (
                         <CartItemCard
@@ -397,9 +445,10 @@ export default function ShoppingCartTabs() {
         <OrderModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          cartItems={cartItems}
+          cartItems={activeCartItems}
           totalPrice={subtotal}
           finalTotal={finalTotal}
+          delivery={delivery}
           discountData={discountData}
           branch={branch}
         />

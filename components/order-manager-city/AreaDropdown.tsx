@@ -1,5 +1,4 @@
-import { ChevronDown, Loader2 } from "lucide-react";
-import { useState } from "react";
+import Select from "react-select";
 
 interface Area {
   _id?: string;
@@ -22,57 +21,51 @@ const AreaDropdown = ({
   loading = false,
   accentColor,
 }: AreaDropdownProps) => {
-  const [open, setOpen] = useState(false);
+  const selectOptions = options.map((item) => ({
+    value: item.area,
+    label: item.area,
+  }));
+
+  const selectedOption =
+    selectOptions.find((opt) => opt.value === value) || null;
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      {/* Selected */}
-      <button
-        type="button"
-        className="w-full flex items-center justify-between px-4 py-4 border-2 rounded-lg bg-white font-semibold"
-        style={{ borderColor: accentColor }}
-        onClick={() => setOpen((p) => !p)}
-      >
-        <span className={value ? "text-gray-900" : "text-gray-400"}>
-          {loading ? "Fetching Areas..." : value || "Please select your area"}
-        </span>
-
-        {loading ? (
-          <Loader2 size={18} className="animate-spin" color={accentColor} />
-        ) : (
-          <ChevronDown size={18} color={accentColor} />
-        )}
-      </button>
-
-      {/* Dropdown */}
-      {open && !loading && options.length > 0 && (
-        <ul className="absolute left-0 right-0 mt-0 bg-white border rounded-lg shadow-xl z-30 h-[90px] overflow-y-auto">
-          {options?.map((item) => (
-            <li
-              key={item?._id || item?.id}
-              onClick={() => {
-                onChange(item?.area || "");
-                setOpen(false);
-              }}
-              className="px-4 py-2 text-start text-sm leading-tight cursor-pointer hover:bg-amber-50 hover:text-amber-600 transition"
-            >
-              {item?.area}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {/* Empty */}
-      {open && !loading && options.length === 0 && (
-        <div className="absolute left-0 right-0 mt-2 bg-white border rounded-lg p-4 text-sm text-gray-400 shadow">
-          No areas available
-        </div>
-      )}
-    </div>
+    <Select
+      value={selectedOption}
+      onChange={(opt) => onChange(opt ? opt.value : "")}
+      options={selectOptions}
+      isLoading={loading}
+      isSearchable
+      placeholder="Please select your area"
+      className="text-left"
+      styles={{
+        control: (base, state) => ({
+          ...base,
+          minHeight: "56px",
+          borderRadius: "12px",
+          borderColor: accentColor,
+          boxShadow: state.isFocused ? `0 0 0 1px ${accentColor}` : "none",
+          "&:hover": {
+            borderColor: accentColor,
+          },
+        }),
+        option: (base, state) => ({
+          ...base,
+          backgroundColor: state.isFocused ? "#FEF3C7" : "white",
+          color: state.isFocused ? accentColor : "#111827",
+          cursor: "pointer",
+        }),
+        singleValue: (base) => ({
+          ...base,
+          fontWeight: 600,
+        }),
+        placeholder: (base) => ({
+          ...base,
+          color: "#9CA3AF",
+          fontWeight: 500,
+        }),
+      }}
+    />
   );
 };
 

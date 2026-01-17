@@ -18,6 +18,7 @@ interface OrderModalProps {
   cartItems: any[];
   totalPrice: number;
   finalTotal: number;
+  delivery: number;
   discountData: any;
   branch: any;
 }
@@ -43,6 +44,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
   cartItems,
   totalPrice,
   finalTotal,
+  delivery,
   discountData,
   branch,
 }) => {
@@ -66,8 +68,8 @@ const OrderModal: React.FC<OrderModalProps> = ({
     phone: "",
     address: "",
     notes: "",
-    payment_method: "cash",
-    order_type: "pickup",
+    payment_method: "cash on delivery",
+    order_type: "delivery",
     branch_id: branch?.id || "1",
     promo_code_id: discountData?.id || "",
   };
@@ -76,7 +78,6 @@ const OrderModal: React.FC<OrderModalProps> = ({
     setIsLoading(true);
     const token = Cookies.get("token");
     const formData = new FormData();
-
     Object.entries(values).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, value.toString());
@@ -91,23 +92,27 @@ const OrderModal: React.FC<OrderModalProps> = ({
       formData.append(`products[${itemIndex}][product_id]`, item.id.toString());
       formData.append(
         `products[${itemIndex}][quantity]`,
-        item.quantity.toString()
+        item.quantity.toString(),
       );
       formData.append(`products[${itemIndex}][price]`, item.price.toString());
       formData.append(
         `products[${itemIndex}][description]`,
-        item.description || ""
+        item.description || "",
       );
       formData.append(
         `products[${itemIndex}][total_price]`,
-        (item.price * item.quantity).toString()
+        (item.price * item.quantity).toString(),
       );
-      item.options?.forEach((opt: any, optIndex: number) => {
-        formData.append(
-          `products[${itemIndex}][options][${optIndex}]`,
-          opt.id.toString()
-        );
-      });
+
+      const options = item?.options || [];
+      if (options.length > 0) {
+        options.forEach((opt: any, optIndex: number) => {
+          formData.append(
+            `products[${itemIndex}][options][${optIndex}]`,
+            opt.id.toString(),
+          );
+        });
+      }
     });
 
     try {
@@ -115,13 +120,23 @@ const OrderModal: React.FC<OrderModalProps> = ({
         token ? "/user/user/order" : "/user/order",
         formData,
         {
-          responseType: "text",
-        }
+          responseType: "json",
+        },
       );
-      const win = window.open("", "_self");
-      win?.document.open();
-      win?.document.write(res.data);
-      win?.document.close();
+      console.log(res,'forms---->')
+      if (res.data?.order?.payment_method === "cash on delivery") {
+        toast.success(res.data.message || "Order successfully submitted! 🎉");
+        dispatch(clearCart());
+        router.push("/");
+      } else {
+        const win = window.open("", "_self");
+        win?.document.open();
+        win?.document.write(res.data);
+        win?.document.close();
+        dispatch(clearCart());
+      }
+
+      setIsModalOpen(false);
       setIsLoading(false);
     } catch (err: any) {
       console.error("Payment Error", err);
@@ -129,6 +144,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
       toast.error("Payment gateway open nahi ho saka");
     }
   };
+
   console.log("Payment cartItems", cartItems);
 
   return (
@@ -234,9 +250,10 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       <Field
                         as="select"
                         name="order_type"
-                        className="w-full border rounded-lg p-2.5 mt-1 focus:ring-2 focus:ring-amber-500 outline-none bg-white"
+                        disabled
+                        className="w-full px-2 border rounded-lg py-3.5 mt-1 focus:ring-2 focus:ring-amber-500 outline-none bg-white"
                       >
-                        <option value="pickup">Pickup</option>
+                        {/* <option value="pickup">Pickup</option> */}
                         <option value="delivery">Delivery</option>
                       </Field>
                     </div>
@@ -274,10 +291,10 @@ const OrderModal: React.FC<OrderModalProps> = ({
                         name="payment_method"
                         className="w-full border rounded-lg p-2.5 mt-1 focus:ring-2 focus:ring-amber-500 outline-none bg-white"
                       >
-                        <option value="cash">Cash</option>
-                        <option value="stripe">Stripe</option>
-                        <option value="easypaisa">EasyPaisa</option>
-                        <option value="jazzcash">JazzCash</option>
+                        <option value="cash on delivery">
+                          Cash On Delivery
+                        </option>
+                        <option value="online">Online</option>
                       </Field>
                     </div>
                     <div>
@@ -306,10 +323,10 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       >
                         <span className="text-gray-700">
                           {item.name}{" "}
-                          <b className="text-gray-400">x{item.quantity}</b>
+                          <b className="text-gray-400">Qty {item.quantity}</b>
                         </span>
                         <span className="font-semibold">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          Rs.{(item.price * item.quantity).toFixed(2)}
                         </span>
                       </div>
                     ))}
@@ -318,15 +335,21 @@ const OrderModal: React.FC<OrderModalProps> = ({
                   <div className="border-t pt-4 space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
-                      <span>${totalPrice?.toFixed(2)}</span>
+                      <span>Rs.{totalPrice?.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-red-500">
-                      <span>Discount</span>
-                      <span>-${discountAmount.toFixed(2)}</span>
+                    {discountAmount !== 0 && (
+                      <div className="flex justify-between text-green-500">
+                        <span>Discount</span>
+                        <span>Rs.{discountAmount.toFixed(2)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span>Delivery</span>
+                      <span>Rs.{delivery.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between font-bold text-lg pt-2 border-t mt-2">
                       <span>Total</span>
-                      <span>${safeFinalTotal?.toFixed(2)}</span>
+                      <span>Rs.{finalTotal?.toFixed(2)}</span>
                     </div>
                   </div>
 

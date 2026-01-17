@@ -21,8 +21,11 @@ interface MenuItem {
   image: string;
   images: string[] | string;
   average_rating: string | number;
+  rating: string | number;
   base_price: string;
   branch_price: number;
+  reviews: any[] | string;
+  created_at: string;
   gl_file?: string;
   options: {
     id: number;
@@ -72,7 +75,7 @@ export default function Detail() {
     setSelectedOptions((prev) =>
       prev.includes(optionId)
         ? prev.filter((id) => id !== optionId)
-        : [...prev, optionId]
+        : [...prev, optionId],
     );
   };
 
@@ -86,30 +89,29 @@ export default function Detail() {
     return (base + optionsTotal) * quantity;
   }, [item, selectedOptions, quantity]);
 
-const handleAddToCart = () => {
-  if (!item) return;
+  const handleAddToCart = () => {
+    if (!item) return;
 
-  dispatch(
-    addToCart({
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      image: parsedImages[0] || item.image,
-      price: totalPrice,
-      quantity,
-      options: item?.options
-        ?.filter((o) => selectedOptions?.includes(o.id))
-        .map((o) => ({
-          id: o.id,
-          name: o.name,
-          price_modifier: Number(o.price_modifier),
-        })),
-    })
-  );
+    dispatch(
+      addToCart({
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        image: parsedImages[0] || item.image,
+        price: Number(item.branch_price || item.base_price),
+        quantity,
+        options: item?.options
+          ?.filter((o) => selectedOptions?.includes(o.id))
+          .map((o) => ({
+            id: o.id,
+            name: o.name,
+            price_modifier: Number(o.price_modifier),
+          })),
+      }),
+    );
 
-  toast.success(`${item.name} added to cart! 🎉`);
-};
-
+    toast.success(`${item.name} added to cart! 🎉`);
+  };
 
   const handleRatingSubmit = async () => {
     if (!item) return;
@@ -135,13 +137,15 @@ const handleAddToCart = () => {
       toast.error(error?.data?.message || "Something went wrong");
     }
   };
-
+  const avgRating = Number(item?.average_rating || 0);
+  const ratingPercent = Math.min((avgRating / 5) * 100, 100);
+  const reviewsArray = Array.isArray(item?.reviews) ? item?.reviews : [];
   return (
     <>
-      <section className="min-h-screen bg-[#ffffff] px-4 md:px-6 py-12 md:py-24">
+      <section className="min-h-screen bg-[#ffffff] px-4 md:px-6 py-12 md:py-16">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20">
           {/* IMAGE / GALLERY */}
-          <div className="w-full">
+          <div className="w-full col-span-2 md:col-span-1">
             <ThreeDImageGallery
               images={parsedImages}
               alt={item.name}
@@ -150,44 +154,22 @@ const handleAddToCart = () => {
           </div>
 
           {/* CONTENT */}
-          <div className="w-full bg-white rounded-3xl p-6 md:p-10 shadow-md hover:shadow-2xl">
-            <div className="h-[270px] overflow-y-auto">
-              <span className="inline-block mb-4 text-xs font-semibold tracking-widest uppercase bg-amber-50 text-amber-700 px-4 py-1 rounded-full">
+          <div className="w-full bg-white col-span-2 md:col-span-1 rounded-3xl p-6 md:p-6 shadow-md hover:shadow-2xl">
+            <div className="h-[370px] overflow-y-auto">
+              <span className="inline-block mb-1 text-xs font-semibold tracking-widest uppercase bg-amber-50 text-amber-700 px-4 py-1 rounded-full">
                 Signature Item
               </span>
-              {/* STAR RATING CLICKABLE */}
-              <div
-                className="flex justify-start gap-3 mb-5 cursor-pointer items-center"
-                onClick={() => setIsRatingOpen(true)}
-              >
-                {Array.from({ length: 5 }, (_, i) => {
-                  const avg = Number(item.average_rating || 0);
-                  return (
-                    <svg
-                      key={i}
-                      className={`w-5 h-5 fill-current transition transform hover:scale-110 ${
-                        i < avg ? "text-yellow-400" : "text-gray-300"
-                      }`}
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.756 4.635 1.122 6.545z" />
-                    </svg>
-                  );
-                })}
-                <span className="ml-2 text-sm text-gray-500">Review</span>
-              </div>
-
-              <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-4 md:mb-6">
+              <h1 className="text-2xl md:text-2xl font-extrabold text-gray-900">
                 {item.name}
               </h1>
 
-              <p className="text-gray-600 text-sm md:text-lg mb-8 leading-relaxed">
+              <p className="text-gray-600 text-sm md:text-lg leading-relaxed">
                 {item.description}
               </p>
 
               {/* OPTIONS */}
               {Array.isArray(item.options) && item.options.length > 0 && (
-                <div className="mb-6">
+                <div className="mb-2">
                   <h3 className="font-bold text-gray-800 mb-3">Extras</h3>
                   <div className="flex flex-col gap-2">
                     {item?.options?.map((opt) => (
@@ -216,7 +198,7 @@ const handleAddToCart = () => {
                 value={customDescription}
                 onChange={(e) => setCustomDescription(e.target.value)}
                 placeholder="Add special instructions..."
-                className="mt-3 w-full border rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full border rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
                 rows={3}
               />
             </div>
@@ -251,12 +233,68 @@ const handleAddToCart = () => {
               onClick={handleAddToCart}
               className="w-full py-3 md:py-5 bg-black text-white text-sm md:text-base font-semibold uppercase tracking-widest rounded-2xl hover:bg-amber-600 transition-all"
             >
-              Add to Cart - ${totalPrice}
+              Add to Cart - Rs.{totalPrice}
             </button>
 
             <p className="text-xs text-gray-400 text-center mt-6">
               Freshly prepared • Best quality guaranteed
             </p>
+          </div>
+          <div className="col-span-2">
+            {/* Progress Bar */}
+            <div className="flex items-center gap-2 mb-6">
+              <div className="flex items-center">
+                {Array.from({ length: 5 }).map((_, index) => {
+                  const filled = index < Math.round(avgRating);
+                  return (
+                    <svg
+                      key={index}
+                      className={`w-5 h-5 transition-transform ${
+                        filled ? "text-yellow-400" : "text-gray-300"
+                      }`}
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.562-.955L10 0l2.95 5.955 6.562.955-4.756 4.635 1.122 6.545z" />
+                    </svg>
+                  );
+                })}
+              </div>
+
+              <span className="text-sm font-semibold text-gray-700">
+                ({ratingPercent?.toFixed(0)}%)
+              </span>
+            </div>
+
+            {/* Reviews (same as before) */}
+            <div className="space-y-4">
+              {reviewsArray?.length > 0 ? (
+                reviewsArray?.map((review: any, index: number) => (
+                  <div
+                    key={review?.id || index}
+                    className="bg-white border rounded-xl p-4 shadow-sm"
+                  >
+                    <div className="flex justify-between items-center mb-2">
+                      <p className="text-xs text-gray-400">
+                        {new Date(review?.created_at).toLocaleDateString()}
+                      </p>
+
+                      <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 font-semibold">
+                        {review?.rating} ★
+                      </span>
+                    </div>
+
+                    <p className="text-gray-700 text-sm">
+                      {review?.review || "No review provided."}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <div className="text-sm text-gray-400 text-center">
+                  No reviews available
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>

@@ -46,7 +46,7 @@ export default function ThreeDModel({
   }
 
   return (
-    <div className="relative w-full h-[500px] rounded-xl bg-gray-200 shadow-inner">
+    <div className="relative w-full h-[400px] md:h-[520px] rounded-xl bg-gray-200 shadow-inner">
       <Canvas
         camera={{ position: [0, 0, 5], fov: 45 }}
         onPointerDown={onDragStart}
@@ -60,7 +60,7 @@ export default function ThreeDModel({
           <Model url={glbUrl} onError={() => setError(true)} />
         </Suspense>
 
-        <OrbitControls enableZoom minDistance={2} maxDistance={100} />
+        <OrbitControls enableZoom minDistance={1} maxDistance={200} />
       </Canvas>
     </div>
   );

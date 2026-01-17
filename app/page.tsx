@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 //@ts-ignore
 import Cookies from "js-cookie";
@@ -14,43 +15,59 @@ import ReviewTestimonials from "@/components/sections/ReviewTestimonials";
 import Modal from "@/components/ui/Modal";
 import OrderTypeContent from "@/components/order-manager-city/OrderTypeContent";
 
-export default function Home() {
+export default function HomePage() {
   const [showLocationModal, setShowLocationModal] = useState(false);
+  const [cookieModalOpen, setCookieModalOpen] = useState(false);
 
   useEffect(() => {
     const locationCookie = Cookies.get("user_location");
-    const sessionActive = sessionStorage.getItem("location_session");
-    if (!locationCookie || !sessionActive) {
+    const locationSession = sessionStorage.getItem("location_session");
+
+    if (!locationCookie && !locationSession) {
       setShowLocationModal(true);
-    } else {
-      setShowLocationModal(false);
+    }
+    const cookieSession = sessionStorage.getItem("cookie_modal_closed");
+    if (!cookieSession) {
+      setCookieModalOpen(true);
     }
   }, []);
 
+  const handleCloseLocationModal = () => {
+    setShowLocationModal(false);
+    sessionStorage.setItem("location_session", "true");
+  };
+
+  const handleCloseCookieModal = () => {
+    setCookieModalOpen(false);
+    sessionStorage.setItem("cookie_modal_closed", "true");
+  };
   return (
     <main className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
+      {/* Location Modal */}
       <Modal
         isOpen={showLocationModal}
-        onClose={() => setShowLocationModal(false)}
+        onClose={handleCloseLocationModal}
         maxWidth="max-w-xl"
       >
-        {[
-          <OrderTypeContent
-            key="location"
-            onClose={() => setShowLocationModal(false)}
-          />
-        ]}
+        <OrderTypeContent onClose={handleCloseLocationModal} />
       </Modal>
-      <>
-        <Navbar />
-        <Hero />
-        <HomeManu />
-        <Gallery />
-        <HomeAbout />
-        <ReviewTestimonials />
-        <Toaster position="top-right" />
-        {!showLocationModal && <Footer />}
-      </>
+
+      {/* Navbar */}
+      <Navbar onLocationClick={() => setShowLocationModal(true)} />
+
+      {/* Main Sections */}
+      <Hero />
+      <HomeManu />
+      <Gallery />
+      <HomeAbout />
+      <ReviewTestimonials />
+      <Toaster position="top-right" />
+
+      {/* Footer with cookie modal */}
+      <Footer
+        cookieModalOpen={cookieModalOpen}
+        onCloseCookieModal={handleCloseCookieModal}
+      />
     </main>
   );
 }

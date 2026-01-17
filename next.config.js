@@ -10,6 +10,8 @@ const nextConfig = {
     config.cache = false;
     return config;
   },
+  // Ye line build folder ka naam change karegi
+  distDir: 'build',
 };
 
 module.exports = nextConfig;

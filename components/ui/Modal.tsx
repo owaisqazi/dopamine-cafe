@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  children: ReactNode[];
+  children: ReactNode[]|ReactNode;
   maxWidth?: string;
 }
 export default function Modal({ isOpen, onClose, children, maxWidth = "max-w-5xl" }: ModalProps) {

@@ -4,28 +4,45 @@ import { useEffect, useState } from "react";
 import { Heart, Facebook, Instagram, Twitter, Cookie } from "lucide-react";
 import Image from "next/image";
 import CookieModal from "../ui/cookieModalOpen";
-import { usePathname } from "next/navigation";
 import { useNewsletterMutation } from "@/store/api/authApi";
 import { toast } from "react-hot-toast";
-interface NewsletterData {
-  email: string;
+
+// ✅ Footer accepts props to control cookie modal externally if needed
+interface FooterProps {
+  cookieModalOpen?: boolean; // optional, if controlled externally
+  onCloseCookieModal?: () => void; // optional callback
 }
 
-export default function Footer() {
-  const pathname = usePathname();
+export default function Footer({
+  cookieModalOpen: externalCookieOpen,
+  onCloseCookieModal: externalOnClose,
+}: FooterProps) {
   const [cookieModalOpen, setCookieModalOpen] = useState(false);
-
-  // 🔥 Newsletter
-  const [newsletter, { isLoading }] = useNewsletterMutation();
   const [email, setEmail] = useState<string>("");
 
+  const [newsletter, { isLoading }] = useNewsletterMutation();
+
   useEffect(() => {
-    if (pathname === "/") {
-      setCookieModalOpen(true);
-    } else {
-      setCookieModalOpen(false);
+    // If parent controls modal, use external value
+    if (externalCookieOpen !== undefined) {
+      setCookieModalOpen(externalCookieOpen);
+      return;
     }
-  }, [pathname]);
+
+    // Show modal only once per session
+    const cookieClosed = sessionStorage.getItem("cookieClosed");
+    if (!cookieClosed) {
+      setCookieModalOpen(true);
+    }
+  }, [externalCookieOpen]);
+
+  const handleCloseCookieModal = () => {
+    setCookieModalOpen(false);
+    sessionStorage.setItem("cookieClosed", "true");
+
+    // Call external handler if provided
+    if (externalOnClose) externalOnClose();
+  };
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +86,7 @@ export default function Footer() {
               {/* Links */}
               <div className="flex gap-6 text-gray-300 font-medium">
                 <a href="/gallery" className="hover:text-amber-500 transition">
-                  home
+                  Home
                 </a>
                 <a href="/gallery" className="hover:text-amber-500 transition">
                   Gallery
@@ -86,31 +103,16 @@ export default function Footer() {
               </div>
 
               {/* Social Icons */}
-              <div className="flex gap-4">
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-amber-500 transition"
-                >
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-amber-500 transition"
-                >
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-amber-500 transition"
-                >
-                  <Twitter className="w-5 h-5" />
-                </a>
+              <div className="flex gap-4 mt-2">
+                <Facebook className="w-5 h-5 text-gray-400 hover:text-amber-500 transition" />
+                <Instagram className="w-5 h-5 text-gray-400 hover:text-amber-500 transition" />
+                <Twitter className="w-5 h-5 text-gray-400 hover:text-amber-500 transition" />
               </div>
 
-              {/* 🔥 Newsletter */}
+              {/* Newsletter */}
               <form
                 onSubmit={handleNewsletterSubmit}
-                className="flex flex-col sm:flex-row items-center gap-3 w-full"
+                className="flex flex-col sm:flex-row items-center gap-3 w-full mt-2"
               >
                 <input
                   type="email"
@@ -140,7 +142,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Cookie Icon Button */}
+          {/* Cookie Button */}
           <button
             onClick={() => setCookieModalOpen(true)}
             className="fixed bottom-6 left-6 bg-amber-600 hover:bg-amber-700 p-3 rounded-full shadow-lg text-white transition transform hover:scale-110 z-50"
@@ -152,10 +154,11 @@ export default function Footer() {
         </div>
       </footer>
 
+      {/* Cookie Modal */}
       {cookieModalOpen && (
         <CookieModal
           isOpen={cookieModalOpen}
-          onClose={() => setCookieModalOpen(false)}
+          onClose={handleCloseCookieModal}
         />
       )}
     </>
