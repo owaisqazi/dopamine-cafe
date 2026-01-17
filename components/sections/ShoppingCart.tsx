@@ -201,7 +201,7 @@ export default function ShoppingCartTabs() {
       order?.items?.map((item: any) => item.id),
     );
   }, [orderData]);
-
+//@ts-ignore
   const unpaidCartItems = useMemo(
     () => cartItems.filter((item) => unpaidProductIds.includes(item?.id)),
     [cartItems, unpaidProductIds],

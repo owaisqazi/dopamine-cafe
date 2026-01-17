@@ -4,7 +4,7 @@
 import { MapPin, Phone, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetByHomeAboutQuery } from "@/store/api/authApi";
-import { IMAGE_BASE_URL } from "../auth/axiosInstance";
+// import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 import SkeletonLoader from "../Skeleton/SkeletonLoader";
 
 export default function About() {

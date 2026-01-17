@@ -11,7 +11,7 @@ const nextConfig = {
     return config;
   },
   // Ye line build folder ka naam change karegi
-  distDir: 'build',
+  // distDir: 'build',
 };
 
 module.exports = nextConfig;
