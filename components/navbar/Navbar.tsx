@@ -80,7 +80,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
       {/* MINI MENU HEADER (Same as yours) */}
       {items?.length > 0 && (
         <div
-          className={`fixed top-0 w-full z-50 left-0 bg-[#fbbf24] py-3 text-white text-sm px-6 hidden md:flex overflow-x-auto menu-scrollbar-hide`}
+          className={`fixed top-0 w-full z-50 left-0 bg-amber-500 hover:bg-amber-700 py-3 text-white text-sm px-6 hidden md:flex overflow-x-auto menu-scrollbar-hide`}
         >
           <div className="flex gap-8 mx-auto">
             {items.map((cat: any) => (
@@ -102,7 +102,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
 
       {/* MOBILE MINI MENU (Same as yours) */}
       {items?.length > 0 && (
-        <nav className="fixed top-0 left-0 w-full z-40 bg-[#d97706] py-0 flex items-center md:hidden">
+        <nav className="fixed top-0 left-0 w-full z-40 bg-amber-600 hover:bg-amber-700 py-0 flex items-center md:hidden">
           <button
             onClick={() =>
               miniRef.current?.scrollBy({ left: -100, behavior: "smooth" })
@@ -168,7 +168,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
               {/* NEW LOCATION BUTTON (IMAGE STYLE) */}
               <button
                 onClick={onLocationClick}
-                className="flex items-center gap-2 bg-[#fbbf24] hover:bg-yellow-500 text-white px-2 py-1 md:px-4 md:py-2 rounded-xl transition-all shadow-md border border-yellow-900/20"
+                className="flex items-center gap-2 bg-amber-500 hover:bg-amber-700 text-white px-2 py-1 md:px-4 md:py-2 rounded-xl transition-all shadow-md border border-yellow-900/20"
               >
                 <div className="bg-white/20 p-1 rounded-full shrink-0">
                   <MapPin size={14} className="text-white fill-white" />
@@ -283,6 +283,15 @@ const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
               </li>
               <li>
                 <Link
+                  href="/blog"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-800 font-semibold text-lg"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/gallery"
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-gray-800 font-semibold text-lg"
@@ -297,6 +306,15 @@ const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
                   className="text-gray-800 font-semibold text-lg"
                 >
                   About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-gray-800 font-semibold text-lg"
+                >
+                  Contact
                 </Link>
               </li>
               {token && (

@@ -30,41 +30,33 @@ interface CartItemProps {
 
 function CartItemCard({ item, handleQuantity, readOnly }: CartItemProps) {
   return (
-    <article className="grid grid-cols-1 sm:grid-cols-12 gap-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition">
-      {/* LEFT: Image */}
-      <div className="sm:col-span-2 w-full">
+    <article className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition">
+      
+      {/* IMAGE */}
+      <div className="col-span-1 md:col-span-2 w-full">
         <img
           src={IMAGE_BASE_URL + (item?.image || item?.product?.image)}
           alt={item?.name || item?.product?.name || "Product"}
-          className="w-full h-24 sm:h-24 rounded-xl object-cover"
+          className="w-full h-48 md:h-24 rounded-xl object-cover"
         />
       </div>
 
-      {/* CENTER: Name + Price */}
-      <div className="sm:col-span-6 flex flex-col justify-center">
+      {/* NAME + PRICE */}
+      <div className="col-span-1 md:col-span-6 flex flex-col justify-center">
         <h3 className="font-bold text-gray-800 text-lg">
           {item?.name || item?.product?.name}
         </h3>
-        {/* <p className="text-amber-600 font-semibold mt-1">
-          Rs.{(item?.price * item?.quantity).toFixed(2)}
-        </p> */}
+
         <p className="text-amber-600 font-semibold mt-1">
           Rs.
-          {(
-            item?.price * item?.quantity +
-            (item?.options?.reduce(
-              (sum: number, opt: any) =>
-                sum + Number(opt.price_modifier) * item.quantity,
-              0,
-            ) || 0)
-          ).toFixed(2)}
+          {Number(item?.price || 0).toFixed(2)}
         </p>
       </div>
 
-      {/* RIGHT: Quantity + Remove */}
+      {/* QUANTITY + REMOVE (EDIT MODE) */}
       {!readOnly && handleQuantity && (
-        <div className="sm:col-span-4 flex items-center justify-end gap-4">
-          <div className="flex items-center justify-end border rounded-full overflow-hidden">
+        <div className="col-span-1 md:col-span-4 flex items-center justify-between md:justify-end gap-4">
+          <div className="flex items-center border rounded-full overflow-hidden">
             <button
               onClick={() => handleQuantity(item, "dec")}
               className="px-3 py-1 hover:bg-gray-200 transition"
@@ -79,6 +71,7 @@ function CartItemCard({ item, handleQuantity, readOnly }: CartItemProps) {
               +
             </button>
           </div>
+
           <button
             onClick={() => handleQuantity(item, "remove")}
             className="text-red-500 hover:text-red-600 flex items-center gap-1"
@@ -88,45 +81,54 @@ function CartItemCard({ item, handleQuantity, readOnly }: CartItemProps) {
         </div>
       )}
 
-      {/* Quantity display only for readOnly */}
+      {/* QUANTITY ONLY (READ ONLY MODE) */}
       {readOnly && (
-        <div className="sm:col-span-4 flex items-center justify-end gap-4">
+        <div className="col-span-1 md:col-span-4 flex items-center justify-end">
           <span className="px-4 font-semibold">{item?.quantity}</span>
         </div>
       )}
 
-      {/* Options */}
+      {/* OPTIONS */}
       {item?.options?.length > 0 && (
-        <div className="sm:col-span-12 mt-4 grid grid-cols-1 gap-4 bg-gray-50 p-2 rounded-lg border border-gray-100">
+        <div className="col-span-1 md:col-span-12 mt-4 grid grid-cols-1 gap-4 bg-gray-50 p-2 rounded-lg border border-gray-100">
           {item?.options.map((opt: any, index: number) => (
             <div
               key={index}
               className="flex justify-between text-gray-700 text-sm"
             >
-              <span>{opt.name}</span>
+              <span>{opt?.name}</span>
               <span className="font-semibold">
-                Rs.{(Number(opt.price_modifier) * item.quantity).toFixed(2)}{" "}
+                Rs.{(Number(opt?.price_modifier) * item?.quantity).toFixed(2)}
               </span>
             </div>
           ))}
         </div>
       )}
-      <div className="col-span-12">
-        <h2>
-          Total product Rs.
-          {(
+
+      {/* TOTAL */}
+      <div className="col-span-1 md:col-span-12">
+        <h2 className="font-bold flex justify-between items-center">
+          <span>
+            Total product
+          </span>
+          <span>
+            Rs.
+            {(
             item?.price * item?.quantity +
             (item?.options?.reduce(
               (sum: number, opt: any) =>
-                sum + Number(opt.price_modifier) * item.quantity,
+                sum + Number(opt?.price_modifier) * item?.quantity,
               0,
             ) || 0)
           ).toFixed(2)}
+          </span>
         </h2>
       </div>
+
     </article>
   );
 }
+
 
 export default function ShoppingCartTabs() {
   const dispatch = useDispatch<AppDispatch>();
@@ -159,14 +161,14 @@ export default function ShoppingCartTabs() {
 
     const unpaidIds =
       orderData.unpaid_orders?.flatMap((order: any) =>
-        order?.items?.map((item: any) => item.id),
+        order?.items?.map((item: any) => item?.id),
       ) || [];
 
     if (activeTab === "cart") {
       // Remove unpaid items from cart
       cartItems.forEach((item) => {
-        if (unpaidIds.includes(item.id)) {
-          dispatch(removeFromCart(item.id));
+        if (unpaidIds.includes(item?.id)) {
+          dispatch(removeFromCart(item?.id));
         }
       });
     } else if (activeTab === "unpaid") {
@@ -174,19 +176,19 @@ export default function ShoppingCartTabs() {
       orderData.unpaid_orders.forEach((order: any) => {
         order?.items?.forEach((item: any) => {
           const exists = cartItems.find(
-            (i) => String(i.id) === String(item.id),
+            (i) => String(i.id) === String(item?.id),
           );
           if (!exists) {
             dispatch(
               addToCart({
-                id: item.id,
+                id: item?.id,
                 name: item?.product?.name || item?.name || order?.name,
                 image: item?.product?.image || item?.image,
                 description:
                   item?.description || item?.product?.description || "",
-                price: Number(item.price),
-                quantity: Number(item.quantity),
-                options: item.options || [],
+                price: Number(item?.price),
+                quantity: Number(item?.quantity),
+                options: item?.options || [],
               }),
             );
           }
@@ -198,7 +200,7 @@ export default function ShoppingCartTabs() {
   const unpaidProductIds = useMemo(() => {
     if (!orderData?.unpaid_orders) return [];
     return orderData.unpaid_orders.flatMap((order: any) =>
-      order?.items?.map((item: any) => item.id),
+      order?.items?.map((item: any) => item?.id),
     );
   }, [orderData]);
 //@ts-ignore
@@ -213,8 +215,8 @@ export default function ShoppingCartTabs() {
   );
 
 const activeCartItems = useMemo(() => {
-  if (activeTab === "cart") return cartItems.filter(item => !unpaidProductIds.includes(item.id));
-  if (activeTab === "unpaid") return cartItems.filter(item => unpaidProductIds.includes(item.id));
+  if (activeTab === "cart") return cartItems.filter(item => !unpaidProductIds.includes(item?.id));
+  if (activeTab === "unpaid") return cartItems.filter(item => unpaidProductIds.includes(item?.id));
   if (activeTab === "paid") return orderData?.paid_orders?.flatMap((order: any) =>
     order?.products.map((product: any) => {
       const item = order?.items.find((i: any) => i.product_id === product?.id);
@@ -235,10 +237,10 @@ const activeCartItems = useMemo(() => {
         const optionsTotal =
           item?.options?.reduce(
             (sum: number, opt: any) =>
-              sum + Number(opt.price_modifier) * item.quantity,
+              sum + Number(opt?.price_modifier) * item?.quantity,
             0,
           ) || 0;
-        return acc + item.price * item.quantity + optionsTotal;
+        return acc + item?.price * item?.quantity + optionsTotal;
       }, 0),
     [activeCartItems],
   );
@@ -259,13 +261,13 @@ const activeCartItems = useMemo(() => {
     if (type === "inc") {
       dispatch(addToCart({ ...item, quantity: 1 }));
     } else if (type === "dec") {
-      if (item.quantity > 1) {
+      if (item?.quantity > 1) {
         dispatch(addToCart({ ...item, quantity: -1 }));
       } else {
-        dispatch(removeFromCart(item.id));
+        dispatch(removeFromCart(item?.id));
       }
     } else if (type === "remove") {
-      dispatch(removeFromCart(item.id));
+      dispatch(removeFromCart(item?.id));
     }
   };
 
@@ -321,7 +323,7 @@ const activeCartItems = useMemo(() => {
               (normalCartItems.length > 0 ? (
                 normalCartItems.map((item) => (
                   <CartItemCard
-                    key={`cart-${item.id}`}
+                    key={`cart-${item?.id}`}
                     item={item}
                     handleQuantity={handleQuantity}
                   />

@@ -137,8 +137,8 @@ export default function Footer({
           <div className="text-center">
             <div className="flex md:text-lg text-sm justify-center items-center gap-2 text-gray-400">
               <span>Made with</span>
-              <Heart className="w-4 h-4 text-red-500 animate-pulse" />
-              <span>© 2024 Dopamine Cafe. All rights reserved.</span>
+              <Heart className="md:w-4 w-2 h-2 md:h-4 text-red-500 animate-pulse" />
+              <span>© 2026 Dopamine Cafe. All rights reserved.</span>
             </div>
           </div>
 

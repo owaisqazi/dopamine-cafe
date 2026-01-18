@@ -155,7 +155,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
         onClose={() => setIsModalOpen(false)}
         maxWidth="max-w-6xl"
       >
-        <section className="flex flex-col h-full max-h-[85vh]">
+        <section className="flex flex-col md:h-full h-full max-h-[90vh] md:max-h-[85vh]">
           {/* Header */}
           <header className="p-6 border-b flex justify-between items-center bg-white sticky top-0 z-10">
             <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
