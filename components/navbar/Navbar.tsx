@@ -18,15 +18,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 //@ts-ignore
 import Cookies from "js-cookie";
+import Modal from "../ui/Modal";
+import OrderTypeContent from "../order-manager-city/OrderTypeContent";
 
-// INTERFACE ADD KIYA
-interface NavbarProps {
-  onLocationClick?: () => void;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
+const Navbar = () => {
   const pathname = usePathname();
   const miniRef = useRef<HTMLDivElement>(null);
+  const [showLocationModal, setShowLocationModal] = useState(false);
+
   const { data } = useGetMenuByMainCategoryQuery();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const items = data?.data || [];
@@ -74,7 +73,19 @@ const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
       : isWhiteBg
       ? "text-gray-700 hover:text-amber-600"
       : "text-white hover:text-amber-200";
+  useEffect(() => {
+    const locationCookie = Cookies.get("user_location");
+    const locationSession = sessionStorage.getItem("location_session");
 
+    if (!locationCookie && !locationSession) {
+      setShowLocationModal(true);
+    }
+  }, []);
+
+  const handleCloseLocationModal = () => {
+    setShowLocationModal(false);
+    sessionStorage.setItem("location_session", "true");
+  };
   return (
     <>
       {/* MINI MENU HEADER (Same as yours) */}
@@ -167,7 +178,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
 
               {/* NEW LOCATION BUTTON (IMAGE STYLE) */}
               <button
-                onClick={onLocationClick}
+                onClick={() => setShowLocationModal(true)}
                 className="flex items-center gap-2 bg-amber-500 hover:bg-amber-700 text-white px-2 py-1 md:px-4 md:py-2 rounded-xl transition-all shadow-md border border-yellow-900/20"
               >
                 <div className="bg-white/20 p-1 rounded-full shrink-0">
@@ -263,15 +274,15 @@ const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
                 )}
               </button>
               {token && (
-              <button
+                <button
                   onClick={() => {
-                      Cookies.remove("token");
-                      window.location.reload();
-                    }}
-                className="md:block hidden items-center gap-2 bg-amber-500 hover:bg-amber-700 text-white px-2 py-1 md:px-4 md:py-2 rounded-xl transition-all shadow-md border border-yellow-900/20"
-              >
-                Logout
-              </button>
+                    Cookies.remove("token");
+                    window.location.reload();
+                  }}
+                  className="md:block hidden items-center gap-2 bg-amber-500 hover:bg-amber-700 text-white px-2 py-1 md:px-4 md:py-2 rounded-xl transition-all shadow-md border border-yellow-900/20"
+                >
+                  Logout
+                </button>
               )}
             </div>
           </div>
@@ -345,6 +356,13 @@ const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
           </div>
         </nav>
       </header>
+      <Modal
+        isOpen={showLocationModal}
+        onClose={handleCloseLocationModal}
+        maxWidth="max-w-xl"
+      >
+        <OrderTypeContent onClose={handleCloseLocationModal} />
+      </Modal>
     </>
   );
 };

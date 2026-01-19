@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MapPin } from "lucide-react";
 //@ts-ignore
 import Cookies from "js-cookie";
@@ -24,20 +24,38 @@ const OrderTypeContent = ({ onClose }: ContentProps) => {
   const [city, setCity] = useState("karachi");
   const [area, setArea] = useState("");
 
+  // Load cities and areas
   const { data: citydata, isLoading: cityIsLoading } = useGetCityQuery("pakistan");
   const cities = Array.isArray(citydata) ? citydata : citydata?.data || [];
 
   const { data, isLoading } = useGetAreaQuery(city, { skip: !city });
   const areaOptions = Array.isArray(data?.data) ? data.data : [];
 
+  // ✅ Load previous selection from sessionStorage or Cookies
+  useEffect(() => {
+    const saved = sessionStorage.getItem("location_session_data") || Cookies.get("user_location");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.city) setCity(parsed.city);
+        if (parsed.area) setArea(parsed.area);
+        if (parsed.type) setType(parsed.type);
+      } catch (err) {
+        console.error("Failed to parse previous location:", err);
+      }
+    }
+  }, []);
+
   const handleFinalSelection = () => {
     if (!area) {
       alert("Please select your area");
       return;
     }
+
     const orderData = { type, city, area };
     Cookies.set("user_location", JSON.stringify(orderData), { expires: 7 });
     sessionStorage.setItem("location_session", "true");
+    sessionStorage.setItem("location_session_data", JSON.stringify(orderData));
 
     // Navbar ko update karne ke liye custom event
     window.dispatchEvent(new Event("locationUpdated"));
@@ -49,7 +67,10 @@ const OrderTypeContent = ({ onClose }: ContentProps) => {
     <div className="p-4 text-center bg-white">
       <p className="text-sm text-gray-500 mb-4 font-medium">Please select your location</p>
 
-      <button className="flex items-center gap-2 px-6 py-2 rounded-full mx-auto mb-4 text-sm font-bold text-white" style={{ backgroundColor: ACCENT }}>
+      <button
+        className="flex items-center gap-2 px-6 py-2 rounded-full mx-auto mb-4 text-sm font-bold text-white"
+        style={{ backgroundColor: ACCENT }}
+      >
         <MapPin size={16} /> Use Current Location
       </button>
 
@@ -66,11 +87,32 @@ const OrderTypeContent = ({ onClose }: ContentProps) => {
               const cityKey = cityName.toLowerCase();
               const icons = CITY_ICONS[cityKey] || ["📍"];
               return (
-                <div key={index} onClick={() => { setCity(cityKey); setArea(""); }} className="cursor-pointer flex flex-col items-center min-w-[80px]">
-                  <div className={`w-24 h-24 border-2 rounded-2xl flex items-center justify-center gap-1 mb-1 transition ${city === cityKey ? "shadow-md" : "opacity-60"}`} style={{ borderColor: city === cityKey ? ACCENT : "#eee" }}>
-                    {icons?.map((icon, i) => <span key={i} className="text-2xl">{icon}</span>)}
+                <div
+                  key={index}
+                  onClick={() => {
+                    setCity(cityKey);
+                    setArea(""); // reset area when changing city
+                  }}
+                  className="cursor-pointer flex flex-col items-center min-w-[80px]"
+                >
+                  <div
+                    className={`w-24 h-24 border-2 rounded-2xl flex items-center justify-center gap-1 mb-1 transition ${
+                      city === cityKey ? "shadow-md" : "opacity-60"
+                    }`}
+                    style={{ borderColor: city === cityKey ? ACCENT : "#eee" }}
+                  >
+                    {icons?.map((icon, i) => (
+                      <span key={i} className="text-2xl">
+                        {icon}
+                      </span>
+                    ))}
                   </div>
-                  <p className="text-xs font-bold uppercase text-center" style={{ color: city === cityKey ? ACCENT : "#9ca3af" }}>{cityName}</p>
+                  <p
+                    className="text-xs font-bold uppercase text-center"
+                    style={{ color: city === cityKey ? ACCENT : "#9ca3af" }}
+                  >
+                    {cityName}
+                  </p>
                 </div>
               );
             })}
@@ -80,7 +122,11 @@ const OrderTypeContent = ({ onClose }: ContentProps) => {
         <AreaDropdown value={area} onChange={setArea} options={areaOptions} loading={isLoading} accentColor={ACCENT} />
       </div>
 
-      <button onClick={handleFinalSelection} className="w-full max-w-sm py-4 rounded-xl font-black text-lg text-white shadow-lg" style={{ backgroundColor: ACCENT }}>
+      <button
+        onClick={handleFinalSelection}
+        className="w-full max-w-sm py-4 rounded-xl font-black text-lg text-white shadow-lg"
+        style={{ backgroundColor: ACCENT }}
+      >
         Select
       </button>
     </div>
