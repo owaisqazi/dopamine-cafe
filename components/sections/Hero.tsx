@@ -12,12 +12,12 @@ const slides = [
   {
     image: "/banner.jpeg",
     title: "Your Daily Dose of Join Now",
-    subtitle: "Dopamine Cafe",
+    subtitle: "The Dopamine Cafe",
   },
   {
     image: "/banner2.png",
     title: "Happiness Starts With a Cup",
-    subtitle: "Dopamine Cafe",
+    subtitle: "The Dopamine Cafe",
   },
 ];
 const sideImages = [
@@ -126,20 +126,20 @@ export default function Hero() {
         onClick={() =>
           setCurrent((c) => (c - 1 + slides?.length) % slides?.length)
         }
-        className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full z-20"
+        className="absolute left-6 top-1/2 -translate-y-1/2 md:block hidden bg-white/20 p-3 rounded-full z-20"
       >
         <ChevronLeft className="text-white" />
       </button>
 
       <button
         onClick={() => setCurrent((c) => (c + 1) % slides?.length)}
-        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full z-20"
+        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full z-20 md:block hidden"
       >
         <ChevronRight className="text-white" />
       </button>
 
       {/* Scroll icon */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-amber-400 animate-bounce z-20">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 md:block hidden text-amber-400 animate-bounce z-20">
         <ChevronDown size={36} />
       </div>
     </section>

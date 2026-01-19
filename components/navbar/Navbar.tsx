@@ -262,6 +262,17 @@ const Navbar: React.FC<NavbarProps> = ({ onLocationClick }) => {
                   />
                 )}
               </button>
+              {token && (
+              <button
+                  onClick={() => {
+                      Cookies.remove("token");
+                      window.location.reload();
+                    }}
+                className="md:block hidden items-center gap-2 bg-amber-500 hover:bg-amber-700 text-white px-2 py-1 md:px-4 md:py-2 rounded-xl transition-all shadow-md border border-yellow-900/20"
+              >
+                Logout
+              </button>
+              )}
             </div>
           </div>
 

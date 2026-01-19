@@ -76,7 +76,7 @@ export default function Footer({
                 width={150}
                 height={150}
                 src="/dopamine_cafe.png"
-                alt="Dopamine Cafe Logo"
+                alt="The Dopamine Cafe Logo"
                 className="w-32 h-32 rounded-full object-cover"
               />
             </div>
@@ -138,7 +138,7 @@ export default function Footer({
             <div className="flex md:text-lg text-sm justify-center items-center gap-2 text-gray-400">
               <span>Made with</span>
               <Heart className="hidden md:block w-4 h-4 text-red-500 animate-pulse" />
-              <span>© 2026 Dopamine Cafe. All rights reserved.</span>
+              <span>© 2026 The Dopamine Cafe. All rights reserved.</span>
             </div>
           </div>
 

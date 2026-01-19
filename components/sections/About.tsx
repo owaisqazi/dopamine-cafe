@@ -79,7 +79,7 @@ export default function About() {
               {items?.name}
             </h3>
             <p className="text-gray-600 mb-4 leading-relaxed">
-              Founded in 2024, Dopamine Cafe was born from a simple idea: create
+              Founded in 2024, The Dopamine Cafe was born from a simple idea: create
               a space where people can escape the daily grind and find their
               moment of joy. Named after the happiness hormone, we believe in
               serving more than just coffee.

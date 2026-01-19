@@ -243,7 +243,7 @@ export default function Contact() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Dopamine Cafe Location"
+              title="The Dopamine Cafe Location"
             />
           </div>
         </Card>

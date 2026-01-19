@@ -14,7 +14,7 @@ export default function SuccessPage() {
         </h1>
 
         <p className="text-gray-400 mt-3">
-          Thank you for choosing <span className="text-[#f59e0b]">Dopamine Cafe</span>.  
+          Thank you for choosing <span className="text-[#f59e0b]">The Dopamine Cafe</span>.  
           Your order has been placed successfully.
         </p>
 

@@ -13,7 +13,7 @@ export default function Gallery() {
       id="gallery"
       className="py-16 px-4 bg-[#ffffff]"
       style={{ backgroundAttachment: "fixed" }}
-      aria-label="Gallery of Dopamine Cafe"
+      aria-label="Gallery of The Dopamine Cafe"
     >
       <div className="container mx-auto max-w-7xl">
         {/* Show Skeleton Loader if loading */}
