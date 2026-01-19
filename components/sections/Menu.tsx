@@ -55,17 +55,22 @@ export default function Menu() {
     { main_category_id: categoryId, category_id: activeCategoryId },
     { skip: false, refetchOnMountOrArgChange: true }
   );
-  const productsIsLoading = productsLoading || productsFetching;
+  const productsIsLoading = productsFetching;
   const categoriesIsLoading = categoriesLoading || categoriesFetching;
   useEffect(() => {
     setProducts([]);
   }, [activeCategory]);
 
-  useEffect(() => {
-    if (productsData?.data) {
+useEffect(() => {
+  if (!productsIsLoading) {
+    if (productsData?.data && productsData.data.length > 0) {
       setProducts(productsData.data);
+    } else {
+      setProducts([]);
     }
-  }, [productsData]);
+  }
+}, [productsData, productsIsLoading]);
+
 
   return (
     <section
@@ -110,12 +115,12 @@ export default function Menu() {
           </nav>
         ) : (
           <div className="text-center py-10 border-2 border-dashed rounded-3xl mb-14">
-            <p className="text-xl text-gray-400">Coming soon...</p>
+            <p className="text-xl text-gray-400">No data Categories</p>
           </div>
         )}
 
         {/* PRODUCTS GRID */}
-        {productsLoading ? (
+        {productsIsLoading ? (
           <SkeletonLoader type="product" count={8} />
         ) : products?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
@@ -194,7 +199,7 @@ export default function Menu() {
           </div>
         ) : (
           <div className="text-center py-20 border-2 border-dashed rounded-3xl">
-            <p className="text-xl text-gray-400">Coming soon...</p>
+            <p className="text-xl text-gray-400">No data product</p>
           </div>
         )}
       </div>

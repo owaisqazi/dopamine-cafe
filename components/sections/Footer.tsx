@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Heart, Facebook, Instagram, Twitter, Cookie } from "lucide-react";
+import { Heart, Facebook, Instagram, Twitter, Cookie, Clock } from "lucide-react";
 import Image from "next/image";
 import CookieModal from "../ui/cookieModalOpen";
 import { useNewsletterMutation } from "@/store/api/authApi";
@@ -68,90 +68,82 @@ export default function Footer({
     <>
       <footer className="bg-[#1C1C1A] text-white py-12 px-4 z-20 relative">
         <div className="container mx-auto">
-          {/* Top Section */}
-          <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 mb-10">
-            {/* LEFT : Logo */}
-            <div className="flex items-center gap-3">
-              <Image
-                width={150}
-                height={150}
-                src="/dopamine_cafe.png"
-                alt="The Dopamine Cafe Logo"
-                className="w-32 h-32 rounded-full object-cover"
-              />
-            </div>
-
-            {/* RIGHT : Links + Social + Newsletter */}
-            <div className="flex flex-col items-center md:items-end gap-6 w-full md:w-auto">
-              {/* Links */}
-              <div className="flex gap-6 text-gray-300 font-medium">
-                <a href="/gallery" className="hover:text-amber-500 transition">
-                  Home
-                </a>
-                <a href="/gallery" className="hover:text-amber-500 transition">
-                  Gallery
-                </a>
-                <a href="/blog" className="hover:text-amber-500 transition">
-                  Blog
-                </a>
-                <a href="/about" className="hover:text-amber-500 transition">
-                  About
-                </a>
-                <a href="/contact" className="hover:text-amber-500 transition">
-                  Contact
-                </a>
-              </div>
-
-              {/* Social Icons */}
-              <div className="flex gap-4 mt-2">
-                <Facebook className="w-5 h-5 text-gray-400 hover:text-amber-500 transition" />
-                <Instagram className="w-5 h-5 text-gray-400 hover:text-amber-500 transition" />
-                <Twitter className="w-5 h-5 text-gray-400 hover:text-amber-500 transition" />
-              </div>
-
-              {/* Newsletter */}
-              <form
-                onSubmit={handleNewsletterSubmit}
-                className="flex flex-col sm:flex-row items-center gap-3 w-full mt-2"
-              >
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="w-full sm:w-64 px-4 py-2 rounded-full bg-[#2A2A28] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                />
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="px-6 py-2 rounded-full bg-amber-600 hover:bg-amber-700 transition text-white font-medium disabled:opacity-60"
-                >
-                  {isLoading ? "Subscribing..." : "Subscribe"}
-                </button>
-              </form>
-            </div>
-          </div>
-
-          {/* Center Text */}
-          <div className="text-center">
-            <div className="flex md:text-lg text-sm justify-center items-center gap-2 text-gray-400">
-              <span>Made with</span>
-              <Heart className="hidden md:block w-4 h-4 text-red-500 animate-pulse" />
-              <span>© 2026 The Dopamine Cafe. All rights reserved.</span>
-            </div>
-          </div>
-
-          {/* Cookie Button */}
-          <button
-            onClick={() => setCookieModalOpen(true)}
-            className="fixed bottom-6 left-6 bg-amber-600 hover:bg-amber-700 p-3 rounded-full shadow-lg text-white transition transform hover:scale-110 z-50"
-            aria-label="Cookie Preferences"
-            title="Cookie Preferences"
-          >
-            <Cookie className="w-6 h-6" />
-          </button>
-        </div>
+                  {/* Top Section */}
+                  <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 mb-10 border-b border-gray-800 pb-10">
+                    
+                    {/* LEFT : Logo & Timings */}
+                    <div className="flex flex-col items-center md:items-start gap-4">
+                      <div className="flex items-center gap-3">
+                        <Image
+                          width={150}
+                          height={150}
+                          src="/dopamine_cafe.png"
+                          alt="The Dopamine Cafe Logo"
+                          className="w-28 h-28 rounded-full object-cover border-2 border-amber-600/20"
+                        />
+                      </div>
+                      {/* TIMING DISPLAY */}
+                      <div className="flex items-center gap-2 bg-[#2A2A28] px-4 py-2 rounded-full border border-amber-600/30">
+                        <Clock className="w-4 h-4 text-amber-500" />
+                        <span className="text-sm font-semibold tracking-wide uppercase text-gray-200">
+                          Open 24/7
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500 italic mt-1">
+                        Always here to satisfy your cravings
+                      </p>
+                    </div>
+        
+                    {/* RIGHT : Links + Social + Newsletter */}
+                    <div className="flex flex-col items-center md:items-end gap-6 w-full md:w-auto">
+                      {/* Links */}
+                      <div className="flex flex-wrap justify-center gap-6 text-gray-300 font-medium">
+                        <a href="/" className="hover:text-amber-500 transition">Home</a>
+                        <a href="/gallery" className="hover:text-amber-500 transition">Gallery</a>
+                        <a href="/blog" className="hover:text-amber-500 transition">Blog</a>
+                        <a href="/about" className="hover:text-amber-500 transition">About</a>
+                        <a href="/contact" className="hover:text-amber-500 transition">Contact</a>
+                      </div>
+        
+                      {/* Social Icons */}
+                      <div className="flex gap-4">
+                        <Facebook className="w-5 h-5 text-gray-400 hover:text-amber-500 cursor-pointer transition" />
+                        <Instagram className="w-5 h-5 text-gray-400 hover:text-amber-500 cursor-pointer transition" />
+                        <Twitter className="w-5 h-5 text-gray-400 hover:text-amber-500 cursor-pointer transition" />
+                      </div>
+        
+                      {/* Newsletter */}
+                      <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row items-center gap-3 w-full">
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="Subscribe to our newsletter"
+                          className="w-full sm:w-64 px-4 py-2 rounded-full bg-[#2A2A28] text-white border border-transparent focus:border-amber-500 outline-none transition"
+                        />
+                        <button
+                          type="submit"
+                          disabled={isLoading}
+                          className="w-full sm:w-auto px-6 py-2 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-medium transition disabled:opacity-60"
+                        >
+                          {isLoading ? "..." : "Subscribe"}
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                  {/* Bottom Copyright Section */}
+                  <div className="text-center pt-6">
+                    <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-gray-500 text-sm">
+                      <div className="flex items-center gap-2">
+                        <span>Made with</span>
+                        <Heart className="w-4 h-4 text-red-600 fill-current animate-pulse" />
+                        <span>by The Dopamine Cafe</span>
+                      </div>
+                      <span className="hidden md:inline">|</span>
+                      <span>© 2026 All rights reserved.</span>
+                    </div>
+                  </div>
+                </div>
       </footer>
 
       {/* Cookie Modal */}

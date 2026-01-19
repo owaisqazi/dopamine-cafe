@@ -240,9 +240,10 @@ export default function Detail() {
               Freshly prepared • Best quality guaranteed
             </p>
           </div>
-          <div className="col-span-2">
+          <div className="col-span-2 cursor-pointer">
             {/* Progress Bar */}
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-6"
+            onClick={() => setIsRatingOpen(true)}>
               <div className="flex items-center">
                 {Array.from({ length: 5 }).map((_, index) => {
                   const filled = index < Math.round(avgRating);
@@ -262,7 +263,7 @@ export default function Detail() {
               </div>
 
               <span className="text-sm font-semibold text-gray-700">
-                ({ratingPercent?.toFixed(0)}%)
+                ({ratingPercent?.toFixed(0)}%) Rate & Review
               </span>
             </div>
 

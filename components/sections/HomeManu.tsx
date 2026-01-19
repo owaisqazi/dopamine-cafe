@@ -2,13 +2,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  useGetMenuByCategoryQuery,
-  useGetByProductQuery,
-} from "@/store/api/authApi";
+import { useGetMenuByCategoryQuery } from "@/store/api/authApi";
 import Image from "next/image";
 import Link from "next/link";
-import { IMAGE_BASE_URL } from "../auth/axiosInstance";
+import axiosInstance, { IMAGE_BASE_URL } from "../auth/axiosInstance";
 import { Plus } from "lucide-react";
 import SkeletonLoader from "@/components/Skeleton/SkeletonLoader";
 
@@ -29,50 +26,50 @@ interface Category {
 
 export default function HomeMenu() {
   const categoryId = ""; // main_category_id
-  const { data: categoriesData, isLoading: categoriesLoading } =
-    useGetMenuByCategoryQuery(categoryId);
+  const { data: categoriesData, isLoading: categoriesLoading } = useGetMenuByCategoryQuery(categoryId);
   const categories: Category[] = categoriesData?.data || [];
 
-  const [activeCategory, setActiveCategory] = useState<{
-    id: string | number;
-    name: string;
-  }>({ id: categories[0]?.id || "", name: categories[0]?.name || "All" });
+  const [activeCategory, setActiveCategory] = useState<{ id: string | number; name: string }>({
+    id: categories[0]?.id || "",
+    name: categories[0]?.name || "All",
+  });
 
-  const activeCategoryId = activeCategory?.id || undefined;
-
-  const { data: productsData, isLoading: productsLoading } =
-    useGetByProductQuery(
-      //@ts-ignore
-      { main_category_id: categoryId, category_id: activeCategoryId },
-      { skip: false, refetchOnMountOrArgChange: true }
-    );
+  const activeCategoryId = activeCategory?.id?.toString() || undefined;
 
   const [products, setProducts] = useState<MenuItem[]>([]);
-  useEffect(() => {
-    if (productsData?.data) {
-      setProducts(productsData.data);
-    } else {
+  const [productsLoading, setProductsLoading] = useState<boolean>(false);
+  const fetchProducts = async () => {
+    setProductsLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (categoryId) params.append("main_category_id", categoryId);
+      if (activeCategoryId) params.append("category_id", activeCategoryId);
+      const Url = activeCategoryId ? `/user/product?${params.toString()}` : "/user/product";
+      const response = await axiosInstance.get(Url);
+      setProducts(response.data?.data || []);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
       setProducts([]);
+    } finally {
+      setProductsLoading(false);
     }
-  }, [productsData]);
+  };
 
+  useEffect(() => {
+    fetchProducts();
+  }, [activeCategoryId]);
   useEffect(() => {
     setProducts([]);
   }, [activeCategory]);
 
   return (
-    <section
-      id="menu"
-      className="relative z-20 bg-white md:py-20 px-4"
-      aria-labelledby="menu-heading"
-    >
+    <section id="menu" className="relative z-20 bg-white md:py-20 px-4" aria-labelledby="menu-heading">
       <div className="container mx-auto">
         {/* HEADER */}
         <header className="text-center my-8">
           <h2 className="text-5xl font-bold text-gray-800 mb-4">Our Menu</h2>
           <p className="text-xl text-gray-600">
-            Take a look at our menu and explore a variety of delicious dishes
-            prepared fresh every day.
+            Take a look at our menu and explore a variety of delicious dishes prepared fresh every day.
           </p>
         </header>
 
@@ -105,10 +102,10 @@ export default function HomeMenu() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
             {products?.slice(0, 8)?.map((item, index) => (
               <Link
-              href={{
-                    pathname: "/menu-detail",
-                    query: { data: encodeURIComponent(JSON.stringify(item)) },
-                  }}
+                href={{
+                  pathname: "/menu-detail",
+                  query: { data: encodeURIComponent(JSON.stringify(item)) },
+                }}
                 key={item?.id}
                 itemScope
                 itemType="https://schema.org/MenuItem"
@@ -119,28 +116,15 @@ export default function HomeMenu() {
               >
                 {/* LEFT CONTENT AREA */}
                 <div className="flex-[1.5] p-4 flex flex-col justify-start">
-                  <h2
-                    itemProp="name"
-                    className="text-[17px] font-bold text-gray-800 leading-tight mb-1"
-                  >
+                  <h2 itemProp="name" className="text-[17px] font-bold text-gray-800 leading-tight mb-1">
                     {item?.name}
                   </h2>
-
-                  <p
-                    itemProp="description"
-                    className="text-[13px] text-gray-400 line-clamp-3 mb-2 leading-snug"
-                  >
+                  <p itemProp="description" className="text-[13px] text-gray-400 line-clamp-3 mb-2 leading-snug">
                     {item?.description}
                   </p>
-
                   <div className="mt-auto">
                     <span className="text-lg font-medium text-gray-600">
-                      <span>
-                        Rs.
-                        {Number(item?.base_price ?? 0) % 1 === 0
-                          ? Number(item?.base_price ?? 0)
-                          : Number(item?.base_price ?? 0).toFixed(2)}
-                      </span>
+                      Rs.{Number(item?.base_price ?? 0) % 1 === 0 ? Number(item.base_price) : Number(item.base_price).toFixed(2)}
                     </span>
                   </div>
                 </div>
@@ -178,7 +162,7 @@ export default function HomeMenu() {
           </div>
         ) : (
           <div className="text-center py-20 border-2 border-dashed rounded-3xl">
-            <p className="text-xl text-gray-400">Coming soon...</p>
+            <p className="text-xl text-gray-400">No data</p>
           </div>
         )}
       </div>
