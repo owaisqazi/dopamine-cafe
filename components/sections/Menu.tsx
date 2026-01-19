@@ -110,7 +110,7 @@ export default function Menu() {
           </nav>
         ) : (
           <div className="text-center py-10 border-2 border-dashed rounded-3xl mb-14">
-            <p className="text-xl text-gray-400">No Categories Found</p>
+            <p className="text-xl text-gray-400">Coming soon...</p>
           </div>
         )}
 
@@ -194,7 +194,7 @@ export default function Menu() {
           </div>
         ) : (
           <div className="text-center py-20 border-2 border-dashed rounded-3xl">
-            <p className="text-xl text-gray-400">No Data Found</p>
+            <p className="text-xl text-gray-400">Coming soon...</p>
           </div>
         )}
       </div>

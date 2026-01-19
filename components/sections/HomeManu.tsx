@@ -178,7 +178,7 @@ export default function HomeMenu() {
           </div>
         ) : (
           <div className="text-center py-20 border-2 border-dashed rounded-3xl">
-            <p className="text-xl text-gray-400">No Data Found</p>
+            <p className="text-xl text-gray-400">Coming soon...</p>
           </div>
         )}
       </div>
