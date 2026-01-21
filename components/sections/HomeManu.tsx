@@ -102,7 +102,7 @@ export default function HomeMenu() {
   return (
     <section className="bg-[#FFF3D6] pb-16">
       {/* CATEGORY HEADER */}
-      <div className="sticky top-0 z-30 bg-[#1C1C19] mb-6">
+      <div className="sticky top-0 z-30 bg-[#1C1D18] mb-6">
         <div className="relative flex items-center w-full mx-auto px-10 py-6">
           <button
             aria-label="Scroll left"
@@ -123,7 +123,7 @@ export default function HomeMenu() {
                 className={`px-6 py-2 rounded-full whitespace-nowrap font-semibold transition-colors ${
                   activeCat === cat.category_id
                     ? "bg-[#f59e0b] text-white"
-                    : "bg-black text-white"
+                    : "bg-[#FFF3D6] text-black"
                 }`}
               >
                 {cat.category_name}
