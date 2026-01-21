@@ -12,7 +12,13 @@ import Navbar from "@/components/navbar/Navbar";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#fdeabf]">
+    <main className="relative min-h-screen">
+      {/* FIXED BACKGROUND */}
+      <div className="fixed inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
+
+      {/* OPTIONAL DARK OVERLAY */}
+      <div className="fixed inset-0 -z-10 bg-[#fdeabf]/40" />
+
       <Navbar />
       <Hero />
       <HomeManu />

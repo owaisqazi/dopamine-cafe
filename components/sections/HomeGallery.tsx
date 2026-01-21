@@ -12,7 +12,7 @@ export default function HomeGallery() {
   return (
     <section
       id="gallery"
-      className="py-16 px-4 bg-[#FFEABF]"
+      className="py-16 px-4"
       style={{ backgroundAttachment: "fixed" }}
       aria-label="Gallery of The Dopamine Cafe"
     >
@@ -20,7 +20,7 @@ export default function HomeGallery() {
         {/* Heading */}
         <header className="text-center mb-8">
           <h2 className="text-5xl font-bold text-gray-800 mb-4">Gallery</h2>
-          <p className="text-xl text-gray-600">Moments that make us smile</p>
+          <p className="text-xl text-gray-900">Moments that make us smile</p>
         </header>
 
         {/* LOADING STATE */}

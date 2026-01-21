@@ -27,6 +27,8 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
+      // Yahan hum ID ke saath selected options ko bhi check karenge 
+      // taake agar same item different options ke sath ho to alag dikhe
       const existingItem = state.items.find(
         (i) => String(i.id) === String(action.payload.id)
       );
@@ -38,27 +40,33 @@ const cartSlice = createSlice({
       }
     },
 
+    // --- NAYA REDUCER: Quantity update karne ke liye ---
+    updateQuantity: (state, action: PayloadAction<{ id: string | number; change: number }>) => {
+      const item = state.items.find((i) => String(i.id) === String(action.payload.id));
+      if (item) {
+        const newQuantity = item.quantity + action.payload.change;
+        if (newQuantity > 0) {
+          item.quantity = newQuantity;
+        }
+      }
+    },
+
     removeFromCart: (state, action: PayloadAction<string | number>) => {
       state.items = state.items.filter(
         (i) => String(i.id) !== String(action.payload)
       );
     },
-
     clearCart: (state) => {
       state.items = [];
     },
 
+    // ✅ Yeh wapas add karein
     setCartItems: (state, action: PayloadAction<CartItem[]>) => {
       state.items = action.payload;
     },
   },
 });
 
-export const {
-  addToCart,
-  removeFromCart,
-  clearCart,
-  setCartItems,
-} = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, setCartItems, updateQuantity } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -33,12 +33,12 @@ export default function HomeAbout() {
   if (isLoading) return <SkeletonLoader type="about" count={3} />;
 
   return (
-    <section id="about" className="py-20 px-4 relative z-20 bg-[#FFEABF]">
+    <section id="about" className="py-20 px-4 relative z-20">
       <div className="container mx-auto">
         {/* SECTION HEADING */}
         <header className="text-center mb-12" data-aos="flip-up">
           <h2 className="text-5xl font-bold text-gray-800 mb-4">About Us</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-900 max-w-2xl mx-auto">
             More than just a cafe, we are a happiness hub where every visit
             boosts your mood.
           </p>
@@ -81,13 +81,13 @@ export default function HomeAbout() {
             <h3 className="text-3xl font-bold text-gray-800 mb-4">
               {items?.name}
             </h3>
-            <p className="text-gray-600 mb-4 leading-relaxed">
+            <p className="text-gray-900 mb-4 leading-relaxed">
               Founded in 2024, The Dopamine Cafe was born from a simple idea: create
               a space where people can escape the daily grind and find their
               moment of joy. Named after the happiness hormone, we believe in
               serving more than just coffee.
             </p>
-            <p className="text-gray-600 leading-relaxed">
+            <p className="text-gray-900 leading-relaxed">
               Our baristas are artists, our chefs are passionate creators, and
               our space is designed to uplift your spirits. Whether you are
               working, meeting friends, or enjoying some alone time, Dopamine

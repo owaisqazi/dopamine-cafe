@@ -4,9 +4,14 @@ import "./globals.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google"; // Inter ki jagah Poppins import karein
 
-const inter = Inter({ subsets: ["latin"] });
+// Poppins configuration
+const poppins = Poppins({ 
+  subsets: ["latin"], 
+  weight: ["400", "500", "600", "700"], // 400 zaroori hai aapke liye
+  variable: "--font-poppins" // CSS variable define karein
+});
 
 export const metadata: Metadata = {
   title: "The Dopamine Cafe",
@@ -27,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={poppins.variable}> {/* Variable yahan add karein */}
+      <body className={poppins.className}> {/* Body par default Poppins apply karein */}
         <ReduxProvider>
           <AOSProvider>
             {children}

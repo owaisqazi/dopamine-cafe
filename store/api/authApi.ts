@@ -87,7 +87,7 @@
       query: () => `/user/image`,
       }),
       getProducts: builder.query<any, string|void>({
-      query: () => "user/product",
+      query: () => "/user/category",
     }),
       getBybranch: builder.query<any, void>({
       query: () => `/user/branch`,

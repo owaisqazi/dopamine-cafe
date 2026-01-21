@@ -10,6 +10,10 @@ import {
   MapPin,
   Phone,
   User,
+  ChevronRight,
+  Plus,
+  Trash2,
+  Minus,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -20,11 +24,16 @@ import Cookies from "js-cookie";
 import Modal from "../ui/Modal";
 import OrderTypeContent from "../order-manager-city/OrderTypeContent";
 import AuthForm from "../forms/AuthForm";
+import { useDispatch } from "react-redux";
+import { updateQuantity, removeFromCart } from "@/store/cartSlice";
+import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 
 const Navbar = () => {
   const pathname = usePathname();
+  const dispatch = useDispatch();
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -37,6 +46,7 @@ const Navbar = () => {
   const [isTransparent, setIsTransparent] = useState(true);
   const lastScrollY = useRef(0);
 
+  console.log(cartItems, "cartItems==>");
   const syncLocation = () => {
     const loc = Cookies.get("user_location");
     const parsed = JSON.parse(loc);
@@ -85,6 +95,17 @@ const Navbar = () => {
     { name: "About Us", href: "/about-us" },
     { name: "Contact", href: "/contact" },
   ];
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => {
+      //@ts-ignore
+      const itemBasePrice = Number(item.price || item.base_price || 0);
+      const optionsPrice =
+        item.options?.reduce((optTotal: number, opt: any) => {
+          return optTotal + Number(opt.price_modifier || 0);
+        }, 0) || 0;
+      return total + (itemBasePrice + optionsPrice) * (item.quantity || 1);
+    }, 0);
+  };
 
   return (
     <>
@@ -240,8 +261,9 @@ const Navbar = () => {
               )}
             </div>
 
-            <Link
-              href="/shopping"
+            <button
+              onClick={() => setIsCartOpen(true)}
+              type="button"
               className={`relative flex flex-col items-center gap-1 group ${
                 isTransparent ? "text-white" : "text-black"
               }`}
@@ -260,7 +282,7 @@ const Navbar = () => {
               <span className="text-[10px] font-bold uppercase hidden md:block">
                 Cart
               </span>
-            </Link>
+            </button>
             <button
               onClick={() => setIsSidebarOpen(true)}
               className={`p-1 rounded-md transition-colors ${
@@ -339,9 +361,190 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      {/* FLOATING BOTTOM CART BAR */}
+      {cartItems.length > 0 && (
+        <div className="fixed bottom-2 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-xl animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <button
+            onClick={() => setIsCartOpen(true)}
+            type="button"
+            className="bg-[#f59e0b] hover:bg-[#d97706] w-full text-white flex items-center justify-between px-6 py-4 rounded-2xl shadow-[0_10px_30px_rgba(245,158,11,0.4)] transition-all active:scale-95 group"
+          >
+            <div className="flex items-center gap-4">
+              {/* Item Count Circle */}
+              <div className="w-8 h-8 bg-white text-[#f59e0b] rounded-full flex items-center justify-center font-bold text-sm">
+                {cartItems.length}
+              </div>
+              <span className="font-bold text-lg tracking-wide uppercase">
+                View Cart
+              </span>
+            </div>
 
+            <div className="flex items-center gap-3">
+              <span className="font-bold text-lg">
+                Rs. {calculateTotal().toFixed(2)}
+              </span>
+              <div className="bg-white/20 p-1 rounded-full group-hover:translate-x-1 transition-transform">
+                <ChevronRight size={20} />
+              </div>
+            </div>
+          </button>
+        </div>
+      )}
       {/* Spacer removed because header is transparent and overlaying the hero section */}
+      {/* cart  */}
+      {/* CART DRAWER OVERLAY */}
+      <div
+        className={`fixed inset-0 z-[100] ${
+          isCartOpen ? "visible" : "invisible"
+        }`}
+      >
+        {/* Backdrop shadow */}
+        <div
+          className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
+            isCartOpen ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={() => setIsCartOpen(false)}
+        />
 
+        {/* Drawer Content */}
+        <div
+          className={`absolute right-0 top-0 h-full w-full max-w-[400px] bg-white shadow-2xl transition-transform duration-500 ease-in-out transform ${
+            isCartOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {/* Header */}
+          <div className="p-6 flex justify-between items-center border-b">
+            <h2 className="text-2xl font-bold text-gray-800">Your Cart</h2>
+            <button
+              onClick={() => setIsCartOpen(false)}
+              className="bg-[#d97706] text-white rounded-full p-1 hover:rotate-90 transition-transform"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Cart Items List */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-6 max-h-[calc(100vh-250px)]">
+            {cartItems.length > 0 ? (
+              cartItems.map((item) => {
+                const optionsTotal =
+                  item.options?.reduce(
+                    (acc: number, opt: any) => acc + Number(opt.price_modifier),
+                    0,
+                  ) || 0;
+                const itemTotal =
+                  (Number(item.price) + optionsTotal) * item.quantity;
+
+                return (
+                  <div key={item.id} className="border-b pb-6 last:border-0">
+                    <div className="flex gap-4">
+                      <div className="relative w-16 h-16 rounded-full overflow-hidden border">
+                        <Image
+                          src={IMAGE_BASE_URL + item.image}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start">
+                          <h3 className="font-bold text-gray-800">
+                            {item.name}
+                          </h3>
+                          {/* Quantity Selector inside cart */}
+                          <div className="flex items-center gap-3 border rounded-full px-3 py-1 text-[#d97706]">
+                            {/* MINUS / DELETE BUTTON */}
+                            <button
+                              className="text-red-500"
+                              onClick={() => {
+                                if (item.quantity === 1) {
+                                  dispatch(removeFromCart(item.id));
+                                } else {
+                                  dispatch(
+                                    updateQuantity({ id: item.id, change: -1 }),
+                                  );
+                                }
+                              }}
+                            >
+                              {item.quantity === 1 ? (
+                                <Trash2 size={14} />
+                              ) : (
+                                <Minus size={14} />
+                              )}
+                            </button>
+
+                            <span className="font-bold text-sm text-black">
+                              {item.quantity}
+                            </span>
+
+                            {/* PLUS BUTTON */}
+                            <button
+                              className="text-[#d97706]"
+                              onClick={() =>
+                                dispatch(
+                                  updateQuantity({ id: item.id, change: 1 }),
+                                )
+                              }
+                            >
+                              <Plus size={14} />
+                            </button>
+                          </div>
+                        </div>
+                        <p className="font-bold text-[#d97706]">
+                          Rs. {Number(item.price).toFixed(1)}
+                        </p>
+
+                        {/* Options List */}
+                        {item.options?.map((opt: any) => (
+                          <div
+                            key={opt.id}
+                            className="text-xs text-gray-500 flex justify-between mt-1"
+                          >
+                            <span>+ {opt.name}</span>
+                            {Number(opt.price_modifier) > 0 && (
+                              <span>Rs. {opt.price_modifier}</span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-center py-20 text-gray-400">
+                Cart is empty
+              </div>
+            )}
+
+            {/* Add more items link */}
+            <button
+              onClick={() => setIsCartOpen(false)}
+              className="flex items-center gap-2 text-gray-500 font-medium hover:text-[#d97706]"
+            >
+              <Plus size={18} /> Add more items
+            </button>
+          </div>
+
+          {/* Footer Section */}
+          <div className="absolute bottom-0 left-0 w-full p-6 bg-white border-t space-y-4">
+            <div className="flex justify-between items-center text-gray-600">
+              <span>Delivery Fee</span>
+              <span className="font-bold">Rs. 250.0</span>
+            </div>
+
+            <button className="w-full bg-[#d97706] hover:bg-[#b96404] text-white py-4 rounded-2xl flex justify-between items-center px-6 font-bold transition-all shadow-lg">
+              <span className="text-lg">Checkout</span>
+              <div className="flex items-center gap-2">
+                <span>Rs. {(calculateTotal() + 250).toFixed(1)}</span>
+                <ChevronRight size={20} />
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* CART DRAWER OVERLAY */}
       <Modal
         isOpen={showLocationModal}
         onClose={() => setShowLocationModal(false)}
