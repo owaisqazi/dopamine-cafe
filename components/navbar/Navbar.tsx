@@ -2,46 +2,48 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   ShoppingCart,
   Menu as MenuIcon,
   X,
-  ChevronRight,
-  ChevronLeft,
   MapPin,
+  Phone,
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useGetMenuByMainCategoryQuery } from "@/store/api/authApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 //@ts-ignore
 import Cookies from "js-cookie";
 import Modal from "../ui/Modal";
 import OrderTypeContent from "../order-manager-city/OrderTypeContent";
+import AuthForm from "../forms/AuthForm";
 
 const Navbar = () => {
   const pathname = usePathname();
-  const miniRef = useRef<HTMLDivElement>(null);
   const [showLocationModal, setShowLocationModal] = useState(false);
-
-  const { data } = useGetMenuByMainCategoryQuery();
+  const [isSignup, setIsSignup] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const items = data?.data || [];
   const [token, setToken] = useState<string | null>(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  // LOCATION STATE
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [displayLocation, setDisplayLocation] = useState("Select Location");
+
+  // NEW STATES FOR SCROLL LOGIC
+  const [isVisible, setIsVisible] = useState(true);
+  const [isTransparent, setIsTransparent] = useState(true);
+  const lastScrollY = useRef(0);
 
   const syncLocation = () => {
     const loc = Cookies.get("user_location");
-    if (loc) {
+    const parsed = JSON.parse(loc);
+    console.log(parsed, "parsed==>");
+    if (parsed?.area) {
       try {
-        const parsed = JSON.parse(loc);
-        setDisplayLocation(parsed.area || "Select Location");
+        setDisplayLocation(parsed.area);
       } catch (e) {
         console.error(e);
       }
@@ -49,319 +51,328 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    syncLocation();
     const t = Cookies.get("token");
     setToken(t);
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+  }, []);
+  useEffect(() => {
+    // initial load par bhi location read karo
+    syncLocation();
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      setIsTransparent(currentScrollY <= 50);
+      setIsVisible(currentScrollY <= 0);
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    // ✅ ADD event listener
+    window.addEventListener("locationUpdated", syncLocation);
     window.addEventListener("scroll", handleScroll);
 
-    // CUSTOM EVENT FOR INSTANT UPDATE
-    window.addEventListener("locationUpdated", syncLocation);
-
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      // ✅ REMOVE properly
       window.removeEventListener("locationUpdated", syncLocation);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  const isActive = (path: string) => pathname === path;
-  const isWhiteBg = scrolled || mobileMenuOpen || pathname !== "/";
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "Gallery", href: "/gallery" },
+    { name: "Blog", href: "/blog" },
+    { name: "About Us", href: "/about-us" },
+    { name: "Contact", href: "/contact" },
+  ];
 
-  const getLinkColor = (active: boolean) =>
-    active
-      ? "text-amber-600 font-semibold"
-      : isWhiteBg
-      ? "text-gray-700 hover:text-amber-600"
-      : "text-white hover:text-amber-200";
-  useEffect(() => {
-    const locationCookie = Cookies.get("user_location");
-    const locationSession = sessionStorage.getItem("location_session");
-
-    if (!locationCookie && !locationSession) {
-      setShowLocationModal(true);
-    }
-  }, []);
-
-  const handleCloseLocationModal = () => {
-    setShowLocationModal(false);
-    sessionStorage.setItem("location_session", "true");
-  };
   return (
     <>
-      {/* MINI MENU HEADER (Same as yours) */}
-      {items?.length > 0 && (
-        <div
-          className={`fixed top-0 w-full z-50 left-0 bg-amber-500 hover:bg-amber-700 py-3 text-white text-sm px-6 hidden md:flex overflow-x-auto menu-scrollbar-hide`}
-        >
-          <div className="flex gap-8 mx-auto">
-            {items.map((cat: any) => (
-              <Link
-                key={cat.id}
-                href={`/menu/${cat.id}?name=${cat.name}`}
-                className={`flex-shrink-0 transition-colors ${
-                  pathname === `/menu/${cat.id}`
-                    ? "text-gray-900 font-bold"
-                    : "text-white hover:text-amber-200"
-                }`}
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* MOBILE MINI MENU (Same as yours) */}
-      {items?.length > 0 && (
-        <nav className="fixed top-0 left-0 w-full z-40 bg-amber-600 hover:bg-amber-700 py-0 flex items-center md:hidden">
-          <button
-            onClick={() =>
-              miniRef.current?.scrollBy({ left: -100, behavior: "smooth" })
-            }
-            className="p-2 text-white"
-          >
-            <ChevronLeft />
-          </button>
-          <div
-            ref={miniRef}
-            className="flex gap-6 overflow-x-auto flex-1 px-2 scrollbar-hide"
-          >
-            {items.map((cat: any) => (
-              <Link
-                key={cat.id}
-                href={`/menu/${cat.id}?name=${cat.name}`}
-                className={`flex-shrink-0 whitespace-nowrap transition-colors ${
-                  pathname === `/menu/${cat.id}`
-                    ? "text-gray-900 font-bold"
-                    : "text-white hover:text-amber-200"
-                }`}
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-          <button
-            onClick={() =>
-              miniRef.current?.scrollBy({ left: 100, behavior: "smooth" })
-            }
-            className="p-2 text-white"
-          >
-            <ChevronRight />
-          </button>
-        </nav>
-      )}
-
-      {/* ===== MAIN NAVBAR ===== */}
-      <header>
-        <nav
-          className={`fixed left-0 w-full py-2 z-50 transition-all duration-300 ${
-            isWhiteBg
-              ? `bg-white shadow-lg ${
-                  items?.length > 0 ? "md:top-[43px] top-[40px]" : "top-0"
-                }`
-              : `${items?.length > 0 ? "top-[48px]" : "top-0"} bg-transparent`
-          }`}
-        >
-          <div className="container mx-auto px-6 flex justify-between items-center">
-            {/* LOGO + LOCATION BOX */}
-            <div className="flex items-center gap-2 md:gap-4">
-              <Link href="/" className="flex items-center">
+      {/* HEADER WITH DYNAMIC CLASSES */}
+      <header
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out
+    ${isVisible ? "translate-y-0" : "-translate-y-full"} 
+    ${
+      isTransparent
+        ? "bg-transparent border-transparent"
+        : "bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm"
+    }`}
+      >
+        <div className="container mx-auto px-4 h-20 flex justify-between items-center relative">
+          {/* LEFT SIDE: Mobile mein Logo / Desktop mein Location */}
+          <div className="flex items-center">
+            {/* Mobile Logo: Sirf 'md' screen se niche nazar ayega */}
+            <div className="md:hidden">
+              <Link href="/">
                 <Image
                   src="/dopamine_cafe.png"
                   alt="Logo"
-                  width={70}
-                  height={70}
-                  className="h-12 w-12 md:h-16 md:w-16 rounded-full object-contain"
-                  priority
+                  width={50}
+                  height={50}
+                  className="h-12 w-12 rounded-full object-contain"
                 />
               </Link>
+            </div>
 
-              {/* NEW LOCATION BUTTON (IMAGE STYLE) */}
+            {/* Desktop Location & Contact: Sirf 'md' screen se uper nazar ayega */}
+            <div className="hidden md:flex items-center gap-6">
               <button
                 onClick={() => setShowLocationModal(true)}
-                className="flex items-center gap-2 bg-amber-500 hover:bg-amber-700 text-white px-2 py-1 md:px-4 md:py-2 rounded-xl transition-all shadow-md border border-yellow-900/20"
+                className="flex items-center gap-3 group"
               >
-                <div className="bg-white/20 p-1 rounded-full shrink-0">
-                  <MapPin size={14} className="text-white fill-white" />
-                </div>
-                <div className="flex flex-col items-start leading-tight text-left overflow-hidden">
-                  <span className="text-[8px] md:text-[10px] font-bold uppercase opacity-80">
+                <MapPin
+                  className={isTransparent ? "text-white" : "text-[#f59e0b]"}
+                  size={24}
+                />
+                <div
+                  className={`flex flex-col text-left ${
+                    isTransparent ? "text-white" : "text-black"
+                  }`}
+                >
+                  <span className="font-bold text-sm uppercase text-[10px] lg:text-sm">
                     Change Location
                   </span>
-                  <span className="text-[10px] md:text-sm font-bold truncate max-w-[70px] md:max-w-[150px]">
+                  <span
+                    className={`text-xs ${
+                      isTransparent ? "text-white/80" : "text-gray-500"
+                    }`}
+                  >
                     {displayLocation}
                   </span>
                 </div>
               </button>
-            </div>
-
-            {/* DESKTOP MENU */}
-            <ul className="hidden lg:flex gap-8 items-center">
-              <li>
-                <Link
-                  href="/"
-                  className={`font-medium transition ${getLinkColor(
-                    isActive("/"),
-                  )}`}
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/gallery"
-                  className={`font-medium transition ${getLinkColor(
-                    isActive("/gallery"),
-                  )}`}
-                >
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className={`font-medium transition ${getLinkColor(
-                    isActive("/blog"),
-                  )}`}
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about-us"
-                  className={`font-medium transition ${getLinkColor(
-                    isActive("/about-us"),
-                  )}`}
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className={`font-medium transition ${getLinkColor(
-                    isActive("/contact"),
-                  )}`}
-                >
-                  Contact
-                </Link>
-              </li>
-            </ul>
-
-            {/* CART + MENU ICON */}
-            <div className="flex items-center gap-4">
-              <Link href="/shoping" className="relative">
-                <ShoppingCart
-                  className={isWhiteBg ? "text-gray-700" : "text-white"}
-                />
-                {cartItems.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-amber-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
-                    {cartItems.length}
-                  </span>
-                )}
-              </Link>
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden"
+              <div
+                className={`h-10 w-[1px] mx-2 ${
+                  isTransparent ? "bg-white/30" : "bg-gray-300"
+                }`}
+              ></div>
+              <a
+                href="https://wa.me/923002444443"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3"
               >
-                {mobileMenuOpen ? (
-                  <X className="text-gray-700" />
-                ) : (
-                  <MenuIcon
-                    className={isWhiteBg ? "text-gray-700" : "text-white"}
-                  />
-                )}
-              </button>
-              {token && (
-                <button
-                  onClick={() => {
-                    Cookies.remove("token");
-                    window.location.reload();
-                  }}
-                  className="md:block hidden items-center gap-2 bg-amber-500 hover:bg-amber-700 text-white px-2 py-1 md:px-4 md:py-2 rounded-xl transition-all shadow-md border border-yellow-900/20"
+                <Phone
+                  className={isTransparent ? "text-white" : "text-[#f59e0b]"}
+                  size={24}
+                />
+                <div
+                  className={`flex flex-col ${
+                    isTransparent ? "text-white" : "text-black"
+                  }`}
                 >
-                  Logout
-                </button>
-              )}
+                  <span className="font-bold text-sm uppercase text-[10px] lg:text-sm">
+                    Contact Us
+                  </span>
+                  <span
+                    className={`text-xs ${
+                      isTransparent ? "text-white/80" : "text-gray-500"
+                    }`}
+                  >
+                    +92-300-2444-443
+                  </span>
+                </div>
+              </a>
             </div>
           </div>
 
-          {/* MOBILE MENU DRAWER (Same as yours) */}
-          <div
-            className={`md:hidden absolute w-full bg-white transition-all duration-300 ease-in-out overflow-hidden shadow-xl ${
-              mobileMenuOpen ? "max-h-[500px] py-8" : "max-h-0 py-0"
-            }`}
-          >
-            <ul className="flex flex-col items-center gap-6">
-              <li>
-                <Link
-                  href="/"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-800 font-semibold text-lg"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-800 font-semibold text-lg"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/gallery"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-800 font-semibold text-lg"
-                >
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about-us"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-800 font-semibold text-lg"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-800 font-semibold text-lg"
-                >
-                  Contact
-                </Link>
-              </li>
-              {token && (
-                <li>
+          {/* CENTER: Logo (Sirf Desktop ke liye) */}
+          <div className="hidden md:flex absolute top-2 left-1/2 -translate-x-1/2 items-center justify-center">
+            <Link href="/">
+              <Image
+                src="/dopamine_cafe.png"
+                alt="Logo"
+                width={100}
+                height={100}
+                className={`rounded-full object-contain transition-all duration-500 ease-in-out
+            ${isTransparent ? "h-20 md:h-28 w-auto" : "h-10 md:h-16 w-auto"}
+          `}
+                priority
+              />
+            </Link>
+          </div>
+
+          {/* RIGHT: Icons & Menu Bar (Dono views mein right par rahega) */}
+          <div className="flex items-center gap-4 md:gap-6">
+            <div className="relative">
+              <button
+                onClick={() => {
+                  if (token) {
+                    setIsUserMenuOpen((prev) => !prev);
+                  } else {
+                    setShowAuthModal(true);
+                  }
+                }}
+                className={`p-1 rounded-full transition-colors ${
+                  isTransparent
+                    ? "text-white hover:bg-white/10"
+                    : "text-[#f59e0b] hover:bg-gray-100"
+                }`}
+              >
+                <User size={28} className="ps-2" />
+                <span className="text-[10px] font-bold uppercase hidden md:block">
+                  Profile
+                </span>
+              </button>
+
+              {/* ✅ USER DROPDOWN (only when logged in) */}
+              {token && isUserMenuOpen && (
+                <div className="absolute right-0 mt-3 w-44 bg-[#FFEABF] rounded-xl shadow-xl overflow-hidden z-50">
+                  <button className="w-full text-left px-4 py-3 text-sm hover:bg-[#1C1C19] hover:text-white">
+                    My Profile
+                  </button>
+
+                  <button className="w-full text-left px-4 py-3 text-sm hover:bg-[#1C1C19] hover:text-white">
+                    My Orders
+                  </button>
+
                   <button
                     onClick={() => {
                       Cookies.remove("token");
+                      setIsUserMenuOpen(false);
                       window.location.reload();
                     }}
-                    className="text-gray-800 font-semibold text-lg"
+                    className="w-full text-left px-4 py-3 text-sm hover:bg-[#1C1C19] hover:text-white"
                   >
                     Logout
                   </button>
-                </li>
+                </div>
               )}
-            </ul>
+            </div>
+
+            <Link
+              href="/shopping"
+              className={`relative flex flex-col items-center gap-1 group ${
+                isTransparent ? "text-white" : "text-black"
+              }`}
+            >
+              <div className="relative">
+                <ShoppingCart
+                  className={isTransparent ? "text-white" : "text-[#f59e0b]"}
+                  size={28}
+                />
+                {cartItems.length > 0 && (
+                  <span className="absolute -top-1 -right-2 bg-red-600 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">
+                    {cartItems.length}
+                  </span>
+                )}
+              </div>
+              <span className="text-[10px] font-bold uppercase hidden md:block">
+                Cart
+              </span>
+            </Link>
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className={`p-1 rounded-md transition-colors ${
+                isTransparent
+                  ? "text-white hover:bg-white/10"
+                  : "text-[#f59e0b] hover:bg-gray-100"
+              }`}
+            >
+              <MenuIcon size={32} />
+            </button>
           </div>
-        </nav>
+        </div>
       </header>
+
+      {/* RIGHT SIDE OFF-CANVAS SIDEBAR */}
+      <div
+        className={`fixed inset-0 z-[100] ${
+          isSidebarOpen ? "visible" : "invisible"
+        }`}
+      >
+        <div
+          className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
+            isSidebarOpen ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={() => setIsSidebarOpen(false)}
+        />
+
+        <div
+          className={`absolute right-0 top-0 h-full w-[300px] bg-[#FFEABF] shadow-2xl transition-transform duration-300 ease-in-out transform ${
+            isSidebarOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="p-6">
+            <div className="flex justify-between items-center mb-10">
+              <h2 className="text-xl font-bold uppercase tracking-widest">
+                Menu
+              </h2>
+              <button onClick={() => setIsSidebarOpen(false)}>
+                <X size={28} className="text-gray-500 hover:text-black" />
+              </button>
+            </div>
+
+            <nav>
+              <ul className="flex flex-col gap-6">
+                {navLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsSidebarOpen(false)}
+                      className={`text-lg font-medium block border-b border-transparent hover:border-[#f59e0b] transition-all ${
+                        pathname === link.href
+                          ? "text-[#f59e0b] font-bold"
+                          : "text-gray-800"
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+
+                {token && (
+                  <li>
+                    <button
+                      onClick={() => {
+                        Cookies.remove("token");
+                        window.location.reload();
+                      }}
+                      className="text-lg font-medium text-red-600 uppercase"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                )}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      {/* Spacer removed because header is transparent and overlaying the hero section */}
+
       <Modal
         isOpen={showLocationModal}
-        onClose={handleCloseLocationModal}
+        onClose={() => setShowLocationModal(false)}
         maxWidth="max-w-xl"
       >
-        <OrderTypeContent onClose={handleCloseLocationModal} />
+        <OrderTypeContent onClose={() => setShowLocationModal(false)} />
+      </Modal>
+      <Modal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        maxWidth="max-w-md"
+      >
+        <div className="relative bg-[#FFEABF] shadow-xl rounded-2xl p-8 w-full max-w-md">
+          {/* ❌ Close Button */}
+          <button
+            onClick={() => setShowAuthModal(false)}
+            className="absolute top-4 right-4 text-gray-600 hover:text-black transition"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+
+          <h2 className="text-2xl font-bold text-center mb-6">
+            {isSignup ? "Create Account" : "Welcome Back"}
+          </h2>
+
+          <AuthForm
+            isSignup={isSignup}
+            toggleSignup={() => setIsSignup(!isSignup)}
+          />
+        </div>
       </Modal>
     </>
   );

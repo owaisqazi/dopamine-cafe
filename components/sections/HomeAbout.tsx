@@ -33,7 +33,7 @@ export default function HomeAbout() {
   if (isLoading) return <SkeletonLoader type="about" count={3} />;
 
   return (
-    <section id="about" className="py-20 px-4 relative z-20 bg-white">
+    <section id="about" className="py-20 px-4 relative z-20 bg-[#FFEABF]">
       <div className="container mx-auto">
         {/* SECTION HEADING */}
         <header className="text-center mb-12" data-aos="flip-up">
@@ -55,16 +55,16 @@ export default function HomeAbout() {
                 data-aos-delay={index * 100}
                 data-aos-duration={3000}
                 data-aos-easing="ease-in-out"
-                className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+                className="group bg-[#1C1C19] hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
               >
                 <CardContent className="p-6 text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-600 mb-4 group-hover:scale-110 transition-transform">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#1C1C19] text-amber-600 mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="w-6 h-6" aria-hidden="true" />
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">
+                  <h3 className="font-semibold text-white mb-2">
                     {info.title}
                   </h3>
-                  <p className="text-gray-600 text-sm">{info.content}</p>
+                  <p className="text-white text-sm">{info.content}</p>
                 </CardContent>
               </Card>
             );

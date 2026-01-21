@@ -12,7 +12,7 @@ export default function HomeGallery() {
   return (
     <section
       id="gallery"
-      className="py-16 px-4 bg-[#ffffff]"
+      className="py-16 px-4 bg-[#FFEABF]"
       style={{ backgroundAttachment: "fixed" }}
       aria-label="Gallery of The Dopamine Cafe"
     >

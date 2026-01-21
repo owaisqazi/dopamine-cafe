@@ -61,7 +61,7 @@
       query: () => `/user/main-category`,
       }),
       getMenuByCategory: builder.query<any, string>({
-      query: (id) => `/user/category?main_category_id=${id}`,
+      query: (id) => `/user/category`,
       }),
       getByHomeSlider: builder.query<any, void>({
       query: () => `/user/slider`,
@@ -72,20 +72,23 @@
       getByHomeGallery: builder.query<any, void>({
       query: () => `/user/gallery`,
       }),
-      getByProduct: builder.query<any, { main_category_id?: string; category_id?: string } | void>({
-      query: (ids) => {
-        if (ids?.main_category_id || ids?.category_id) {
-          const params = new URLSearchParams();
-          if (ids.main_category_id) params.append("main_category_id", ids.main_category_id);
-          if (ids.category_id) params.append("category_id", ids.category_id);
-          return `/user/product?${params.toString()}`;
-        }
-        return `/user/product`;
-      },
-      }),
+      // getByProduct: builder.query<any, { main_category_id?: string; category_id?: string } | void>({
+      // query: (ids) => {
+      //   if (ids?.main_category_id || ids?.category_id) {
+      //     const params = new URLSearchParams();
+      //     if (ids.main_category_id) params.append("main_category_id", ids.main_category_id);
+      //     if (ids.category_id) params.append("category_id", ids.category_id);
+      //     return `/user/product?${params.toString()}`;
+      //   }
+      //   return `/user/product`;
+      // },
+      // }),
       getByHomeImage: builder.query<any, void>({
       query: () => `/user/image`,
       }),
+      getProducts: builder.query<any, string|void>({
+      query: () => "user/product",
+    }),
       getBybranch: builder.query<any, void>({
       query: () => `/user/branch`,
       }),
@@ -113,4 +116,4 @@
       }),
     }),
   });
-  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetByProductQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery} = authApi;
+  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetProductsQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery} = authApi;

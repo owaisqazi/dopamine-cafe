@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Settings } from "lucide-react";
 
 const COOKIE_CATEGORIES = [
   {
@@ -113,7 +114,8 @@ export default function CookieModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0); // open first category by default
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [settingshow, setSettingshow] = useState<boolean>(false);
   const [preferences, setPreferences] = useState<Record<string, string>>({
     "Performance Cookies": "enabled",
     "Functional Cookies": "enabled",
@@ -132,7 +134,12 @@ export default function CookieModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-start pt-20 pb-12 px-4 z-50"
+      className="fixed  bottom-4
+    left-4
+    rounded-xl
+    shadow-2xl
+    w-auto
+    border-b-2 flex justify-center items-start z-50"
       role="dialog"
       aria-modal="true"
       data-aos="flip-left"
@@ -141,11 +148,15 @@ export default function CookieModal({
       data-aos-anchor-placement="top-bottom"
       aria-labelledby="cookie-modal-title"
     >
-      <div className="bg-white rounded-xl shadow-2xl max-w-xl w-full border-b-2 py-4 px-8 relative flex flex-col md:h-auto md:overflow-y-hidden h-[450px] overflow-y-auto">
+      <div
+        className={`bg-white rounded-xl shadow-2xl max-w-xl w-full border-b-2 py-4 px-4 relative flex flex-col ${
+          settingshow === true ? "h-auto" : "h-[230px]"
+        }`}
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-3xl font-bold focus:outline-none"
+          className="absolute top-2 right-4 text-gray-500 hover:text-gray-900 text-3xl font-bold focus:outline-none"
           aria-label="Close cookie preferences"
         >
           &times;
@@ -153,12 +164,12 @@ export default function CookieModal({
 
         <h2
           id="cookie-modal-title"
-          className="text-2xl font-bold mb-6 text-amber-700 tracking-wide"
+          className="text-1xl font-bold mb-0 text-amber-700 tracking-wide"
         >
           Privacy Preference Center
         </h2>
 
-        <p className="text-gray-700 mb-6 text-sm leading-relaxed">
+        <p className="text-gray-700 text-[12px] leading-relaxed">
           When you visit any website, it may store or retrieve information on
           your browser, mostly in the form of cookies. This information might be
           about you, your preferences, or your device and is mostly used to make
@@ -167,22 +178,30 @@ export default function CookieModal({
           experience.
         </p>
 
-        <h3 className="font-semibold text-gray-900 mb-4 text-lg tracking-wide">
+        <h3 className="font-semibold text-gray-900 mb-2 text-md tracking-wide">
           Manage Consent Preferences
         </h3>
-
-        <ul className="space-y-3 md:h-[200px] md:overflow-y-auto mb-8">
-          {COOKIE_CATEGORIES.map((cat, idx) => (
-            <CookieCategory
-              key={cat.name}
-              category={cat}
-              isOpen={openIndex === idx}
-              onToggle={() => toggleOpen(idx)}
-              selectedOption={preferences[cat.name] || "enabled"}
-              onChange={(val) => handlePreferenceChange(cat.name, val)}
-            />
-          ))}
-        </ul>
+        <button
+          onClick={() => setSettingshow(!settingshow)}
+          className="flex items-center gap-2 text-amber-700 hover:text-amber-800 text-sm font-semibold mb-2"
+        >
+          <Settings className="w-6 h-6" />
+          Cookie Settings
+        </button>
+        {settingshow && (
+          <ul className="space-y-3 md:h-[200px] md:overflow-y-auto mb-8">
+            {COOKIE_CATEGORIES.map((cat, idx) => (
+              <CookieCategory
+                key={cat.name}
+                category={cat}
+                isOpen={openIndex === idx}
+                onToggle={() => toggleOpen(idx)}
+                selectedOption={preferences[cat.name] || "enabled"}
+                onChange={(val) => handlePreferenceChange(cat.name, val)}
+              />
+            ))}
+          </ul>
+        )}
 
         <div className="flex justify-end gap-4">
           <button

@@ -80,7 +80,7 @@ export default function ReviewTestimonials() {
         >
           {items?.map((reviewItem: any) => (
             <SwiperSlide key={reviewItem?.id}>
-              <div className="bg-white p-6 my-3 rounded-2xl shadow-md hover:shadow-xl transition flex flex-col h-full min-h-[200px]">
+              <div className="bg-[#1C1C19] p-6 my-3 rounded-2xl shadow-md hover:shadow-xl transition flex flex-col h-full min-h-[200px]">
                 {/* Stars Section */}
                 <div className="flex items-center mb-3">
                   {Array.from({ length: 5 }, (_, i) => (
@@ -89,7 +89,7 @@ export default function ReviewTestimonials() {
                       className={`w-4 h-4 fill-current ${
                         i < reviewItem?.rating
                           ? "text-yellow-400"
-                          : "text-gray-300"
+                          : "text-gray-100"
                       }`}
                       viewBox="0 0 20 20"
                     >
@@ -99,7 +99,7 @@ export default function ReviewTestimonials() {
                 </div>
 
                 {/* Text Section with 4-line limit */}
-                <p title={reviewItem?.review} className="text-gray-600 text-sm flex-1 line-clamp-4 overflow-hidden text-ellipsis cursor-pointer">
+                <p title={reviewItem?.review} className="text-white text-sm flex-1 line-clamp-4 overflow-hidden text-ellipsis cursor-pointer">
                   {reviewItem?.review}
                 </p>
 

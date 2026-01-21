@@ -49,7 +49,7 @@ export default function Contact() {
 
   const handleSubmit = async (
     values: ContactFormValues,
-    { resetForm }: any
+    { resetForm }: any,
   ) => {
     try {
       const formData = new FormData();
@@ -70,7 +70,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="pt-20 bg-white relative z-20">
+    <section id="contact" className="pt-20 bg-[#FFEABF] relative z-20">
       <div className="container mx-auto max-w-6xl">
         {/* Heading */}
         {/* <div className="text-center mb-12">
@@ -82,14 +82,13 @@ export default function Contact() {
           {/* LEFT: Contact Info */}
           <div>
             <address className="not-italic space-y-4 text-gray-600">
-              <p>785 15h Street, Office 478</p>
-              <p>Berlin, DE 81566</p>
+              <p>Shop # 2 & 3, Dopamine Coffee Bar, Sindhi Muslim Cooperative Housing Society Block A Sindhi Muslim CHS (SMCHS), Karach</p>
               <p>
                 <a
                   href="mailto:info@email.com"
                   className="text-gray-800 hover:text-amber-600 transition"
                 >
-                  info@email.com
+                  dopaminecafe@email.com
                 </a>
               </p>
               <p>
@@ -129,21 +128,22 @@ export default function Contact() {
                   {/* Name + Email */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="flex items-center gap-3 border-b border-gray-300 pb-3">
-                      <User className="w-4 h-4 text-gray-500" />
+                      <User className="w-4 h-4 text-black" />{" "}
+                      {/* Icon color change */}
                       <Field
                         type="text"
                         name="name"
                         placeholder="Name"
-                        className="w-full outline-none text-gray-700 placeholder-gray-500"
+                        className="w-full outline-none bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black"
                       />
                     </div>
                     <div className="flex items-center gap-3 border-b border-gray-300 pb-3">
-                      <Mail className="w-4 h-4 text-gray-500" />
+                      <Mail className="w-4 h-4 text-black" />
                       <Field
                         type="email"
                         name="email"
                         placeholder="Email Address"
-                        className="w-full outline-none text-gray-700 placeholder-gray-500"
+                        className="w-full outline-none bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black"
                       />
                     </div>
                   </div>
@@ -151,78 +151,45 @@ export default function Contact() {
                   {/* Phone + Subject */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="flex items-center gap-3 border-b border-gray-300 pb-3">
+                      {/* Note: PhoneField ke andar ja kar bhi aapko styling check karni hogi */}
                       <PhoneField
                         name="phone"
-                        className={""}
+                        className="bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black"
                         placeholder="Enter your phone"
                       />
                     </div>
                     <div className="flex items-center gap-3 border-b border-gray-300 pb-3">
-                      <Info className="w-4 h-4 text-gray-500" />
+                      <Info className="w-4 h-4 text-black" />
                       <Field
                         type="text"
                         name="subject"
                         placeholder="Subject"
-                        className="w-full outline-none text-gray-700 placeholder-gray-500"
+                        className="w-full outline-none bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black"
                       />
                     </div>
                   </div>
 
                   {/* Message */}
                   <div className="flex items-start gap-3 border-b border-gray-300 pb-16">
-                    <Pencil className="w-4 h-4 text-gray-500 mt-1" />
+                    <Pencil className="w-4 h-4 text-black mt-1" />
                     <Field
                       as="textarea"
                       name="message"
                       rows={4}
                       placeholder="How can we help you? Feel free to get in touch!"
-                      className="w-full resize-none outline-none text-gray-700 placeholder-gray-500"
+                      className="w-full resize-none outline-none bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black"
                     />
                   </div>
 
-                  {/* Checkbox + Button */}
+                  {/* Button */}
                   <div className="flex flex-col md:flex-row items-center gap-6">
                     <button
                       type="submit"
                       disabled={isSubmitting}
                       className="bg-amber-600 text-white px-10 py-3 rounded-full hover:opacity-90 transition flex items-center gap-2"
                     >
-                      {isSubmitting ? (
-                        <div className="flex items-center gap-2 justify-center">
-                          <svg
-                            className="w-5 h-5 animate-spin text-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8v8H4z"
-                            ></path>
-                          </svg>
-                          ✈ Get In Touch
-                        </div>
-                      ) : (
-                        "✈ Get In Touch"
-                      )}
+                      {isSubmitting ? "Submitting..." : "✈ Get In Touch"}
                     </button>
-
-                    {/* <label className="flex items-center gap-2 text-sm text-gray-500">
-                      <Field type="checkbox" name="agree" />
-                      I agree that my submitted data is{" "}
-                      <span className="underline cursor-pointer">
-                        collected and stored
-                      </span>
-                    </label> */}
                   </div>
                 </Form>
               )}
@@ -233,12 +200,12 @@ export default function Contact() {
 
       {/* Google Maps Embed */}
       <div className="mx-auto">
-        <Card className="overflow-hidden shadow-2xl">
+        <Card className="overflow-hidden h-[500px] shadow-2xl">
           <div className="aspect-video w-full">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115824.50396460664!2d66.9489125536689!3d24.88038354183107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e85a24caa7f%3A0x9716f7757ab105e0!2zTmV3IFlvcmsgQ29mZmVl25Qg2YbbjNmI24zYp9ix2qkg2qnYp9mB24w!5e0!3m2!1sen!2s!4v1766222723566!5m2!1sen!2s"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28958.028040425157!2d67.02439163021548!3d24.872267036949893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f003279c771%3A0xe0af3c5f91ed418f!2sDopamine%20Coffee%20Bar!5e0!3m2!1sen!2s!4v1768951995513!5m2!1sen!2s"
               width="100%"
-              height="100%"
+              height="500px"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"

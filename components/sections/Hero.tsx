@@ -3,10 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
-import AuthForm from "../forms/AuthForm";
 import SkeletonLoader from "../Skeleton/SkeletonLoader";
-//@ts-ignore
-import Cookies from "js-cookie";
 
 const slides = [
   {
@@ -20,6 +17,7 @@ const slides = [
     subtitle: "The Dopamine Cafe",
   },
 ];
+
 const sideImages = [
   { id: 1, image: "/banner-image-hero.png" },
   { id: 2, image: "/banner-image-hero2.png" },
@@ -27,21 +25,18 @@ const sideImages = [
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
-  const [token, setToken] = useState<string | null>(null);
-  const [isSignup, setIsSignup] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const t = Cookies.get("token");
-    setToken(t);
     setLoading(false);
   }, []);
 
   /* Autoplay */
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrent((c) => (c + 1) % slides?.length);
+      setCurrent((c) => (c + 1) % slides.length);
     }, 9000);
+
     return () => clearInterval(timer);
   }, []);
 
@@ -51,14 +46,14 @@ export default function Hero() {
     <section className="relative h-screen overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
-        {slides?.map((slide, index) => (
+        {slides.map((slide, index) => (
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ${
               index === current ? "opacity-100" : "opacity-0"
             }`}
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(${slide?.image})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(${slide.image})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -68,22 +63,10 @@ export default function Hero() {
 
       {/* Content */}
       <main className="relative z-10 w-full h-full flex items-center justify-center px-6">
-        <div
-          className={`w-full md:flex items-center mt-10 md:mt-20 ${
-            token
-              ? "justify-between md:mx-20 max-w-7xl"
-              : "justify-between md:mx-20 max-w-7xl"
-          }`}
-        >
+        <div className="w-full md:flex items-center justify-between md:mx-20 max-w-7xl mt-10 md:mt-20">
           {/* Text */}
-          <div
-            className={`relative ${
-              token
-                ? "md:w-full max-w-xl min-h-[260px]"
-                : "md:w-full max-w-xl min-h-[260px]"
-            }`}
-          >
-            {slides?.map((slide, index) => (
+          <div className="relative md:w-full max-w-xl min-h-[260px]">
+            {slides.map((slide, index) => (
               <div
                 key={index}
                 className={`absolute inset-0 transition-all duration-700 ${
@@ -92,39 +75,29 @@ export default function Hero() {
                     : "opacity-0 translate-y-6"
                 }`}
               >
-                <h1 className="text-4xl md:text-6xl md:pt-0 pt-20 lg:text-7xl font-bold text-white leading-tight">
-                  {slide?.title}
+                <h1 className="text-4xl md:text-6xl pt-20 md:pt-0 lg:text-7xl font-bold text-white leading-tight">
+                  {slide.title}
                 </h1>
-                <p className="mt-4 text-xl text-amber-300">{slide?.subtitle}</p>
+                <p className="mt-4 text-xl text-amber-300">
+                  {slide.subtitle}
+                </p>
               </div>
             ))}
           </div>
 
-          {/* Auth Form */}
-          {!token ? (
-            <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md">
-              <h2 className="text-2xl font-bold text-center mb-6">
-                {isSignup ? "Create Account" : "Welcome Back"}
-              </h2>
-              <AuthForm
-                isSignup={isSignup}
-                toggleSignup={() => setIsSignup(!isSignup)}
-              />
-            </div>
-          ) : (
-            <img
-              src={sideImages[current]?.image} 
-              alt={`Side Image ${current + 1}`}
-              className="rounded-2xl object-cover w-full max-w-md h-auto shadow-lg"
-            />
-          )}
+          {/* Side Image (always visible now) */}
+          <img
+            src={sideImages[current]?.image}
+            alt={`Side Image ${current + 1}`}
+            className="rounded-2xl object-cover w-full max-w-md h-auto shadow-lg"
+          />
         </div>
       </main>
 
       {/* Controls */}
       <button
         onClick={() =>
-          setCurrent((c) => (c - 1 + slides?.length) % slides?.length)
+          setCurrent((c) => (c - 1 + slides.length) % slides.length)
         }
         className="absolute left-6 top-1/2 -translate-y-1/2 md:block hidden bg-white/20 p-3 rounded-full z-20"
       >
@@ -132,7 +105,7 @@ export default function Hero() {
       </button>
 
       <button
-        onClick={() => setCurrent((c) => (c + 1) % slides?.length)}
+        onClick={() => setCurrent((c) => (c + 1) % slides.length)}
         className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full z-20 md:block hidden"
       >
         <ChevronRight className="text-white" />

@@ -12,7 +12,7 @@ import Navbar from "@/components/navbar/Navbar";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
+    <main className="min-h-screen bg-[#fdeabf]">
       <Navbar />
       <Hero />
       <HomeManu />

@@ -14,7 +14,7 @@ export default function Blog() {
   if (isLoading) return <SkeletonLoader type="blog" count={4} />;
 
   return (
-    <section id="blog" className="py-20 px-4 relative z-20 bg-white">
+    <section id="blog" className="py-20 px-4 relative z-20 bg-[#FFEABF]">
       <div className="container mx-auto">
         {/* SECTION HEADING */}
         <header className="text-center mb-12" data-aos="flip-up">

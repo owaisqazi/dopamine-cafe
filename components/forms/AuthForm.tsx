@@ -88,7 +88,7 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
               <div>
                 <div className="flex items-center gap-3 border-b pb-2.5">
                   <User size={16} />
-                  <Field name="name" placeholder="Full Name" className="w-full outline-none" />
+                  <Field name="name" placeholder="Full Name" className="w-full outline-none bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black" />
                 </div>
                 {touched.name && errors.name && (
                   <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -109,7 +109,7 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
               name="email"
               type="email"
               placeholder="Email Address"
-              className="w-full outline-none"
+              className="w-full outline-none bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black"
             />
           </div>
           {touched.email && errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
@@ -121,7 +121,7 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
               name="password"
               type="password"
               placeholder="Password"
-              className="w-full outline-none"
+              className="w-full outline-none bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black"
             />
           </div>
           {touched.password && errors.password && (

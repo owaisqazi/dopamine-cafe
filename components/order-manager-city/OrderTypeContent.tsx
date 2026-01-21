@@ -64,7 +64,7 @@ const OrderTypeContent = ({ onClose }: ContentProps) => {
   };
 
   return (
-    <div className="p-4 text-center bg-white">
+    <div className="p-4 text-center bg-[#FFEABF]e">
       <p className="text-sm text-gray-500 mb-4 font-medium">Please select your location</p>
 
       <button
