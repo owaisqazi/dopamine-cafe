@@ -150,7 +150,7 @@ export default function CookieModal({
     >
       <div
         className={`bg-white rounded-xl shadow-2xl max-w-xl w-full border-b-2 py-4 px-4 relative flex flex-col ${
-          settingshow === true ? "h-auto" : "h-[230px]"
+          settingshow === true ? "h-auto" : "md:h-[230px] h-[250px]"
         }`}
       >
         {/* Close Button */}
