@@ -76,7 +76,7 @@ export default function Footer({
 
   return (
     <>
-       <footer className="bg-[#1C1C1A] text-white py-12 px-4 z-20 relative">
+      <footer className="bg-[#1C1C1A] text-white py-12 px-4 z-20 relative">
         <div className="container mx-auto">
           {/* Top Section */}
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 mb-10 border-b border-gray-800 pb-10">
@@ -151,7 +151,7 @@ export default function Footer({
                   {isLoading ? "..." : "Subscribe"}
                 </button>
               </form>
-                            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-amber-500" />
                 <a
                   href="tel:021-37229364"
@@ -173,12 +173,16 @@ export default function Footer({
               </div>
             </div>
           </div>
-                        <div className="flex flex-col items-center md:items-center gap-2 text-gray-500 text-sm">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-amber-500" />
-                <span>Shop # 2 & 3, The Dopamine (Restaurant & Coffee Bar), Sindhi Muslim Cooperative Housing Society Block A Sindhi Muslim CHS (SMCHS), Karachi</span>
-              </div>
+          <div className="flex flex-col items-center md:items-center gap-2 text-gray-500 text-sm">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-amber-500" />
+              <span>
+                Shop # 2 & 3, The Dopamine (Restaurant & Coffee Bar), Sindhi
+                Muslim Cooperative Housing Society Block A Sindhi Muslim CHS
+                (SMCHS), Karachi
+              </span>
             </div>
+          </div>
           {/* Bottom Copyright Section */}
           <div className="text-center pt-6">
             <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-gray-500 text-sm">
