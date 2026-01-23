@@ -6,11 +6,7 @@ const ContactFloatButton = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div
-      className="fixed bottom-3 right-5 z-50 flex flex-col items-end gap-3"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="fixed bottom-3 right-5 z-50 flex flex-col items-end gap-3">
       {/* WhatsApp Button */}
       <a
         href="https://wa.me/923002444443"
@@ -50,11 +46,10 @@ const ContactFloatButton = () => {
       {/* Main Floating Icon */}
       <div
         className="bg-[#2A2A28] p-3 rounded-full shadow-lg cursor-pointer hover:bg-[#3a3a37] transition animate-float"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <Phone
-                          className={"text-[#f59e0b]"}
-                          size={24}
-                        />
+        <Phone className="text-[#f59e0b]" size={24} />
       </div>
     </div>
   );
