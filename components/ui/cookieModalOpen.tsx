@@ -149,8 +149,8 @@ export default function CookieModal({
       aria-labelledby="cookie-modal-title"
     >
       <div
-        className={`bg-white rounded-xl shadow-2xl max-w-xl w-full border-b-2 py-4 px-4 relative flex flex-col ${
-          settingshow === true ? "h-auto" : "md:h-[230px] h-[250px]"
+        className={`bg-white rounded-xl shadow-2xl max-w-sm w-full border-b-2 py-4 px-4 relative flex flex-col ${
+          settingshow === true ? "h-auto" : "md:h-[220px] h-[300px]"
         }`}
       >
         {/* Close Button */}
@@ -169,7 +169,7 @@ export default function CookieModal({
           Privacy Preference Center
         </h2>
 
-        <p className="text-gray-700 text-[12px] leading-relaxed">
+        <p className="text-gray-700 text-[11px] leading-relaxed">
           When you visit any website, it may store or retrieve information on
           your browser, mostly in the form of cookies. This information might be
           about you, your preferences, or your device and is mostly used to make
@@ -177,10 +177,6 @@ export default function CookieModal({
           identify you directly, but can give you a more personalized
           experience.
         </p>
-
-        <h3 className="font-semibold text-gray-900 mb-2 text-md tracking-wide">
-          Manage Consent Preferences
-        </h3>
         <button
           onClick={() => setSettingshow(!settingshow)}
           className="flex items-center gap-2 text-amber-700 hover:text-amber-800 text-sm font-semibold mb-2"
@@ -189,6 +185,10 @@ export default function CookieModal({
           Cookie Settings
         </button>
         {settingshow && (
+          <>
+          <h3 className="font-semibold text-gray-900 mb-2 text-md tracking-wide">
+          Manage Consent Preferences
+        </h3>
           <ul className="space-y-3 md:h-[200px] md:overflow-y-auto mb-8">
             {COOKIE_CATEGORIES.map((cat, idx) => (
               <CookieCategory
@@ -201,6 +201,7 @@ export default function CookieModal({
               />
             ))}
           </ul>
+          </>
         )}
 
         <div className="flex justify-end gap-4">
@@ -214,13 +215,13 @@ export default function CookieModal({
               });
               onClose();
             }}
-            className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
+            className="bg-amber-600 hover:bg-amber-700 text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
           >
             Reject All
           </button>
           <button
             onClick={() => onClose()}
-            className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
+            className="bg-amber-600 hover:bg-amber-700 text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
           >
             Confirm My Choices
           </button>

@@ -12,6 +12,7 @@ export interface CartItem {
     name: string;
     price_modifier: number;
   }[];
+  optionsKey: string; // 🔑 IMPORTANT
 }
 
 interface CartState {
@@ -26,11 +27,12 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    // ✅ ADD TO CART (id + optionsKey)
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      // Yahan hum ID ke saath selected options ko bhi check karenge 
-      // taake agar same item different options ke sath ho to alag dikhe
       const existingItem = state.items.find(
-        (i) => String(i.id) === String(action.payload.id)
+        (i) =>
+          String(i.id) === String(action.payload.id) &&
+          i.optionsKey === action.payload.optionsKey
       );
 
       if (existingItem) {
@@ -40,9 +42,21 @@ const cartSlice = createSlice({
       }
     },
 
-    // --- NAYA REDUCER: Quantity update karne ke liye ---
-    updateQuantity: (state, action: PayloadAction<{ id: string | number; change: number }>) => {
-      const item = state.items.find((i) => String(i.id) === String(action.payload.id));
+    // ✅ UPDATE QUANTITY (id + optionsKey)
+    updateQuantity: (
+      state,
+      action: PayloadAction<{
+        id: string | number;
+        optionsKey: string;
+        change: number;
+      }>
+    ) => {
+      const item = state.items.find(
+        (i) =>
+          String(i.id) === String(action.payload.id) &&
+          i.optionsKey === action.payload.optionsKey
+      );
+
       if (item) {
         const newQuantity = item.quantity + action.payload.change;
         if (newQuantity > 0) {
@@ -51,22 +65,36 @@ const cartSlice = createSlice({
       }
     },
 
-    removeFromCart: (state, action: PayloadAction<string | number>) => {
+    // ✅ REMOVE ITEM (id + optionsKey)
+    removeFromCart: (
+      state,
+      action: PayloadAction<{ id: string | number; optionsKey: string }>
+    ) => {
       state.items = state.items.filter(
-        (i) => String(i.id) !== String(action.payload)
+        (i) =>
+          !(
+            String(i.id) === String(action.payload.id) &&
+            i.optionsKey === action.payload.optionsKey
+          )
       );
     },
+
     clearCart: (state) => {
       state.items = [];
     },
 
-    // ✅ Yeh wapas add karein
     setCartItems: (state, action: PayloadAction<CartItem[]>) => {
       state.items = action.payload;
     },
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, setCartItems, updateQuantity } = cartSlice.actions;
+export const {
+  addToCart,
+  updateQuantity,
+  removeFromCart,
+  clearCart,
+  setCartItems,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

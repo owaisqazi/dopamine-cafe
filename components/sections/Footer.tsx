@@ -8,6 +8,9 @@ import {
   Twitter,
   Cookie,
   Clock,
+  MessageCircle,
+  Phone,
+  MapPin,
 } from "lucide-react";
 import Image from "next/image";
 import CookieModal from "../ui/cookieModalOpen";
@@ -73,7 +76,7 @@ export default function Footer({
 
   return (
     <>
-      <footer className="bg-[#1C1C1A] text-white py-12 px-4 z-20 relative">
+       <footer className="bg-[#1C1C1A] text-white py-12 px-4 z-20 relative">
         <div className="container mx-auto">
           {/* Top Section */}
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 mb-10 border-b border-gray-800 pb-10">
@@ -103,7 +106,7 @@ export default function Footer({
             {/* RIGHT : Links + Social + Newsletter */}
             <div className="flex flex-col items-center md:items-end gap-6 w-full md:w-auto">
               {/* Links */}
-              <div className="flex flex-wrap justify-center gap-6 text-gray-300 font-medium">
+              <div className="flex flex-wrap justify-center gap-6 text-gray-500 font-medium">
                 <a href="/" className="hover:text-amber-500 transition">
                   Home
                 </a>
@@ -148,8 +151,34 @@ export default function Footer({
                   {isLoading ? "..." : "Subscribe"}
                 </button>
               </form>
+                            <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-amber-500" />
+                <a
+                  href="tel:021-37229364"
+                  className="hover:text-amber-500 transition text-gray-500"
+                >
+                  021-37229364
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <MessageCircle className="w-4 h-4 text-amber-500 " />
+                <a
+                  href="https://wa.me/+923002444443"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-amber-500 transition text-gray-500"
+                >
+                  +92-300-2444443
+                </a>
+              </div>
             </div>
           </div>
+                        <div className="flex flex-col items-center md:items-center gap-2 text-gray-500 text-sm">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-amber-500" />
+                <span>Shop # 2 & 3, The Dopamine (Restaurant & Coffee Bar), Sindhi Muslim Cooperative Housing Society Block A Sindhi Muslim CHS (SMCHS), Karachi</span>
+              </div>
+            </div>
           {/* Bottom Copyright Section */}
           <div className="text-center pt-6">
             <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-gray-500 text-sm">
@@ -164,6 +193,7 @@ export default function Footer({
           </div>
         </div>
       </footer>
+
       <div
         className="fixed bottom-4 left-4 z-50 bg-[#2A2A28] p-3 rounded-full shadow-lg cursor-pointer hover:bg-[#3a3a37] transition"
         onClick={() => setCookieModalOpen(true)}

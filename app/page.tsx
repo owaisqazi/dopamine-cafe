@@ -5,7 +5,7 @@ import Hero from "@/components/sections/Hero";
 import HomeAbout from "@/components/sections/HomeAbout";
 import Gallery from "@/components/sections/HomeGallery";
 import Footer from "@/components/sections/Footer";
-import HomeManu from "@/components/sections/HomeManu";
+import HomeManu from "@/components/sections/menu/HomeManu";
 import ReviewTestimonials from "@/components/sections/ReviewTestimonials";
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/navbar/Navbar";

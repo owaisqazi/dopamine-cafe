@@ -31,7 +31,6 @@ interface CartItemProps {
 function CartItemCard({ item, handleQuantity, readOnly }: CartItemProps) {
   return (
     <article className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition">
-      
       {/* IMAGE */}
       <div className="col-span-1 md:col-span-2 w-full">
         <img
@@ -108,27 +107,23 @@ function CartItemCard({ item, handleQuantity, readOnly }: CartItemProps) {
       {/* TOTAL */}
       <div className="col-span-1 md:col-span-12">
         <h2 className="font-bold flex justify-between items-center">
-          <span>
-            Total product
-          </span>
+          <span>Total product</span>
           <span>
             Rs.
             {(
-            item?.price * item?.quantity +
-            (item?.options?.reduce(
-              (sum: number, opt: any) =>
-                sum + Number(opt?.price_modifier) * item?.quantity,
-              0,
-            ) || 0)
-          ).toFixed(2)}
+              item?.price * item?.quantity +
+              (item?.options?.reduce(
+                (sum: number, opt: any) =>
+                  sum + Number(opt?.price_modifier) * item?.quantity,
+                0,
+              ) || 0)
+            ).toFixed(2)}
           </span>
         </h2>
       </div>
-
     </article>
   );
 }
-
 
 export default function ShoppingCartTabs() {
   const dispatch = useDispatch<AppDispatch>();
@@ -168,7 +163,12 @@ export default function ShoppingCartTabs() {
       // Remove unpaid items from cart
       cartItems.forEach((item) => {
         if (unpaidIds.includes(item?.id)) {
-          dispatch(removeFromCart(item?.id));
+          dispatch(
+            removeFromCart({
+              id: item.id,
+              optionsKey: item.optionsKey,
+            }),
+          );
         }
       });
     } else if (activeTab === "unpaid") {
@@ -189,6 +189,7 @@ export default function ShoppingCartTabs() {
                 price: Number(item?.price),
                 quantity: Number(item?.quantity),
                 options: item?.options || [],
+                optionsKey: "no-options",
               }),
             );
           }
@@ -203,7 +204,7 @@ export default function ShoppingCartTabs() {
       order?.items?.map((item: any) => item?.id),
     );
   }, [orderData]);
-//@ts-ignore
+  //@ts-ignore
   const unpaidCartItems = useMemo(
     () => cartItems.filter((item) => unpaidProductIds.includes(item?.id)),
     [cartItems, unpaidProductIds],
@@ -214,22 +215,29 @@ export default function ShoppingCartTabs() {
     [cartItems, unpaidProductIds],
   );
 
-const activeCartItems = useMemo(() => {
-  if (activeTab === "cart") return cartItems.filter(item => !unpaidProductIds.includes(item?.id));
-  if (activeTab === "unpaid") return cartItems.filter(item => unpaidProductIds.includes(item?.id));
-  if (activeTab === "paid") return orderData?.paid_orders?.flatMap((order: any) =>
-    order?.products.map((product: any) => {
-      const item = order?.items.find((i: any) => i.product_id === product?.id);
-      return {
-        ...product,
-        quantity: item?.quantity || 1,
-        price: Number(item?.price || product?.base_price),
-        options: item?.options || [],
-      };
-    })
-  ) || [];
-  return [];
-}, [activeTab, cartItems, unpaidProductIds, orderData]);
+  const activeCartItems = useMemo(() => {
+    if (activeTab === "cart")
+      return cartItems.filter((item) => !unpaidProductIds.includes(item?.id));
+    if (activeTab === "unpaid")
+      return cartItems.filter((item) => unpaidProductIds.includes(item?.id));
+    if (activeTab === "paid")
+      return (
+        orderData?.paid_orders?.flatMap((order: any) =>
+          order?.products.map((product: any) => {
+            const item = order?.items.find(
+              (i: any) => i.product_id === product?.id,
+            );
+            return {
+              ...product,
+              quantity: item?.quantity || 1,
+              price: Number(item?.price || product?.base_price),
+              options: item?.options || [],
+            };
+          }),
+        ) || []
+      );
+    return [];
+  }, [activeTab, cartItems, unpaidProductIds, orderData]);
 
   const subtotal = useMemo(
     () =>
@@ -264,10 +272,20 @@ const activeCartItems = useMemo(() => {
       if (item?.quantity > 1) {
         dispatch(addToCart({ ...item, quantity: -1 }));
       } else {
-        dispatch(removeFromCart(item?.id));
+        dispatch(
+          removeFromCart({
+            id: item.id,
+            optionsKey: item.optionsKey,
+          }),
+        );
       }
     } else if (type === "remove") {
-      dispatch(removeFromCart(item?.id));
+      dispatch(
+        removeFromCart({
+          id: item.id,
+          optionsKey: item.optionsKey,
+        }),
+      );
     }
   };
 

@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { addToCart } from "@/store/cartSlice";
 import toast from "react-hot-toast";
-import { IMAGE_BASE_URL } from "../auth/axiosInstance";
+import { IMAGE_BASE_URL } from "../../auth/axiosInstance";
 import {
   X,
   Share2,
@@ -28,6 +28,7 @@ interface MenuItem {
   images: string[] | string;
   base_price: string;
   branch_price: number;
+  optionsKey: string;
   options: {
     id: number;
     name: string;
@@ -81,6 +82,12 @@ export default function ProductDetailModal({
   }, [item, selectedOptions, quantity]);
 
   const handleAddToCart = () => {
+    // Generate a unique optionsKey so every add creates a new object
+    const optionsKey =
+      selectedOptions.length > 0
+        ? selectedOptions.sort().join("-") + `-${Date.now()}`
+        : `no-options-${Date.now()}`;
+
     dispatch(
       addToCart({
         id: item.id,
@@ -90,8 +97,10 @@ export default function ProductDetailModal({
         image: parsedImages[0],
         //@ts-ignore
         options: item.options.filter((o) => selectedOptions.includes(o.id)),
+        optionsKey, // <-- unique for every click
       }),
     );
+
     toast.success("Added to cart!");
     onClose();
   };
@@ -207,11 +216,12 @@ export default function ProductDetailModal({
           </div>
 
           {/* FOOTER: QUANTITY AND ADD TO CART */}
-          <div className="mt-auto pt-6 border-t flex items-center gap-4">
-            <div className="flex items-center bg-gray-100 rounded-lg p-1">
+          <div className="mt-auto pt-6 border-t flex flex-col md:flex-row items-center gap-4">
+            {/* QUANTITY CONTROL */}
+            <div className="flex items-center w-full md:w-auto bg-gray-100 rounded-lg p-1 justify-center">
               <button
                 onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                className="w-10 h-10 flex items-center justify-center text-[#bb6605] hover:text-[#bb6605]"
+                className="w-10 h-10 flex items-center justify-center text-[#bb6605] hover:text-[#bb6605] rounded-lg"
               >
                 <Minus size={18} />
               </button>
@@ -220,15 +230,16 @@ export default function ProductDetailModal({
               </span>
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 flex items-center justify-center text-[#bb6605] hover:text-[#bb6605]"
+                className="w-10 h-10 flex items-center justify-center text-[#bb6605] hover:text-[#bb6605] rounded-lg"
               >
                 <Plus size={18} />
               </button>
             </div>
 
+            {/* ADD TO CART BUTTON */}
             <button
               onClick={handleAddToCart}
-              className="flex-1 bg-[#bb6605] hover:bg-[#bb6605] text-white py-4 px-6 rounded-xl flex justify-between items-center font-bold transition-all transform active:scale-[0.98]"
+              className="flex-1 w-full md:w-auto bg-[#bb6605] text-white py-4 px-6 rounded-xl flex justify-between items-center font-bold text-sm hover:bg-[#a35c04] transition-all transform active:scale-[0.98]"
             >
               <span>Rs. {totalPrice.toFixed(1)}</span>
               <span className="flex items-center gap-2">

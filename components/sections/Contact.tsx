@@ -9,6 +9,7 @@ import {
   Instagram,
   Facebook,
   Twitter,
+  MessageCircle,
 } from "lucide-react";
 import { Card } from "../ui/card";
 import { useContactMutation } from "@/store/api/authApi";
@@ -82,21 +83,36 @@ export default function Contact() {
           {/* LEFT: Contact Info */}
           <div>
             <address className="not-italic space-y-4 text-gray-600">
-              <p>Shop # 2 & 3, Dopamine Coffee Bar, Sindhi Muslim Cooperative Housing Society Block A Sindhi Muslim CHS (SMCHS), Karach</p>
+              <p>
+                Shop # 2 & 3, The Dopamine (Restaurant & Coffee Bar), Sindhi
+                Muslim Cooperative Housing Society Block A Sindhi Muslim CHS
+                (SMCHS), Karachi
+              </p>
               <p>
                 <a
-                  href="mailto:info@email.com"
+                  href="mailto:info@thedopaminecafe.com"
                   className="text-gray-800 hover:text-amber-600 transition"
                 >
-                  dopaminecafe@email.com
+                  info@thedopaminecafe.com
+                </a>
+              </p>
+                <h6>Contact Number</h6>
+              <p>
+                <a
+                  href="https://wa.me/+923002444443"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-800 font-medium hover:text-amber-600 transition"
+                >
+                  +92 300 2444443
                 </a>
               </p>
               <p>
                 <a
-                  href="tel:+18408412569"
+                  href="tel:021-37229364"
                   className="text-gray-800 font-medium hover:text-amber-600 transition"
                 >
-                  +1 840 841 25 69
+                  021-37229364
                 </a>
               </p>
             </address>
@@ -203,7 +219,7 @@ export default function Contact() {
         <Card className="overflow-hidden h-[500px] shadow-2xl">
           <div className="aspect-video w-full">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28958.028040425157!2d67.02439163021548!3d24.872267036949893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f003279c771%3A0xe0af3c5f91ed418f!2sDopamine%20Coffee%20Bar!5e0!3m2!1sen!2s!4v1768951995513!5m2!1sen!2s"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.003051195576!2d67.05244921059484!3d24.863745377835045!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f45b541471b%3A0xc5c74230cd401e3d!2sThe%20Dopamine%20Cafe!5e0!3m2!1sen!2s!4v1769136809523!5m2!1sen!2s"
               width="100%"
               height="500px"
               style={{ border: 0 }}

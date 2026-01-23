@@ -27,6 +27,7 @@ import AuthForm from "../forms/AuthForm";
 import { useDispatch } from "react-redux";
 import { updateQuantity, removeFromCart } from "@/store/cartSlice";
 import { IMAGE_BASE_URL } from "../auth/axiosInstance";
+import DeleteModal from "../sections/menu/DeleteModal";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -37,6 +38,7 @@ const Navbar = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const [deleteId, setDeleteId] = useState<any | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [displayLocation, setDisplayLocation] = useState("Select Location");
@@ -46,11 +48,9 @@ const Navbar = () => {
   const [isTransparent, setIsTransparent] = useState(true);
   const lastScrollY = useRef(0);
 
-  console.log(cartItems, "cartItems==>");
   const syncLocation = () => {
     const loc = Cookies.get("user_location");
-    const parsed = JSON.parse(loc);
-    console.log(parsed, "parsed==>");
+    const parsed = loc ? JSON.parse(loc) : {};
     if (parsed?.area) {
       try {
         setDisplayLocation(parsed.area);
@@ -135,66 +135,67 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {/* Desktop Location & Contact: Sirf 'md' screen se uper nazar ayega */}
-            <div className="hidden md:flex items-center gap-6">
-              <button
-                onClick={() => setShowLocationModal(true)}
-                className="flex items-center gap-3 group"
-              >
-                <MapPin
-                  className={isTransparent ? "text-white" : "text-[#f59e0b]"}
-                  size={24}
-                />
-                <div
-                  className={`flex flex-col text-left ${
-                    isTransparent ? "text-white" : "text-black"
-                  }`}
-                >
-                  <span className="font-bold text-sm uppercase text-[10px] lg:text-sm">
-                    Change Location
-                  </span>
-                  <span
-                    className={`text-xs ${
-                      isTransparent ? "text-white/80" : "text-gray-500"
-                    }`}
-                  >
-                    {displayLocation}
-                  </span>
-                </div>
-              </button>
-              <div
-                className={`h-10 w-[1px] mx-2 ${
-                  isTransparent ? "bg-white/30" : "bg-gray-300"
-                }`}
-              ></div>
-              <a
-                href="https://wa.me/923002444443"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3"
-              >
-                <Phone
-                  className={isTransparent ? "text-white" : "text-[#f59e0b]"}
-                  size={24}
-                />
-                <div
-                  className={`flex flex-col ${
-                    isTransparent ? "text-white" : "text-black"
-                  }`}
-                >
-                  <span className="font-bold text-sm uppercase text-[10px] lg:text-sm">
-                    Contact Us
-                  </span>
-                  <span
-                    className={`text-xs ${
-                      isTransparent ? "text-white/80" : "text-gray-500"
-                    }`}
-                  >
-                    +92-300-2444-443
-                  </span>
-                </div>
-              </a>
-            </div>
+{/* Desktop Location & Contact: visible only on md+ screens */}
+<div className="hidden md:flex items-center gap-6">
+  {/* Change Location Button */}
+  <button
+    onClick={() => setShowLocationModal(true)}
+    className="flex items-center gap-3 group"
+  >
+    <MapPin
+      className={isTransparent ? "text-white" : "text-[#f59e0b]"}
+      size={24}
+    />
+    <div className={`flex flex-col text-left ${isTransparent ? "text-white" : "text-black"}`}>
+      <span className="font-bold text-[10px] lg:text-sm uppercase">Change Location</span>
+      <span className={`text-xs ${isTransparent ? "text-white/80" : "text-gray-500"}`}>
+        {displayLocation}
+      </span>
+    </div>
+  </button>
+
+  {/* Vertical Divider */}
+  <div className={`h-10 w-[1px] ${isTransparent ? "bg-white/30" : "bg-gray-300"}`}></div>
+
+  {/* Contact Section */}
+  <div className="flex items-center gap-4">
+    {/* WhatsApp */}
+    <a
+      href="https://wa.me/923002444443"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-2 hover:underline"
+    >
+      <Phone className={isTransparent ? "text-white" : "text-[#25D366]"} size={20} />
+      <div className="flex flex-col">
+        <span className={`font-bold text-[10px] lg:text-sm uppercase ${isTransparent ? "text-white" : "text-black"}`}>
+          WhatsApp
+        </span>
+        <span className={`text-xs ${isTransparent ? "text-white/80" : "text-gray-500"}`}>
+          +92-300-2444443
+        </span>
+      </div>
+    </a>
+
+    {/* Call */}
+    <a
+      href="tel:02137229364"
+      className="flex items-center gap-2 hover:underline"
+    >
+      <Phone className={isTransparent ? "text-white" : "text-blue-500"} size={20} />
+      <div className="flex flex-col">
+        <span className={`font-bold text-[10px] lg:text-sm uppercase ${isTransparent ? "text-white" : "text-black"}`}>
+          Call Us
+        </span>
+        <span className={`text-xs ${isTransparent ? "text-white/80" : "text-gray-500"}`}>
+          021-37229364
+        </span>
+      </div>
+    </a>
+  </div>
+</div>
+
+
           </div>
 
           {/* CENTER: Logo (Sirf Desktop ke liye) */}
@@ -459,10 +460,19 @@ const Navbar = () => {
                               className="text-red-500"
                               onClick={() => {
                                 if (item.quantity === 1) {
-                                  dispatch(removeFromCart(item.id));
+                                  dispatch(
+                                    removeFromCart({
+                                      id: item.id,
+                                      optionsKey: item.optionsKey,
+                                    }),
+                                  );
                                 } else {
                                   dispatch(
-                                    updateQuantity({ id: item.id, change: -1 }),
+                                    updateQuantity({
+                                      id: item.id,
+                                      optionsKey: item.optionsKey, // 🔑 MUST
+                                      change: -1,
+                                    }),
                                   );
                                 }
                               }}
@@ -483,7 +493,11 @@ const Navbar = () => {
                               className="text-[#d97706]"
                               onClick={() =>
                                 dispatch(
-                                  updateQuantity({ id: item.id, change: 1 }),
+                                  updateQuantity({
+                                    id: item.id,
+                                    optionsKey: item.optionsKey, // 🔑 MUST
+                                    change: -1,
+                                  }),
                                 )
                               }
                             >
@@ -577,6 +591,13 @@ const Navbar = () => {
           />
         </div>
       </Modal>
+      {deleteId && (
+        <DeleteModal
+          productId={deleteId.id}
+          cartItems={cartItems}
+          onClose={() => setDeleteId(null)}
+        />
+      )}
     </>
   );
 };
