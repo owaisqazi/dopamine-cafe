@@ -6,6 +6,7 @@ import { AppDispatch } from "@/store/store";
 import { updateQuantity } from "@/store/cartSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { IMAGE_BASE_URL } from "@/components/auth/axiosInstance";
 
 interface RepeatModalProps {
   item: any;
@@ -53,7 +54,7 @@ export default function RepeatModal({ item, cartItems, onClose, onChooseAgain }:
           <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
             <div className="w-full md:flex-1">
               <div className="relative w-40 h-40 sm:w-64 sm:h-64 mx-auto shadow-lg rounded-full overflow-hidden border-4 border-orange-50">
-                <Image src={item.image} alt="product" fill className="object-contain rounded-full border-[12px] border-blue-50 shadow-xl" />
+                <Image src={IMAGE_BASE_URL + item.image} alt="product" fill className="object-contain rounded-full border-[12px] border-blue-50 shadow-xl" />
               </div>
             </div>
 
