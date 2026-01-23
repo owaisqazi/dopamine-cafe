@@ -90,7 +90,7 @@
 //               aria-pressed={activeCategory?.id === ""}
 //               className={`px-6 py-3 rounded-full uppercase font-semibold transition-all duration-300 ${
 //                 activeCategory?.id === ""
-//                   ? "bg-amber-600 text-white shadow-lg scale-105"
+//                   ? "bg-[#C7862F] text-white shadow-lg scale-105"
 //                   : "bg-gray-100 text-gray-700 hover:bg-amber-100 hover:scale-105"
 //               }`}
 //             >
@@ -105,7 +105,7 @@
 //                 aria-pressed={activeCategory?.id === cat?.id}
 //                 className={`px-6 py-3 uppercase rounded-full font-semibold transition-all duration-300 ${
 //                   activeCategory?.id === cat?.id
-//                     ? "bg-amber-600 text-white shadow-lg scale-105"
+//                     ? "bg-[#C7862F] text-white shadow-lg scale-105"
 //                     : "bg-gray-100 text-gray-700 hover:bg-amber-100 hover:scale-105"
 //                 }`}
 //               >

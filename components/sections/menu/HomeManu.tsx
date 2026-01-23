@@ -135,7 +135,7 @@ export default function HomeMenu() {
   if (isLoading) return <SkeletonLoader type="product" count={6} />;
 
   return (
-    <section className="pb-16 bg-gray-50/30">
+    <section className="pb-16 bg-gray-50/30" id="menu-item">
       <CategoryHeader
         filteredCategories={filteredCategories}
         activeCat={activeCat}
@@ -157,7 +157,7 @@ export default function HomeMenu() {
             id={`cat-${cat.category_id}`}
             className="mb-12"
           >
-            <h2 className="text-center font-bold mb-8 text-3xl md:text-[40px] text-[#f59e0b]">
+            <h2 className="text-center font-bold mb-8 text-3xl md:text-[40px] text-[#C7862F]">
               {cat.category_name}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

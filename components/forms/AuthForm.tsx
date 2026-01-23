@@ -131,7 +131,7 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-amber-600 hover:bg-amber-700"
+            className="w-full bg-[#C7862F] hover:bg-[#b17323]"
           >
             {isSubmitting ? "Please wait..." : isSignup ? "Sign Up" : "Login"}
           </Button>
@@ -141,7 +141,7 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
             <button
               type="button"
               onClick={toggleSignup}
-              className="text-amber-600 ml-1 font-medium"
+              className="text-[#C7862F] ml-1 font-medium"
             >
               {isSignup ? "Login" : "Sign Up"}
             </button>

@@ -1,25 +1,53 @@
 "use client";
 import { Trash2, X } from "lucide-react";
-import { AppDispatch } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 import { removeFromCart } from "@/store/cartSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 interface DeleteModalProps {
   productId: number;
-  optionsKey?: string;
-  cartItems: any[];
   onClose: () => void;
+  cartItems?: any[];      // "?" lagane se Navbar ka error khatam ho jayega
+  optionsKeyData?: string; 
+  type?: string;
+  optionsKey?: string;    // TypeScript error fix karne ke liye
 }
 
-export default function DeleteModal({ productId, cartItems, onClose }: DeleteModalProps) {
+export default function DeleteModal({
+  productId,
+  cartItems: propCartItems,
+  type,
+  optionsKeyData,
+  onClose,
+}: DeleteModalProps) {
   const dispatch = useDispatch<AppDispatch>();
+  
+  // Agar props se cartItems nahi mile, to Redux se le lo
+  const reduxCartItems = useSelector((state: RootState) => state.cart.items);
+  const itemsToFilter = propCartItems || reduxCartItems;
 
   const handleRemove = () => {
-    cartItems
-      .filter((c) => String(c.id) === String(productId))
-      .forEach((itemToRemove) =>
-        dispatch(removeFromCart({ id: itemToRemove.id, optionsKey: itemToRemove.optionsKey! })),
+    if (type === "cart" && optionsKeyData) {
+      // Navbar/Cart Drawer wala case: Specific customization remove karein
+      dispatch(
+        removeFromCart({
+          id: productId,
+          optionsKey: optionsKeyData,
+        }),
       );
+    } else {
+      // HomeMenu wala case: Us product ke saare variations delete karein
+      itemsToFilter
+        .filter((c) => String(c.id) === String(productId))
+        .forEach((itemToRemove) =>
+          dispatch(
+            removeFromCart({
+              id: itemToRemove.id,
+              optionsKey: itemToRemove.optionsKey!,
+            }),
+          ),
+        );
+    }
     onClose();
   };
 
@@ -28,20 +56,18 @@ export default function DeleteModal({ productId, cartItems, onClose }: DeleteMod
       <div className="bg-white rounded-2xl w-full max-w-xl shadow-2xl animate-in fade-in zoom-in duration-200">
         <div className="flex items-center justify-between p-2 border-b">
           <div className="flex items-center gap-2">
-            <Trash2 className="text-[#d97706]" size={20} />
+            <Trash2 className="text-[#C7862F]" size={20} />
             <h3 className="text-lg font-bold text-gray-800">Confirm Deletion</h3>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
             <X size={20} />
           </button>
         </div>
-
         <div className="py-2 px-4 text-start">
           <p className="text-gray-600 text-sm sm:text-base font-medium">
             Are you sure you want to remove this product from the cart?
           </p>
         </div>
-
         <div className="p-4 flex gap-3 bg-gray-50 rounded-b-2xl">
           <button
             onClick={onClose}
@@ -51,7 +77,7 @@ export default function DeleteModal({ productId, cartItems, onClose }: DeleteMod
           </button>
           <button
             onClick={handleRemove}
-            className="flex-1 py-3 bg-[#d97706] text-white rounded-xl font-bold text-sm hover:bg-[#b45309] transition-colors shadow-lg flex items-center justify-center gap-2"
+            className="flex-1 py-3 bg-[#C7862F] text-white rounded-xl font-bold text-sm hover:bg-[#b17323] transition-colors shadow-lg flex items-center justify-center gap-2"
           >
             <Trash2 size={16} /> Remove
           </button>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Phone } from "lucide-react";
 import { useState } from "react";
 
@@ -6,18 +6,21 @@ const ContactFloatButton = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="fixed bottom-3 right-5 z-50 flex flex-col items-end gap-3">
+    <div
+      className="fixed bottom-3 right-5 z-50 flex flex-col items-end gap-3"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {/* WhatsApp Button */}
       <a
         href="https://wa.me/923002444443"
         target="_blank"
         rel="noopener noreferrer"
-        className={`w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 animate-float
+        className={`w-12 h-12 bg-[#25D366] rounded-full flex items-center justify-center shadow-2xl transition-all duration-300
           ${isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}
         `}
-        title="Chat on WhatsApp"
       >
-        <svg
+       <svg
           viewBox="0 0 24 24"
           className="w-8 h-8 text-white fill-current"
           xmlns="http://www.w3.org/2000/svg"
@@ -29,12 +32,11 @@ const ContactFloatButton = () => {
       {/* Call Button */}
       <a
         href="tel:02137229364"
-        className={`w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 animate-float
+        className={`w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300
           ${isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}
         `}
-        title="Call Us"
       >
-        <svg
+         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-8 h-8 text-white fill-current"
           viewBox="0 0 24 24"
@@ -44,12 +46,8 @@ const ContactFloatButton = () => {
       </a>
 
       {/* Main Floating Icon */}
-      <div
-        className="bg-[#2A2A28] p-3 rounded-full shadow-lg cursor-pointer hover:bg-[#3a3a37] transition animate-float"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <Phone className="text-[#f59e0b]" size={24} />
+      <div className="bg-[#2A2A28] p-3 rounded-full shadow-lg cursor-pointer hover:bg-[#3a3a37] transition">
+        <Phone className="text-[#C7862F]" size={24} />
       </div>
     </div>
   );

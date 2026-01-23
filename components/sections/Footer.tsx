@@ -7,15 +7,16 @@ import {
   Instagram,
   Twitter,
   Cookie,
-  Clock,
   MessageCircle,
   Phone,
   MapPin,
+  Mail,
 } from "lucide-react";
 import Image from "next/image";
 import CookieModal from "../ui/cookieModalOpen";
 import { useNewsletterMutation } from "@/store/api/authApi";
 import { toast } from "react-hot-toast";
+import Link from "next/link";
 
 // ✅ Footer accepts props to control cookie modal externally if needed
 interface FooterProps {
@@ -77,123 +78,188 @@ export default function Footer({
   return (
     <>
       <footer className="bg-[#1C1C1A] text-white py-12 px-4 z-20 relative">
-        <div className="container mx-auto">
-          {/* Top Section */}
-          <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 mb-10 border-b border-gray-800 pb-10">
-            {/* LEFT : Logo & Timings */}
+        <div className="container mx-auto px-4">
+          {/* TOP GRID SECTION */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 border-b border-gray-800 pb-4 mb-4">
+            {/* COLUMN 1 : LOGO */}
             <div className="flex flex-col items-center md:items-start gap-4">
-              <div className="flex items-center gap-3">
-                <Image
-                  width={150}
-                  height={150}
-                  src="/dopamine_cafe.png"
-                  alt="The Dopamine Cafe Logo"
-                  className="w-28 h-28 rounded-full object-cover border-2 border-amber-600/20"
-                />
+              <Image
+                width={150}
+                height={150}
+                src="/dopamine_cafe.png"
+                alt="The Dopamine Cafe Logo"
+                className="w-28 h-28 rounded-full object-cover border-2 border-[#C7862F]/20"
+              />
+              <div className="flex justify-center text-gray-500 text-sm">
+                <div className="flex items-start gap-2 text-start w-full">
+                  <MapPin className="w-10 h-10 text-[#C7862F] mt-1" />
+                  <span>
+                    Shop # 2 & 3, Dopamine (Restaurant & Coffee Bar), Sindhi
+                    Muslim Cooperative Housing Society Block A, Karachi
+                  </span>
+                </div>
               </div>
-              {/* TIMING DISPLAY */}
-              <div className="flex items-center gap-2 bg-[#2A2A28] px-4 py-2 rounded-full border border-amber-600/30">
-                <Clock className="w-4 h-4 text-amber-500" />
-                <span className="text-sm font-semibold tracking-wide uppercase text-gray-200">
-                  Open 24/7
-                </span>
+              <div className="flex gap-4">
+                <Facebook className="w-5 h-5 text-gray-400 hover:text-[#b17323] cursor-pointer transition" />
+                <Instagram className="w-5 h-5 text-gray-400 hover:text-[#b17323] cursor-pointer transition" />
+                <Twitter className="w-5 h-5 text-gray-400 hover:text-[#b17323] cursor-pointer transition" />
               </div>
-              <p className="text-xs text-gray-500 italic mt-1">
-                Always here to satisfy your cravings
-              </p>
             </div>
 
-            {/* RIGHT : Links + Social + Newsletter */}
-            <div className="flex flex-col items-center md:items-end gap-6 w-full md:w-auto">
-              {/* Links */}
-              <div className="flex flex-wrap justify-center gap-6 text-gray-500 font-medium">
-                <a href="/" className="hover:text-amber-500 transition">
+            {/* COLUMN 2 : OPENING HOURS */}
+            <div className="flex flex-col items-center md:items-start gap-4">
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-[#C7862F]">
+                Opening Hours
+              </h4>
+
+              <div className="w-full space-y-2 text-sm text-gray-400">
+                <div className="flex justify-between border-b border-gray-800 pb-1">
+                  <span>Monday</span>
+                  <span>8:00 AM – 11:00 PM</span>
+                </div>
+                <div className="flex justify-between border-b border-gray-800 pb-1">
+                  <span>Tuesday</span>
+                  <span>8:00 AM – 11:00 PM</span>
+                </div>
+                <div className="flex justify-between border-b border-gray-800 pb-1">
+                  <span>Wednesday</span>
+                  <span>8:00 AM – 11:00 PM</span>
+                </div>
+                <div className="flex justify-between border-b border-gray-800 pb-1">
+                  <span>Thursday</span>
+                  <span>8:00 AM – 11:00 PM</span>
+                </div>
+                <div className="flex justify-between border-b border-gray-800 pb-1">
+                  <span>Friday</span>
+                  <span>8:00 AM – 11:00 PM</span>
+                </div>
+                <div className="flex justify-between border-b border-gray-800 pb-1">
+                  <span>Saturday</span>
+                  <span>8:00 AM – 11:00 PM</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Sunday</span>
+                  <span>8:00 AM – 11:00 PM</span>
+                </div>
+              </div>
+            </div>
+
+            {/* COLUMN 3 : LINKS + NEWSLETTER + CONTACT */}
+            <div className="flex flex-col items-center md:items-end gap-6">
+              {/* LINKS */}
+              <div className="flex flex-wrap justify-center md:justify-end gap-5 text-gray-500 font-medium">
+                <Link href="/" className="hover:text-[#b17323] transition">
                   Home
-                </a>
-                <a href="/gallery" className="hover:text-amber-500 transition">
+                </Link>
+                <Link
+                  href="/gallery"
+                  className="hover:text-[#b17323] transition"
+                >
                   Gallery
-                </a>
-                <a href="/blog" className="hover:text-amber-500 transition">
+                </Link>
+                <Link href="/blog" className="hover:text-[#b17323] transition">
                   Blog
-                </a>
-                <a href="/about" className="hover:text-amber-500 transition">
+                </Link>
+                <Link href="/about" className="hover:text-[#b17323] transition">
                   About
-                </a>
-                <a href="/contact" className="hover:text-amber-500 transition">
+                </Link>
+                <Link
+                  href="/contact"
+                  className="hover:text-[#b17323] transition"
+                >
                   Contact
-                </a>
+                </Link>
               </div>
 
-              {/* Social Icons */}
-              <div className="flex gap-4">
-                <Facebook className="w-5 h-5 text-gray-400 hover:text-amber-500 cursor-pointer transition" />
-                <Instagram className="w-5 h-5 text-gray-400 hover:text-amber-500 cursor-pointer transition" />
-                <Twitter className="w-5 h-5 text-gray-400 hover:text-amber-500 cursor-pointer transition" />
-              </div>
-
-              {/* Newsletter */}
+              {/* NEWSLETTER */}
               <form
                 onSubmit={handleNewsletterSubmit}
-                className="flex flex-col sm:flex-row items-center gap-3 w-full"
+                className="flex flex-col sm:flex-row gap-3 w-full md:w-auto"
               >
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Subscribe to our newsletter"
-                  className="w-full sm:w-64 px-4 py-2 rounded-full bg-[#2A2A28] text-white border border-transparent focus:border-amber-500 outline-none transition"
+                  placeholder="Your email address"
+                  className="w-full sm:w-60 px-4 py-2 rounded-full bg-[#2A2A28] text-white border border-transparent focus:border-[#C7862F] outline-none"
                 />
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full sm:w-auto px-6 py-2 rounded-full bg-amber-600 hover:bg-amber-700 text-white font-medium transition disabled:opacity-60"
+                  className="px-6 py-2 rounded-full bg-[#C7862F] hover:bg-[#b17323] text-white transition disabled:opacity-60"
                 >
                   {isLoading ? "..." : "Subscribe"}
                 </button>
               </form>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-amber-500" />
-                <a
-                  href="tel:021-37229364"
-                  className="hover:text-amber-500 transition text-gray-500"
-                >
-                  021-37229364
-                </a>
-              </div>
-              <div className="flex items-center gap-2">
-                <MessageCircle className="w-4 h-4 text-amber-500 " />
-                <a
-                  href="https://wa.me/+923002444443"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-amber-500 transition text-gray-500"
-                >
-                  +92-300-2444443
-                </a>
+
+              {/* CONTACT */}
+              <div className="flex flex-col gap-2 text-gray-500 text-sm">
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-[#C7862F]" />
+                  <a
+                    href="tel:021-37229364"
+                    className="hover:text-[#b17323] transition"
+                  >
+                    021-37229364
+                  </a>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="w-4 h-4 text-[#C7862F]" />
+                  <a
+                    href="https://wa.me/923002444443"
+                    target="_blank"
+                    className="hover:text-[#b17323] transition"
+                  >
+                    +92-300-2444443
+                  </a>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-[#C7862F]" />
+                  <a
+                    href="mailto:info@dopaminecafe.com"
+                    className="hover:text-[#b17323] transition"
+                  >
+                    info@dopaminecafe.com
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center md:items-center gap-2 text-gray-500 text-sm">
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-amber-500" />
-              <span>
-                Shop # 2 & 3, The Dopamine (Restaurant & Coffee Bar), Sindhi
-                Muslim Cooperative Housing Society Block A Sindhi Muslim CHS
-                (SMCHS), Karachi
-              </span>
-            </div>
-          </div>
-          {/* Bottom Copyright Section */}
-          <div className="text-center pt-6">
-            <div className="flex flex-col md:flex-row justify-center items-center gap-2 text-gray-500 text-sm">
-              <div className="flex items-center gap-2">
-                <span>Made with</span>
-                <Heart className="w-4 h-4 text-red-600 fill-current animate-pulse" />
-                <span>by The Dopamine Cafe</span>
-              </div>
+          {/* COPYRIGHT */}
+          <div className="text-center text-gray-500 text-sm">
+            <div className="flex flex-col md:flex-row justify-center items-center gap-2">
+              <span>Made with</span>
+              <Heart className="w-4 h-4 text-red-600 fill-current animate-pulse" />
+              <span>by The Dopamine Cafe</span>
               <span className="hidden md:inline">|</span>
               <span>© 2026 All rights reserved.</span>
             </div>
+          </div>
+
+          {/* LEGAL */}
+          <div className="flex justify-center flex-wrap gap-4 mt-4 text-sm text-gray-500">
+            <Link
+              href="/refund-policy"
+              className="hover:text-[#b17323] hover:underline"
+            >
+              Refund Policy
+            </Link>
+            <span className="opacity-40">|</span>
+            <Link
+              href="/privacy-policy"
+              className="hover:text-[#b17323] hover:underline"
+            >
+              Privacy Policy
+            </Link>
+            <span className="opacity-40">|</span>
+            <Link
+              href="/terms"
+              className="hover:text-[#b17323] hover:underline"
+            >
+              Terms & Conditions
+            </Link>
           </div>
         </div>
       </footer>
@@ -202,7 +268,7 @@ export default function Footer({
         className="fixed bottom-4 left-4 z-50 bg-[#2A2A28] p-3 rounded-full shadow-lg cursor-pointer hover:bg-[#3a3a37] transition"
         onClick={() => setCookieModalOpen(true)}
       >
-        <Cookie className="w-6 h-6 text-amber-500" />
+        <Cookie className="w-6 h-6 text-[#C7862F]" />
       </div>
       {/* Cookie Modal */}
       {cookieModalOpen && (

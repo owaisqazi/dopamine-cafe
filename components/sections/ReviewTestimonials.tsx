@@ -88,7 +88,7 @@ export default function ReviewTestimonials() {
                       key={i}
                       className={`w-4 h-4 fill-current ${
                         i < reviewItem?.rating
-                          ? "text-yellow-400"
+                          ? "text-[#C7862F]"
                           : "text-gray-100"
                       }`}
                       viewBox="0 0 20 20"
@@ -115,7 +115,7 @@ export default function ReviewTestimonials() {
         <div className="flex justify-center items-center">
           <button
             onClick={() => handleOpenModal()}
-            className="mt-3 px-4 py-2 text-center bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-sm transition"
+            className="mt-3 px-4 py-2 text-center bg-[#C7862F] hover:bg-[#b17323] text-white rounded-xl text-sm transition"
           >
             Rate & Review
           </button>
@@ -138,7 +138,7 @@ export default function ReviewTestimonials() {
                   key={star}
                   onClick={() => setRating(star)}
                   className={`w-10 h-10 cursor-pointer transition hover:scale-110 fill-current ${
-                    star <= rating ? "text-yellow-400" : "text-gray-300"
+                    star <= rating ? "text-[#C7862F]" : "text-gray-300"
                   }`}
                   viewBox="0 0 20 20"
                 >
@@ -171,7 +171,7 @@ export default function ReviewTestimonials() {
                 className={`flex-1 py-2 rounded-xl text-white transition flex justify-center items-center ${
                   ratingLoading || rating === 0
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-amber-600 hover:bg-amber-700"
+                    : "bg-[#C7862F] hover:bg-[#b17323]"
                 }`}
               >
                 {ratingLoading ? (

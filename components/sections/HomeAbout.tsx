@@ -58,7 +58,7 @@ export default function HomeAbout() {
                 className="group bg-[#1C1C19] hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
               >
                 <CardContent className="p-6 text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#1C1C19] text-amber-600 mb-4 group-hover:scale-110 transition-transform">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#1C1C19] text-[#C7862F] mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="w-6 h-6" aria-hidden="true" />
                   </div>
                   <h3 className="font-semibold text-white mb-2">

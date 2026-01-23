@@ -20,7 +20,7 @@ export default function CancelPage() {
 
         <div className="mt-8 space-y-3">
           <p
-            className="block w-full bg-[#f59e0b] text-black font-semibold py-3 rounded-xl hover:bg-[#e58e00] transition"
+            className="block w-full bg-[#C7862F] text-black font-semibold py-3 rounded-xl hover:bg-[#e58e00] transition"
           >
             Try Again
           </p>

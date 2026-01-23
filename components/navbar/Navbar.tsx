@@ -39,6 +39,7 @@ const Navbar = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [deleteId, setDeleteId] = useState<any | null>(null);
+  const [optionsKeyData, setOptionsKeyData] = useState<any | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [displayLocation, setDisplayLocation] = useState("Select Location");
@@ -47,6 +48,15 @@ const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isTransparent, setIsTransparent] = useState(true);
   const lastScrollY = useRef(0);
+  useEffect(() => {
+    // Agar location already selected nahi hai
+    const hasSession = sessionStorage.getItem("location_session");
+    const hasCookie = Cookies.get("user_location");
+
+    if (!hasSession && !hasCookie) {
+      setShowLocationModal(true);
+    }
+  }, []);
 
   const syncLocation = () => {
     const loc = Cookies.get("user_location");
@@ -106,10 +116,18 @@ const Navbar = () => {
       return total + (itemBasePrice + optionsPrice) * (item.quantity || 1);
     }, 0);
   };
-
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    // Pehle check karein ke hum Home page par hain ya nahi
+    if (window.location.pathname === "/") {
+      e.preventDefault();
+      const target = document.getElementById("menu-item");
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
   return (
     <>
-      {/* HEADER WITH DYNAMIC CLASSES */}
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out
     ${isVisible ? "translate-y-0" : "-translate-y-full"} 
@@ -119,7 +137,26 @@ const Navbar = () => {
         : "bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm"
     }`}
       >
-        <div className="container mx-auto px-4 h-20 flex justify-between items-center relative">
+        <div className="flex items-center md:hidden justify-between px-4 py-2 text-sm font-semibold">
+          <button
+            onClick={() => setShowLocationModal(true)}
+            className="flex items-center gap-1"
+          >
+            <MapPin size={16} className="text-[#C7862F]" />
+            <span className="truncate max-w-[140px] text-[#C7862F]">
+              {displayLocation}
+            </span>
+          </button>
+
+          <Link
+            href="/#menu-item"
+            onClick={handleScroll}
+            className="bg-[#C7862F] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase"
+          >
+            Order Now
+          </Link>
+        </div>
+        <div className="container mx-auto px-4 md:h-20 h-18 flex justify-between items-center relative">
           {/* LEFT SIDE: Mobile mein Logo / Desktop mein Location */}
           <div className="flex items-center">
             {/* Mobile Logo: Sirf 'md' screen se niche nazar ayega */}
@@ -135,67 +172,101 @@ const Navbar = () => {
               </Link>
             </div>
 
-{/* Desktop Location & Contact: visible only on md+ screens */}
-<div className="hidden md:flex items-center gap-6">
-  {/* Change Location Button */}
-  <button
-    onClick={() => setShowLocationModal(true)}
-    className="flex items-center gap-3 group"
-  >
-    <MapPin
-      className={isTransparent ? "text-white" : "text-[#f59e0b]"}
-      size={24}
-    />
-    <div className={`flex flex-col text-left ${isTransparent ? "text-white" : "text-black"}`}>
-      <span className="font-bold text-[10px] lg:text-sm uppercase">Change Location</span>
-      <span className={`text-xs ${isTransparent ? "text-white/80" : "text-gray-500"}`}>
-        {displayLocation}
-      </span>
-    </div>
-  </button>
+            {/* Desktop Location & Contact: visible only on md+ screens */}
+            <div className="hidden md:flex items-center gap-6">
+              {/* Change Location Button */}
+              <button
+                onClick={() => setShowLocationModal(true)}
+                className="flex items-center gap-3 group"
+              >
+                <MapPin
+                  className={isTransparent ? "text-white" : "text-[#C7862F]"}
+                  size={24}
+                />
+                <div
+                  className={`flex flex-col text-left ${
+                    isTransparent ? "text-white" : "text-black"
+                  }`}
+                >
+                  <span className="font-bold text-[10px] lg:text-sm uppercase">
+                    Change Location
+                  </span>
+                  <span
+                    className={`text-xs ${
+                      isTransparent ? "text-white/80" : "text-gray-500"
+                    }`}
+                  >
+                    {displayLocation}
+                  </span>
+                </div>
+              </button>
 
-  {/* Vertical Divider */}
-  <div className={`h-10 w-[1px] ${isTransparent ? "bg-white/30" : "bg-gray-300"}`}></div>
+              {/* Vertical Divider */}
+              <div
+                className={`h-10 w-[1px] ${
+                  isTransparent ? "bg-white/30" : "bg-gray-300"
+                }`}
+              ></div>
 
-  {/* Contact Section */}
-  <div className="flex items-center gap-4">
-    {/* WhatsApp */}
-    <a
-      href="https://wa.me/923002444443"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center gap-2 hover:underline"
-    >
-      <Phone className={isTransparent ? "text-white" : "text-[#25D366]"} size={20} />
-      <div className="flex flex-col">
-        <span className={`font-bold text-[10px] lg:text-sm uppercase ${isTransparent ? "text-white" : "text-black"}`}>
-          WhatsApp
-        </span>
-        <span className={`text-xs ${isTransparent ? "text-white/80" : "text-gray-500"}`}>
-          +92-300-2444443
-        </span>
-      </div>
-    </a>
+              {/* Contact Section */}
+              <div className="flex items-center gap-4">
+                {/* WhatsApp */}
+                <a
+                  href="https://wa.me/923002444443"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:underline"
+                >
+                  <Phone
+                    className={isTransparent ? "text-white" : "text-[#25D366]"}
+                    size={20}
+                  />
+                  <div className="flex flex-col">
+                    <span
+                      className={`font-bold text-[10px] lg:text-sm uppercase ${
+                        isTransparent ? "text-white" : "text-black"
+                      }`}
+                    >
+                      WhatsApp
+                    </span>
+                    <span
+                      className={`text-xs ${
+                        isTransparent ? "text-white/80" : "text-gray-500"
+                      }`}
+                    >
+                      +92-300-2444443
+                    </span>
+                  </div>
+                </a>
 
-    {/* Call */}
-    <a
-      href="tel:02137229364"
-      className="flex items-center gap-2 hover:underline"
-    >
-      <Phone className={isTransparent ? "text-white" : "text-blue-500"} size={20} />
-      <div className="flex flex-col">
-        <span className={`font-bold text-[10px] lg:text-sm uppercase ${isTransparent ? "text-white" : "text-black"}`}>
-          Call Us
-        </span>
-        <span className={`text-xs ${isTransparent ? "text-white/80" : "text-gray-500"}`}>
-          021-37229364
-        </span>
-      </div>
-    </a>
-  </div>
-</div>
-
-
+                {/* Call */}
+                <a
+                  href="tel:02137229364"
+                  className="flex items-center gap-2 hover:underline"
+                >
+                  <Phone
+                    className={isTransparent ? "text-white" : "text-blue-500"}
+                    size={20}
+                  />
+                  <div className="flex flex-col">
+                    <span
+                      className={`font-bold text-[10px] lg:text-sm uppercase ${
+                        isTransparent ? "text-white" : "text-black"
+                      }`}
+                    >
+                      Call Us
+                    </span>
+                    <span
+                      className={`text-xs ${
+                        isTransparent ? "text-white/80" : "text-gray-500"
+                      }`}
+                    >
+                      021-37229364
+                    </span>
+                  </div>
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* CENTER: Logo (Sirf Desktop ke liye) */}
@@ -216,6 +287,20 @@ const Navbar = () => {
 
           {/* RIGHT: Icons & Menu Bar (Dono views mein right par rahega) */}
           <div className="flex items-center gap-4 md:gap-6">
+            {/* ORDER NOW DESKTOP */}
+            <Link
+              href="/#menu-item"
+              onClick={handleScroll}
+              scroll={true}
+              className={`hidden md:flex px-5 py-2 rounded-full font-bold uppercase text-sm
+              ${
+                isTransparent
+                  ? "bg-white text-[#C7862F]"
+                  : "bg-[#C7862F] text-white"
+              }`}
+            >
+              Order Now
+            </Link>
             <div className="relative">
               <button
                 onClick={() => {
@@ -228,7 +313,7 @@ const Navbar = () => {
                 className={`p-1 rounded-full transition-colors ${
                   isTransparent
                     ? "text-white hover:bg-white/10"
-                    : "text-[#f59e0b] hover:bg-gray-100"
+                    : "text-[#C7862F] hover:bg-gray-100"
                 }`}
               >
                 <User size={28} className="ps-2" />
@@ -271,7 +356,7 @@ const Navbar = () => {
             >
               <div className="relative">
                 <ShoppingCart
-                  className={isTransparent ? "text-white" : "text-[#f59e0b]"}
+                  className={isTransparent ? "text-white" : "text-[#C7862F]"}
                   size={28}
                 />
                 {cartItems.length > 0 && (
@@ -289,7 +374,7 @@ const Navbar = () => {
               className={`p-1 rounded-md transition-colors ${
                 isTransparent
                   ? "text-white hover:bg-white/10"
-                  : "text-[#f59e0b] hover:bg-gray-100"
+                  : "text-[#C7862F] hover:bg-gray-100"
               }`}
             >
               <MenuIcon size={32} />
@@ -333,9 +418,9 @@ const Navbar = () => {
                     <Link
                       href={link.href}
                       onClick={() => setIsSidebarOpen(false)}
-                      className={`text-lg font-medium block border-b border-transparent hover:border-[#f59e0b] transition-all ${
+                      className={`text-lg font-medium block border-b border-transparent hover:border-[#C7862F] transition-all ${
                         pathname === link.href
-                          ? "text-[#f59e0b] font-bold"
+                          ? "text-[#C7862F] font-bold"
                           : "text-gray-800"
                       }`}
                     >
@@ -368,11 +453,11 @@ const Navbar = () => {
           <button
             onClick={() => setIsCartOpen(true)}
             type="button"
-            className="bg-[#f59e0b] hover:bg-[#d97706] w-full text-white flex items-center justify-between px-6 py-4 rounded-2xl shadow-[0_10px_30px_rgba(245,158,11,0.4)] transition-all active:scale-95 group"
+            className="bg-[#C7862F] hover:bg-[#b17323] w-full text-white flex items-center justify-between px-6 py-4 rounded-2xl shadow-[0_10px_30px_rgba(245,158,11,0.4)] transition-all active:scale-95 group"
           >
             <div className="flex items-center gap-4">
               {/* Item Count Circle */}
-              <div className="w-8 h-8 bg-white text-[#f59e0b] rounded-full flex items-center justify-center font-bold text-sm">
+              <div className="w-8 h-8 bg-white text-[#C7862F] rounded-full flex items-center justify-center font-bold text-sm">
                 {cartItems.length}
               </div>
               <span className="font-bold text-lg tracking-wide uppercase">
@@ -418,7 +503,7 @@ const Navbar = () => {
             <h2 className="text-2xl font-bold text-gray-800">Your Cart</h2>
             <button
               onClick={() => setIsCartOpen(false)}
-              className="bg-[#d97706] text-white rounded-full p-1 hover:rotate-90 transition-transform"
+              className="bg-[#C7862F] text-white rounded-full p-1 hover:rotate-90 transition-transform"
             >
               <X size={20} />
             </button>
@@ -454,18 +539,20 @@ const Navbar = () => {
                             {item.name}
                           </h3>
                           {/* Quantity Selector inside cart */}
-                          <div className="flex items-center gap-3 border rounded-full px-3 py-1 text-[#d97706]">
+                          <div className="flex items-center gap-3 border rounded-full px-3 py-1 text-[#C7862F]">
                             {/* MINUS / DELETE BUTTON */}
                             <button
                               className="text-red-500"
                               onClick={() => {
                                 if (item.quantity === 1) {
-                                  dispatch(
-                                    removeFromCart({
-                                      id: item.id,
-                                      optionsKey: item.optionsKey,
-                                    }),
-                                  );
+                                  // dispatch(
+                                  //   removeFromCart({
+                                  //     id: item.id,
+                                  //     optionsKey: item.optionsKey,
+                                  //   }),
+                                  // );
+                                  setDeleteId(item?.id);
+                                  setOptionsKeyData(item.optionsKey);
                                 } else {
                                   dispatch(
                                     updateQuantity({
@@ -490,7 +577,7 @@ const Navbar = () => {
 
                             {/* PLUS BUTTON */}
                             <button
-                              className="text-[#d97706]"
+                              className="text-[#C7862F]"
                               onClick={() =>
                                 dispatch(
                                   updateQuantity({
@@ -505,7 +592,7 @@ const Navbar = () => {
                             </button>
                           </div>
                         </div>
-                        <p className="font-bold text-[#d97706]">
+                        <p className="font-bold text-[#C7862F]">
                           Rs. {Number(item.price).toFixed(1)}
                         </p>
 
@@ -535,7 +622,7 @@ const Navbar = () => {
             {/* Add more items link */}
             <button
               onClick={() => setIsCartOpen(false)}
-              className="flex items-center gap-2 text-gray-500 font-medium hover:text-[#d97706]"
+              className="flex items-center gap-2 text-gray-500 font-medium hover:text-[#C7862F]"
             >
               <Plus size={18} /> Add more items
             </button>
@@ -548,7 +635,7 @@ const Navbar = () => {
               <span className="font-bold">Rs. 250.0</span>
             </div>
 
-            <button className="w-full bg-[#d97706] hover:bg-[#b96404] text-white py-4 rounded-2xl flex justify-between items-center px-6 font-bold transition-all shadow-lg">
+            <button className="w-full bg-[#C7862F] hover:bg-[#b17323] text-white py-4 rounded-2xl flex justify-between items-center px-6 font-bold transition-all shadow-lg">
               <span className="text-lg">Checkout</span>
               <div className="flex items-center gap-2">
                 <span>Rs. {(calculateTotal() + 250).toFixed(1)}</span>
@@ -593,8 +680,9 @@ const Navbar = () => {
       </Modal>
       {deleteId && (
         <DeleteModal
-          productId={deleteId.id}
-          cartItems={cartItems}
+          productId={deleteId} // Navbar mein aap 'item.id' bhej rahe hain
+          optionsKeyData={optionsKeyData}
+          type={"cart"}
           onClose={() => setDeleteId(null)}
         />
       )}

@@ -46,7 +46,7 @@ function CartItemCard({ item, handleQuantity, readOnly }: CartItemProps) {
           {item?.name || item?.product?.name}
         </h3>
 
-        <p className="text-amber-600 font-semibold mt-1">
+        <p className="text-[#C7862F] font-semibold mt-1">
           Rs.
           {Number(item?.price || 0).toFixed(2)}
         </p>
@@ -322,7 +322,7 @@ export default function ShoppingCartTabs() {
               key={tab}
               onClick={() => setActiveTab(tab as any)}
               className={`px-6 py-2 rounded-full font-semibold capitalize ${
-                activeTab === tab ? "bg-amber-600 text-white" : "bg-gray-100"
+                activeTab === tab ? "bg-[#C7862F] text-white" : "bg-gray-100"
               }`}
             >
               {tab === "cart"
@@ -354,7 +354,7 @@ export default function ShoppingCartTabs() {
               (orderData?.unpaid_orders?.length > 0 ? (
                 orderData.unpaid_orders.map((order: any) => (
                   <div key={order?.id} className="space-y-4">
-                    <h2 className="text-amber-600 font-bold text-xl mb-4">
+                    <h2 className="text-[#C7862F] font-bold text-xl mb-4">
                       Order Number: {order?.order_number}
                     </h2>
                     {order?.products.map((product: any) => {
@@ -453,7 +453,7 @@ export default function ShoppingCartTabs() {
 
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="w-full mt-6 py-4 bg-amber-600 text-white rounded-xl"
+                className="w-full mt-6 py-4 bg-[#C7862F] text-white rounded-xl"
               >
                 Checkout
               </button>

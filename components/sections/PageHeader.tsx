@@ -4,13 +4,15 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
 interface PageHeaderProps {
+  customClass?: string; // Rename 'class' to 'customClass' to avoid reserved keyword error
   title: string;
   backgroundImage?: string;
   backgroundVideo?: string;
-  isLoading?: boolean; // NEW
+  isLoading?: boolean;
 }
 
 const PageHeader = ({
+  customClass = "", // Default empty string
   title,
   backgroundImage = "/gellery1.png",
   backgroundVideo,
@@ -21,10 +23,8 @@ const PageHeader = ({
   const pathNodes = pathname.split("/").filter(Boolean);
 
   const queryName = searchParams.get("name");
-
   const [videoLoaded, setVideoLoaded] = useState(false);
 
-  // If there is a video, consider it loaded once metadata is ready
   useEffect(() => {
     if (!backgroundVideo) setVideoLoaded(true);
     else setVideoLoaded(false);
@@ -33,18 +33,19 @@ const PageHeader = ({
   return (
     <header
       role="banner"
-      className="relative h-screen overflow-hidden flex items-center justify-center"
+      // Fixed logic: customClass agar empty hai to h-screen apply hoga
+      className={`relative ${customClass ? customClass : "h-screen"} overflow-hidden flex items-center justify-center`}
     >
       {/* BACKGROUND */}
       {backgroundVideo ? (
         <div className="fixed inset-0 z-10 overflow-hidden" aria-label="Background video">
           {!videoLoaded && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-              {/* Skeleton Loader */}
               <div className="animate-pulse w-48 h-48 bg-white/20 rounded-full" />
             </div>
           )}
           <video
+            key={backgroundVideo} // Key added to force re-render on video change
             preload="auto"
             className="w-full h-full object-cover"
             autoPlay
@@ -73,17 +74,10 @@ const PageHeader = ({
 
       {/* CONTENT */}
       <div className="relative z-20 text-center px-6">
-        {/* BREADCRUMBS */}
-        <nav
-          aria-label="Breadcrumb"
-          className="flex justify-center items-center gap-2 text-amber-200 mb-4 text-sm md:text-base font-medium uppercase tracking-widest"
-        >
+        <nav aria-label="Breadcrumb" className="flex justify-center items-center gap-2 text-amber-200 mb-4 text-sm md:text-base font-medium uppercase tracking-widest">
           <ol className="flex gap-2">
             <li>
-              <Link
-                href="/"
-                className="hover:text-white uppercase transition-colors"
-              >
+              <Link href="/" className="hover:text-white uppercase transition-colors">
                 Home
               </Link>
             </li>
@@ -100,11 +94,10 @@ const PageHeader = ({
           </ol>
         </nav>
 
-        {/* TITLE */}
         <h1 className="text-5xl md:text-7xl font-bold text-white uppercase tracking-tight">
           {title}
         </h1>
-        <div className="h-1.5 w-24 bg-amber-600 mx-auto mt-4 rounded-full" />
+        <div className="h-1.5 w-24 bg-[#C7862F] mx-auto mt-4 rounded-full" />
       </div>
     </header>
   );

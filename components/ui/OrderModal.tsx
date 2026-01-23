@@ -359,7 +359,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                     className={`mt-6 w-full py-3.5 text-white rounded-xl font-bold uppercase shadow-md transition-all flex justify-center items-center gap-2 ${
                       isLoading
                         ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-amber-500 hover:bg-amber-600"
+                        : "bg-amber-500 hover:bg-[#C7862F]"
                     }`}
                   >
                     {isLoading && (

@@ -50,28 +50,28 @@ export default function ProductCard({ item, openModal, setDeleteId, handlePlusCl
         {totalQuantity === 0 ? (
           <button
             onClick={() => openModal(item)}
-            className="w-9 h-9 bg-[#d97706] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#b45309] transition-transform active:scale-90"
+            className="w-9 h-9 bg-[#C7862F] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-[#b17323] transition-transform active:scale-90"
           >
             <Plus size={20} />
           </button>
         ) : totalQuantity === 1 ? (
-          <div className="bg-[#fdf2f2] border border-[#f59e0b]/20 flex items-center p-1 rounded-full shadow-sm">
+          <div className="bg-[#fdf2f2] border border-[#C7862F]/20 flex items-center p-1 rounded-full shadow-sm">
             <button
               onClick={() => setDeleteId(item)}
-              className="w-8 h-8 bg-white border border-[#d97706] text-[#d97706] rounded-full flex items-center justify-center hover:bg-red-50 transition-colors"
+              className="w-8 h-8 bg-white border border-[#C7862F] text-[#C7862F] rounded-full flex items-center justify-center hover:bg-red-50 transition-colors"
             >
               <Trash2 size={14} />
             </button>
             <span className="px-3 font-bold text-sm text-gray-800">{totalQuantity}</span>
             <button
               onClick={() => handlePlusClick(item)}
-              className="w-8 h-8 bg-[#d97706] text-white rounded-full flex items-center justify-center hover:bg-[#b45309]"
+              className="w-8 h-8 bg-[#C7862F] text-white rounded-full flex items-center justify-center hover:bg-[#b17323]"
             >
               <Plus size={16} />
             </button>
           </div>
         ) : (
-          <div className="bg-[#fdf2f2] border border-[#f59e0b]/20 flex items-center p-1 rounded-full shadow-sm">
+          <div className="bg-[#fdf2f2] border border-[#C7862F]/20 flex items-center p-1 rounded-full shadow-sm">
             <button
               onClick={() => {
                 const last = productCartItems[productCartItems.length - 1];
@@ -81,14 +81,14 @@ export default function ProductCard({ item, openModal, setDeleteId, handlePlusCl
                   dispatch(removeFromCart({ id: last.id, optionsKey: last.optionsKey! }));
                 }
               }}
-              className="w-8 h-8 bg-white border border-[#d97706] text-[#d97706] rounded-full flex items-center justify-center hover:bg-red-50 transition-colors"
+              className="w-8 h-8 bg-white border border-[#C7862F] text-[#C7862F] rounded-full flex items-center justify-center hover:bg-red-50 transition-colors"
             >
               <Minus size={16} />
             </button>
             <span className="px-3 font-bold text-sm text-gray-800">{totalQuantity}</span>
             <button
               onClick={() => handlePlusClick(item)}
-              className="w-8 h-8 bg-[#d97706] text-white rounded-full flex items-center justify-center hover:bg-[#b45309]"
+              className="w-8 h-8 bg-[#C7862F] text-white rounded-full flex items-center justify-center hover:bg-[#b17323]"
             >
               <Plus size={16} />
             </button>

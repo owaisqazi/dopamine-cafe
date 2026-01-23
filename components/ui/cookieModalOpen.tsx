@@ -81,7 +81,7 @@ function CookieCategory({
                   value="enabled"
                   checked={selectedOption === "enabled"}
                   onChange={() => onChange("enabled")}
-                  className="w-5 h-5 text-amber-600 focus:ring-amber-500"
+                  className="w-5 h-5 text-[#C7862F] focus:ring-[#C7862F]"
                 />
                 <span>Enabled</span>
               </label>
@@ -92,14 +92,14 @@ function CookieCategory({
                   value="disabled"
                   checked={selectedOption === "disabled"}
                   onChange={() => onChange("disabled")}
-                  className="w-5 h-5 text-amber-600 focus:ring-amber-500"
+                  className="w-5 h-5 text-[#C7862F] focus:ring-[#b17323]"
                 />
                 <span>Disabled</span>
               </label>
             </div>
           )}
           {category.alwaysActive && (
-            <p className="italic text-amber-600 font-semibold">Always Active</p>
+            <p className="italic text-[#C7862F] font-semibold">Always Active</p>
           )}
         </div>
       )}
@@ -164,7 +164,7 @@ export default function CookieModal({
 
         <h2
           id="cookie-modal-title"
-          className="text-1xl font-bold mb-0 text-amber-700 tracking-wide"
+          className="text-1xl font-bold mb-0 text-[#C7862F] tracking-wide"
         >
           Privacy Preference Center
         </h2>
@@ -179,7 +179,7 @@ export default function CookieModal({
         </p>
         <button
           onClick={() => setSettingshow(!settingshow)}
-          className="flex items-center gap-2 text-amber-700 hover:text-amber-800 text-sm font-semibold mb-2"
+          className="flex items-center gap-2 text-[#C7862F] hover:text-amber-800 text-sm font-semibold mb-2"
         >
           <Settings className="w-6 h-6" />
           Cookie Settings
@@ -215,13 +215,13 @@ export default function CookieModal({
               });
               onClose();
             }}
-            className="bg-amber-600 hover:bg-amber-700 text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
+            className="bg-[#C7862F] hover:bg-[#b17323] text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
           >
             Reject All
           </button>
           <button
             onClick={() => onClose()}
-            className="bg-amber-600 hover:bg-amber-700 text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
+            className="bg-[#C7862F] hover:bg-[#b17323] text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
           >
             Confirm My Choices
           </button>

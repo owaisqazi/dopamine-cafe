@@ -17,7 +17,7 @@ export default function SearchInput({ search, setSearch }: Props) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search for items..."
-          className="w-full border rounded-full pl-5 pr-5 py-3 focus:outline-none focus:ring-2 focus:ring-[#f59e0b]"
+          className="w-full border rounded-full pl-5 pr-5 py-3 focus:outline-none focus:ring-2 focus:ring-[#C7862F]"
         />
         <Search
           className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"

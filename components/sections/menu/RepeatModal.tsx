@@ -38,12 +38,12 @@ export default function RepeatModal({ item, cartItems, onClose, onChooseAgain }:
       <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[95vh] overflow-hidden shadow-2xl flex flex-col animate-in fade-in zoom-in duration-200">
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-[#d97706] text-lg sm:text-2xl font-bold">
+          <h2 className="text-[#C7862F] text-lg sm:text-2xl font-bold">
             Repeat Previous Customization?
           </h2>
           <button
             onClick={onClose}
-            className="bg-[#d97706] text-white rounded-full p-1 hover:rotate-90 transition-transform"
+            className="bg-[#C7862F] text-white rounded-full p-1 hover:rotate-90 transition-transform"
           >
             <X size={18} />
           </button>
@@ -60,7 +60,7 @@ export default function RepeatModal({ item, cartItems, onClose, onChooseAgain }:
 
             <div className="flex-1 space-y-3 text-center md:text-left">
               <h3 className="text-xl font-bold text-gray-800">{item.name}</h3>
-              <p className="text-lg font-bold text-[#d97706]">Rs. {item.base_price}</p>
+              <p className="text-lg font-bold text-[#C7862F]">Rs. {item.base_price}</p>
               <p className="text-xs text-gray-400 leading-relaxed line-clamp-3">{item.description}</p>
 
               <div className="pt-2 bg-orange-50/50 p-3 rounded-xl border border-orange-100">
@@ -95,7 +95,7 @@ export default function RepeatModal({ item, cartItems, onClose, onChooseAgain }:
           </button>
           <button
             onClick={handleRepeatOrder}
-            className="w-full sm:w-auto px-8 py-3 bg-[#d97706] text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-[#b45309] shadow-lg shadow-orange-200 transition-all active:scale-95"
+            className="w-full sm:w-auto px-8 py-3 bg-[#C7862F] text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-[#b45309] shadow-lg shadow-orange-200 transition-all active:scale-95"
           >
             Repeat Order ↻
           </button>

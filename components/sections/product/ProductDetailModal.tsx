@@ -51,6 +51,7 @@ export default function ProductDetailModal({
 
   const [quantity, setQuantity] = useState(1);
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
+  const [specialNote, setSpecialNote] = useState("");
   const [showShare, setShowShare] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -97,7 +98,8 @@ export default function ProductDetailModal({
         image: parsedImages[0],
         //@ts-ignore
         options: item.options.filter((o) => selectedOptions.includes(o.id)),
-        optionsKey, // <-- unique for every click
+        optionsKey,
+        description: specialNote || "",
       }),
     );
 
@@ -111,7 +113,7 @@ export default function ProductDetailModal({
         {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 z-50 bg-[#d97706] text-white rounded-full p-1 hover:bg-[#bb6605] transition-colors"
+          className="absolute right-4 top-4 z-50 bg-[#C7862F] text-white rounded-full p-1 hover:bg-[#bb6605] transition-colors"
         >
           <X size={24} />
         </button>
@@ -145,7 +147,7 @@ export default function ProductDetailModal({
             <div className="relative">
               <button
                 onClick={() => setShowShare(!showShare)}
-                className="bg-[#d97706] text-white p-2 rounded-full hover:bg-[#bb6605]"
+                className="bg-[#C7862F] text-white p-2 rounded-full hover:bg-[#bb6605]"
               >
                 <Share2 size={20} />
               </button>
@@ -158,7 +160,7 @@ export default function ProductDetailModal({
                   <button className="p-2 bg-blue-600 text-white rounded-md shadow-lg hover:scale-110 transition">
                     <Facebook size={18} />
                   </button>
-                  <button className="p-2 bg-[#d97706] text-white rounded-md shadow-lg hover:scale-110 transition">
+                  <button className="p-2 bg-[#C7862F] text-white rounded-md shadow-lg hover:scale-110 transition">
                     <ShoppingCart size={18} />
                   </button>
                   <button className="p-2 bg-sky-500 text-white rounded-md shadow-lg hover:scale-110 transition">
@@ -196,7 +198,7 @@ export default function ProductDetailModal({
                           checked={selectedOptions.includes(opt.id)}
                           onChange={() => handleOptionToggle(opt.id)}
                           className="w-5 h-5 rounded border-gray-300 
-             accent-[#f59e0b] focus:ring-[#f59e0b]"
+             accent-[#C7862F] focus:ring-[#C7862F]"
                         />
 
                         <div>
@@ -214,7 +216,15 @@ export default function ProductDetailModal({
               </>
             )}
           </div>
-
+          <div className="mb-2">
+            <textarea
+              value={specialNote}
+              onChange={(e) => setSpecialNote(e.target.value)}
+              placeholder="Add any special instructions..."
+              className="w-full p-3 border rounded-lg border-gray-300 focus:ring-[#C7862F] focus:border-[#C7862F] resize-none"
+              rows={3}
+            />
+          </div>
           {/* FOOTER: QUANTITY AND ADD TO CART */}
           <div className="mt-auto pt-6 border-t flex flex-col md:flex-row items-center gap-4">
             {/* QUANTITY CONTROL */}
