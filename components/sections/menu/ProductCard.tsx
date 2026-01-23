@@ -40,7 +40,7 @@ export default function ProductCard({ item, openModal, setDeleteId, handlePlusCl
             src={IMAGE_BASE_URL + item.image}
             alt={item.name}
             fill
-            className="object-contain rounded-full border-[12px] border-blue-50 shadow-xl"
+            className="object-cover group-hover:scale-110 transition duration-500"
           />
         </div>
       </div>
