@@ -85,7 +85,7 @@ const CartDrawer = ({
       >
         {/* BACKDROP */}
         <div
-          className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-black/40  transition-opacity duration-300 ${
             isOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={onClose}
@@ -93,137 +93,150 @@ const CartDrawer = ({
 
         {/* DRAWER */}
         <div
-          className={`absolute right-0 top-0 h-full w-full max-w-[400px] bg-white shadow-2xl transition-transform duration-500 ease-in-out ${
+          className={`absolute right-0 top-0 h-full w-full max-w-[400px] shadow-2xl transition-transform duration-500 ease-in-out ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {/* HEADER */}
-          <div className="p-6 flex justify-between items-center border-b">
-            <h2 className="text-2xl font-bold">Your Cart</h2>
-            <button
-              onClick={onClose}
-              className="bg-[#2A2A28] text-white rounded-full p-1 hover:rotate-90 transition"
-            >
-              <X size={20} />
-            </button>
-          </div>
+          {/* 🔹 BACKGROUND IMAGE */}
+          <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
 
-          {/* ITEMS */}
-          <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(100vh-250px)]">
-            {cartItems.length ? (
-              cartItems.map((item) => (
-                <div key={item.id} className="border-b pb-6">
-                  <div className="flex gap-4">
-                    <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                      <Image
-                        src={IMAGE_BASE_URL + item.image}
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
+          {/* 🔹 OVERLAY */}
+          <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
 
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <h3 className="font-bold">{item.name}</h3>
+          {/* CONTENT */}
+          <div className="relative flex flex-col h-full ">
+            {/* HEADER */}
+            <div className="p-6 flex justify-between items-center border-b">
+              <h2 className="text-2xl font-bold">Your Cart</h2>
+              <button
+                onClick={onClose}
+                className="bg-[#2A2A28] text-white rounded-full p-1 hover:rotate-90 transition"
+              >
+                <X size={20} />
+              </button>
+            </div>
 
-                        <div className="flex items-center gap-3 border rounded-full px-3 py-1">
-                          <button
-                            className="text-red-500"
-                            onClick={() =>
-                              item.quantity === 1
-                                ? onDeleteRequest(item.id, item.optionsKey)
-                                : dispatch(
-                                    updateQuantity({
-                                      id: item.id,
-                                      optionsKey: item.optionsKey,
-                                      change: -1,
-                                    }),
-                                  )
-                            }
-                          >
-                            {item.quantity === 1 ? (
-                              <Trash2 size={14} />
-                            ) : (
-                              <Minus size={14} />
-                            )}
-                          </button>
-
-                          <span className="font-bold">{item.quantity}</span>
-
-                          <button
-                            onClick={() =>
-                              dispatch(
-                                updateQuantity({
-                                  id: item.id,
-                                  optionsKey: item.optionsKey,
-                                  change: +1,
-                                }),
-                              )
-                            }
-                          >
-                            <Plus size={14} />
-                          </button>
-                        </div>
+            {/* ITEMS */}
+            <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(100vh-250px)]">
+              {cartItems.length ? (
+                cartItems.map((item) => (
+                  <div key={item.id} className="border-b pb-6">
+                    <div className="flex gap-4">
+                      <div className="relative w-16 h-16 rounded-full overflow-hidden">
+                        <Image
+                          src={IMAGE_BASE_URL + item.image}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                        />
                       </div>
 
-                      <p className="text-[#2A2A28] font-bold">
-                        Rs. {item.price}
-                      </p>
+                      <div className="flex-1">
+                        <div className="flex justify-between">
+                          <h3 className="font-bold">{item.name}</h3>
+
+                          <div className="flex items-center gap-3 border rounded-full px-3 py-1">
+                            <button
+                              className="text-red-500"
+                              onClick={() =>
+                                item.quantity === 1
+                                  ? onDeleteRequest(item.id, item.optionsKey)
+                                  : dispatch(
+                                      updateQuantity({
+                                        id: item.id,
+                                        optionsKey: item.optionsKey,
+                                        change: -1,
+                                      }),
+                                    )
+                              }
+                            >
+                              {item.quantity === 1 ? (
+                                <Trash2 size={14} />
+                              ) : (
+                                <Minus size={14} />
+                              )}
+                            </button>
+
+                            <span className="font-bold">{item.quantity}</span>
+
+                            <button
+                              onClick={() =>
+                                dispatch(
+                                  updateQuantity({
+                                    id: item.id,
+                                    optionsKey: item.optionsKey,
+                                    change: +1,
+                                  }),
+                                )
+                              }
+                            >
+                              <Plus size={14} />
+                            </button>
+                          </div>
+                        </div>
+
+                        <p className="text-[#2A2A28] font-bold">
+                          Rs. {item.price}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-400 py-20">Cart is empty</p>
-            )}
+                ))
+              ) : (
+                <p className="text-center text-gray-400 py-20">Cart is empty</p>
+              )}
 
-            <button
-              onClick={onClose}
-              className="flex items-center gap-2 text-gray-500 hover:text-[#2A2A28]"
-            >
-              <Plus size={18} /> Add more items
-            </button>
-          </div>
-
-          {/* FOOTER */}
-          <div className="absolute bottom-0 left-0 w-full py-2 px-6 border-t bg-white">
-            <div className="flex justify-between mb-3">
-              <span>Delivery Fee</span>
-              <span className="font-bold">Rs. {delivery}</span>
+              <button
+                onClick={onClose}
+                className="flex items-center gap-2 text-gray-500 hover:text-[#2A2A28]"
+              >
+                <Plus size={18} /> Add more items
+              </button>
             </div>
-            {discount !== 0 && (
+
+            {/* FOOTER */}
+            <div className="absolute bottom-0 left-0 w-full py-2 px-6 border-t ">
               <div className="flex justify-between mb-3">
-                <span>Discount</span>
-                <span className="font-bold">Rs. {discount}</span>
+                <span>Delivery Fee</span>
+                <span className="font-bold">Rs. {delivery}</span>
               </div>
-            )}
-            <input
-              value={promoCode}
-              onChange={(e) => setPromoCode(e.target.value)}
-              placeholder="Promo code"
-              className="w-full border p-3 rounded-xl"
-            />
-            <button
-              onClick={applyPromoCode}
-              disabled={promoLoading}
-              className="w-full mt-3 py-3 bg-[#FFEABF] text-gray-700 hover:bg-[#d4c3a2] rounded-xl mb-3"
-            >
-              {promoLoading ? "Applying..." : "Apply Promo"}
-            </button>
-            <button onClick={()=>{
-              setIsModalOpen(true)
-              onClose()
-              }} className="w-full bg-[#2A2A28] hover:bg-[#3a3a37] text-white py-4 rounded-2xl flex justify-between px-6 font-bold">
-              <span>Checkout</span>
-              <span className="flex items-center gap-2">
-                Rs. {finalTotal?.toFixed(2)}
-                <ChevronRight size={18} />
-              </span>
-            </button>
+              {discount !== 0 && (
+                <div className="flex justify-between mb-3">
+                  <span>Discount</span>
+                  <span className="font-bold">Rs. {discount}</span>
+                </div>
+              )}
+              <input
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value)}
+                placeholder="Promo code"
+                className="w-full border p-3 rounded-xl"
+              />
+              <button
+                onClick={applyPromoCode}
+                disabled={promoLoading}
+                className="w-full mt-3 py-3 bg-[#FFEABF] text-gray-700 hover:bg-[#d4c3a2] rounded-xl mb-3"
+              >
+                {promoLoading ? "Applying..." : "Apply Promo"}
+              </button>
+              <button
+                onClick={() => {
+                  setIsModalOpen(true);
+                  onClose();
+                }}
+                className="w-full bg-[#2A2A28] hover:bg-[#3a3a37] text-white py-4 rounded-2xl flex justify-between px-6 font-bold"
+              >
+                <span>Checkout</span>
+                <span className="flex items-center gap-2">
+                  Rs. {finalTotal?.toFixed(2)}
+                  <ChevronRight size={18} />
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
       <OrderModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}

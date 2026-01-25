@@ -134,12 +134,7 @@ export default function CookieModal({
 
   return (
     <div
-      className="fixed  bottom-4
-    left-4
-    rounded-xl
-    shadow-2xl
-    w-auto
-    border-b-2 flex justify-center items-start z-50"
+      className="fixed bottom-4 left-4 z-50 rounded-xl shadow-2xl overflow-hidden"
       role="dialog"
       aria-modal="true"
       data-aos="flip-left"
@@ -148,8 +143,12 @@ export default function CookieModal({
       data-aos-anchor-placement="top-bottom"
       aria-labelledby="cookie-modal-title"
     >
+      <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
+
+      {/* OVERLAY (same as homepage) */}
+      <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
       <div
-        className={`bg-white rounded-xl shadow-2xl max-w-sm w-full border-b-2 py-4 px-4 relative flex flex-col ${
+        className={`rounded-xl shadow-2xl max-w-sm w-full border-b-2 py-4 px-4 relative flex flex-col ${
           settingshow === true ? "h-auto" : "md:h-[220px] h-[220px]"
         }`}
       >
@@ -186,21 +185,21 @@ export default function CookieModal({
         </button>
         {settingshow && (
           <>
-          <h3 className="font-semibold text-gray-900 mb-2 text-md tracking-wide">
-          Manage Consent Preferences
-        </h3>
-          <ul className="space-y-3 md:h-[200px] md:overflow-y-auto mb-8">
-            {COOKIE_CATEGORIES.map((cat, idx) => (
-              <CookieCategory
-                key={cat.name}
-                category={cat}
-                isOpen={openIndex === idx}
-                onToggle={() => toggleOpen(idx)}
-                selectedOption={preferences[cat.name] || "enabled"}
-                onChange={(val) => handlePreferenceChange(cat.name, val)}
-              />
-            ))}
-          </ul>
+            <h3 className="font-semibold text-gray-900 mb-2 text-md tracking-wide">
+              Manage Consent Preferences
+            </h3>
+            <ul className="space-y-3 md:h-[200px] md:overflow-y-auto mb-8">
+              {COOKIE_CATEGORIES.map((cat, idx) => (
+                <CookieCategory
+                  key={cat.name}
+                  category={cat}
+                  isOpen={openIndex === idx}
+                  onToggle={() => toggleOpen(idx)}
+                  selectedOption={preferences[cat.name] || "enabled"}
+                  onChange={(val) => handlePreferenceChange(cat.name, val)}
+                />
+              ))}
+            </ul>
           </>
         )}
 

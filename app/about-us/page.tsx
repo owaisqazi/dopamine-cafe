@@ -14,7 +14,7 @@ export default function Home() {
   const video = (IMAGE_BASE_URL + items?.video) || "";
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
+    <main className="min-h-screen ">
       <Navbar />
       <PageHeader
         isLoading={isLoading}

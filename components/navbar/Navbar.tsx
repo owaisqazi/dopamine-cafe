@@ -124,7 +124,7 @@ const Navbar = () => {
     ${
       isTransparent
         ? "bg-transparent border-transparent"
-        : "bg-transparent backdrop-blur-sm border-b border-gray-100 shadow-sm"
+        : "bg-transparent border-b border-gray-100 shadow-sm"
     }`}
       >
         <div className="flex items-center md:hidden justify-between px-4 py-2 text-sm font-semibold">
@@ -315,11 +315,10 @@ const Navbar = () => {
               {/* ✅ USER DROPDOWN (only when logged in) */}
               {token && isUserMenuOpen && (
                 <div className="absolute right-0 mt-3 w-44 bg-[#FFEABF] rounded-xl shadow-xl overflow-hidden z-50">
-
                   <Link href="/my-orders">
-                  <button className="w-full text-left px-4 py-3 text-sm hover:bg-[#1C1C19] hover:text-white">
-                    My Orders
-                  </button>
+                    <button className="w-full text-left px-4 py-3 text-sm hover:bg-[#1C1C19] hover:text-white">
+                      My Orders
+                    </button>
                   </Link>
 
                   <button
@@ -378,6 +377,7 @@ const Navbar = () => {
           isSidebarOpen ? "visible" : "invisible"
         }`}
       >
+        {/* BACKDROP */}
         <div
           className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
             isSidebarOpen ? "opacity-100" : "opacity-0"
@@ -385,12 +385,20 @@ const Navbar = () => {
           onClick={() => setIsSidebarOpen(false)}
         />
 
+        {/* SIDEBAR */}
         <div
-          className={`absolute right-0 top-0 h-full w-[300px] bg-[#FFEABF] shadow-2xl transition-transform duration-300 ease-in-out transform ${
+          className={`absolute right-0 top-0 h-full w-[300px] shadow-2xl transition-transform duration-300 ease-in-out transform ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="p-6">
+          {/* 🔹 BACKGROUND IMAGE */}
+          <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
+
+          {/* 🔹 OVERLAY */}
+          <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
+
+          {/* 🔹 CONTENT */}
+          <div className="relative flex flex-col h-full p-6 text-[#2A2A28]">
             <div className="flex justify-between items-center mb-10">
               <h2 className="text-xl font-bold uppercase tracking-widest">
                 Menu
@@ -400,7 +408,7 @@ const Navbar = () => {
               </button>
             </div>
 
-            <nav>
+            <nav className="flex-1 overflow-y-auto">
               <ul className="flex flex-col gap-6">
                 {navLinks.map((link) => (
                   <li key={link.name}>
@@ -409,7 +417,7 @@ const Navbar = () => {
                       onClick={() => setIsSidebarOpen(false)}
                       className={`text-lg font-medium block border-b border-transparent hover:border-[rgb(42,42,40)] transition-all ${
                         pathname === link.href
-                          ? "text-[#2A2A28] border-b border-transparent border-[rgb(42,42,40)] font-bold"
+                          ? "font-bold border-b border-[rgb(42,42,40)]"
                           : "text-gray-700"
                       }`}
                     >
@@ -436,6 +444,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
       {/* FLOATING BOTTOM CART BAR */}
       {cartItems.length > 0 && (
         <div className="fixed bottom-2 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-xl animate-in fade-in slide-in-from-bottom-4 duration-300">
@@ -480,14 +489,31 @@ const Navbar = () => {
         onClose={() => setShowLocationModal(false)}
         maxWidth="max-w-xl"
       >
-        <OrderTypeContent onClose={() => setShowLocationModal(false)} />
+        {/* 🔹 BACKGROUND IMAGE */}
+        <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
+
+        {/* 🔹 OVERLAY */}
+        <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
+
+        {/* 🔹 CONTENT */}
+        <div className="relative  rounded-2xl p-6 w-full max-w-xl">
+          <OrderTypeContent onClose={() => setShowLocationModal(false)} />
+        </div>
       </Modal>
+
       <Modal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         maxWidth="max-w-md"
       >
-        <div className="relative bg-[#FFEABF] shadow-xl rounded-2xl p-8 w-full max-w-md">
+        {/* 🔹 BACKGROUND IMAGE */}
+        <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
+
+        {/* 🔹 OVERLAY */}
+        <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
+
+        {/* 🔹 CONTENT */}
+        <div className="relative shadow-xl rounded-2xl p-8 w-full max-w-md">
           {/* ❌ Close Button */}
           <button
             onClick={() => setShowAuthModal(false)}
@@ -497,7 +523,7 @@ const Navbar = () => {
             ✕
           </button>
 
-          <h2 className="text-2xl font-bold text-center mb-6">
+          <h2 className="text-2xl font-bold text-center mb-6 text-[#2A2A28]">
             {isSignup ? "Create Account" : "Welcome Back"}
           </h2>
 
@@ -507,6 +533,7 @@ const Navbar = () => {
           />
         </div>
       </Modal>
+
       {deleteId && (
         <DeleteModal
           productId={deleteId} // Navbar mein aap 'item.id' bhej rahe hain

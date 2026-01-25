@@ -12,12 +12,9 @@ import {
   X,
   Share2,
   Facebook,
-  Twitter,
-  Linkedin,
-  Link as LinkIcon,
   Minus,
   Plus,
-  ShoppingCart,
+  Instagram,
 } from "lucide-react";
 
 interface MenuItem {
@@ -108,8 +105,18 @@ export default function ProductDetailModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="relative w-full max-w-5xl bg-white rounded-[30px] shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50  p-4">
+      <div className="relative w-full max-w-5xl rounded-[30px] shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]">
+        {/* BACKGROUND IMAGE + OVERLAY */}
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src="/main.jpeg" // yahan apni background image ka path
+            alt="background"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-[#fdeabf]/40 " />
+        </div>
         {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
@@ -119,7 +126,7 @@ export default function ProductDetailModal({
         </button>
 
         {/* LEFT: IMAGE SECTION */}
-        <div className="w-full md:w-1/2 bg-white flex items-center justify-center p-8 relative">
+        <div className="w-full md:w-1/2 flex items-center justify-center p-8 relative">
           <div className="relative w-full aspect-square max-w-[400px]">
             <Image
               src={IMAGE_BASE_URL + (parsedImages[0] || item.image)}
@@ -153,22 +160,43 @@ export default function ProductDetailModal({
               </button>
 
               {showShare && (
-                <div className="absolute top-12 right-0 flex flex-col gap-2 z-50 animate-in fade-in slide-in-from-top-2">
-                  <button className="p-2 bg-blue-500 text-white rounded-md shadow-lg hover:scale-110 transition">
-                    <LinkIcon size={18} />
-                  </button>
-                  <button className="p-2 bg-blue-600 text-white rounded-md shadow-lg hover:scale-110 transition">
-                    <Facebook size={18} />
-                  </button>
-                  <button className="p-2 bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-md shadow-lg hover:scale-110 transition">
-                    <ShoppingCart size={18} />
-                  </button>
-                  <button className="p-2 bg-sky-500 text-white rounded-md shadow-lg hover:scale-110 transition">
-                    <Twitter size={18} />
-                  </button>
-                  <button className="p-2 bg-blue-700 text-white rounded-md shadow-lg hover:scale-110 transition">
-                    <Linkedin size={18} />
-                  </button>
+                <div className="absolute top-12 right-0 flex flex-col gap-2 z-50 animate-in fade-in slide-in-from-top-2 bg-[#2A2A28] p-3 rounded-md shadow-lg">
+                  <div className="flex gap-4">
+                    {/* FACEBOOK */}
+                    <a
+                      href="https://www.facebook.com/share/1GUe2cv7Y2/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Facebook"
+                    >
+                      <Facebook className="w-5 h-5 text-[#FFEABF] hover:text-[#d4c3a2] cursor-pointer transition" />
+                    </a>
+
+                    {/* INSTAGRAM */}
+                    <a
+                      href="https://www.instagram.com/accounts/login/?next=%2Fthedopaminecafe_&source=omni_redirect"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram"
+                    >
+                      <Instagram className="w-5 h-5 text-[#FFEABF] hover:text-[#d4c3a2] cursor-pointer transition" />
+                    </a>
+
+                    {/* TIKTOK */}
+                    <a
+                      href="https://www.tiktok.com/@thedopaminecafe?_r=1&_t=ZS-93JsmAenl6W"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="TikTok"
+                    >
+                      <svg
+                        className="w-5 h-5 text-[#FFEABF] hover:text-[#d4c3a2] cursor-pointer transition fill-current"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M12.15 2h2.1c.15 1.2.75 2.4 1.8 3.3 1.05.9 2.25 1.35 3.45 1.5v2.1c-1.5 0-3-.45-4.35-1.35v6.9c0 3.45-2.85 6.3-6.3 6.3S2.7 18 2.7 14.55c0-3.3 2.55-6 5.85-6.3v2.25c-1.8.3-3.15 1.8-3.15 3.75 0 2.1 1.65 3.75 3.75 3.75s3.75-1.65 3.75-3.75V2z" />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
               )}
             </div>

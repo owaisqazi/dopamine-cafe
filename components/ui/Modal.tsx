@@ -14,7 +14,7 @@ export default function Modal({ isOpen, onClose, children, maxWidth = "max-w-5xl
 
   const modalContent = (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4">
-       <div className={`bg-white w-full ${maxWidth} rounded-xl shadow-2xl overflow-hidden relative`} 
+       <div className={` w-full ${maxWidth} rounded-xl shadow-2xl overflow-hidden relative`} 
             onClick={(e) => e.stopPropagation()}>
          {children}
        </div>

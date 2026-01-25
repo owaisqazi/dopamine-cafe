@@ -4,13 +4,27 @@ import Navbar from '@/components/navbar/Navbar';
 import { Toaster } from "react-hot-toast";
 import Gallery from '@/components/sections/Gallery';
 
-export default function page() {
+export default function Page() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
-     <Navbar /> 
-      <PageHeader  title={"Gallery"} backgroundImage = {"/gallery3.png"}/>
+    <main className="relative min-h-screen">
+
+      {/* FIXED BACKGROUND IMAGE */}
+      <div className="fixed inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
+      
+      {/* OPTIONAL OVERLAY */}
+      <div className="fixed inset-0 -z-10 bg-[#fdeabf]/40" />
+
+      <Navbar /> 
+
+      <PageHeader  
+        title="Gallery" 
+        backgroundImage="/gallery3.png" 
+      />
+
       <Gallery />
+
       <Footer />
+
       <Toaster position="top-right" reverseOrder={false} />
     </main>
   );

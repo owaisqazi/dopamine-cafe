@@ -31,7 +31,7 @@ export default function About() {
   ];
   if (isLoading) return <SkeletonLoader type="about" count={3} />;
   return (
-    <section id="about" className="py-20 px-4 relative z-20 bg-[#FFEABF]">
+    <section id="about" className="py-20 px-4 relative z-20 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat">
       <div className="container mx-auto">
         {/* SECTION HEADING */}
         {/* <header className="text-center mb-12" data-aos="flip-up">
@@ -80,7 +80,7 @@ export default function About() {
               {items?.name}
             </h3>
             <p className="text-gray-600 mb-4 leading-relaxed">
-             {items?.description}
+              {items?.description}
             </p>
           </div>
 

@@ -11,7 +11,7 @@ export default function Gallery() {
   return (
     <section
       id="gallery"
-      className="py-16 px-4 bg-[#FFEABF]"
+      className="py-16 px-4"
       style={{ backgroundAttachment: "fixed" }}
       aria-label="Gallery of The Dopamine Cafe"
     >
