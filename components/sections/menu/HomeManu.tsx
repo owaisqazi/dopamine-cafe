@@ -49,9 +49,9 @@ export default function HomeMenu() {
   const categories: Category[] = useMemo(() => {
     if (!data?.data) return [];
     return data.data.map((cat: any) => ({
-      category_id: cat.id,
-      category_name: cat.name,
-      products: cat.products.map((p: any) => ({
+      category_id: cat?.id,
+      category_name: cat?.name,
+      products: cat?.products.map((p: any) => ({
         ...p,
         optionsKey: "no-options",
       })),
@@ -64,11 +64,11 @@ export default function HomeMenu() {
     return categories
       .map((cat) => ({
         ...cat,
-        products: cat.products.filter((p) =>
+        products: cat?.products.filter((p) =>
           p.name.toLowerCase().includes(search.toLowerCase()),
         ),
       }))
-      .filter((cat) => cat.products.length > 0);
+      .filter((cat) => cat?.products.length > 0);
   }, [search, categories]);
 
   /** SCROLL SPY */
@@ -77,11 +77,11 @@ export default function HomeMenu() {
       setIsSticky(window.scrollY > 650);
       let newActiveCat = activeCat;
       for (const cat of filteredCategories) {
-        const el = document.getElementById(`cat-${cat.category_id}`);
+        const el = document.getElementById(`cat-${cat?.category_id}`);
         if (el) {
           const rect = el.getBoundingClientRect();
           if (rect.top <= 100 && rect.bottom >= 100) {
-            newActiveCat = cat.category_id;
+            newActiveCat = cat?.category_id;
             break;
           }
         }
@@ -99,7 +99,7 @@ export default function HomeMenu() {
   const handlePlusClick = (item: Product) => {
     // Check if any customized version of this product exists in cart
     const customizedItem = cartItems.find(
-      (c) => c.id === item.id && c.options && c.options.length > 0,
+      (c) => c.id === item?.id && c.options && c.options.length > 0,
     );
 
     if (customizedItem) {
@@ -108,21 +108,21 @@ export default function HomeMenu() {
     } else {
       // Check if it's already in cart as a simple item
       const existingSimpleItem = cartItems.find(
-        (c) => c.id === item.id && c.optionsKey === "no-options",
+        (c) => c.id === item?.id && c.optionsKey === "no-options",
       );
 
       if (existingSimpleItem) {
         dispatch(
-          updateQuantity({ id: item.id, optionsKey: "no-options", change: 1 }),
+          updateQuantity({ id: item?.id, optionsKey: "no-options", change: 1 }),
         );
       } else {
         dispatch(
           addToCart({
-            id: item.id,
-            name: item.name,
-            description: item.description,
-            image: item.image,
-            price: item.base_price,
+            id: item?.id,
+            name: item?.name,
+            description: item?.description,
+            image: item?.image,
+            price: item?.base_price,
             quantity: 1,
             options: [],
             optionsKey: "no-options",
@@ -153,17 +153,22 @@ export default function HomeMenu() {
       <div className="w-full mx-auto px-4 md:px-10 mt-10">
         {filteredCategories.map((cat) => (
           <section
-            key={cat.category_id}
-            id={`cat-${cat.category_id}`}
+            key={cat?.category_id}
+            id={`cat-${cat?.category_id}`}
             className="mb-12"
           >
-            <h2 className="text-center font-bold mb-8 text-3xl md:text-[40px] text-[#C7862F]">
-              {cat.category_name}
+            <h2
+              className="text-center font-extrabold mb-8 text-4xl md:text-[50px] uppercase tracking-tighter
+             bg-cover bg-center bg-no-repeat 
+             bg-clip-text text-transparent"
+              style={{ backgroundImage: "url('/banner-image-hero.png')" }} 
+            >
+              {cat?.category_name}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cat.products.map((item) => (
+              {cat?.products.map((item) => (
                 <ProductCard
-                  key={item.id}
+                  key={item?.id}
                   item={item}
                   openModal={openModal}
                   setDeleteId={setDeleteId}

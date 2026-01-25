@@ -53,7 +53,7 @@ export default function CategoryHeader({
         isSticky ? "bg-[#1C1D18] shadow-lg" : "bg-transparent"
       }`}
     >
-      <div className="relative flex items-center justify-center w-full mx-auto px-2 md:px-10 py-4">
+      <div className="relative flex items-center justify-center w-full mx-auto px-2 md:px-10 py-2">
         <button aria-label="Scroll left" onClick={scrollLeftCategory}>
           <ChevronLeft
             className={isSticky ? "text-white" : "bg-[#FFEABF] text-black"}
@@ -69,9 +69,9 @@ export default function CategoryHeader({
               key={cat.category_id}
               aria-current={activeCat === cat.category_id}
               onClick={() => scrollToCategory(cat.category_id)}
-              className={`flex-shrink-0 px-6 py-2 rounded-full font-semibold ${
+              className={`flex-shrink-0 my-2 px-6 py-2 rounded-full font-semibold ${
                 activeCat === cat.category_id
-                  ? "bg-[#C7862F] text-white"
+                  ? "bg-[#1C1D18] border border-[#3d3f36] shadow-[0_0_8px_2px_rgba(61,63,54,0.9)] scale-[1.03] text-white"
                   : "bg-[#FFF3D6] text-black"
               }`}
             >

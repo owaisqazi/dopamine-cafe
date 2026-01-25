@@ -11,9 +11,6 @@ import {
   Phone,
   User,
   ChevronRight,
-  Plus,
-  Trash2,
-  Minus,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -25,9 +22,11 @@ import Modal from "../ui/Modal";
 import OrderTypeContent from "../order-manager-city/OrderTypeContent";
 import AuthForm from "../forms/AuthForm";
 import { useDispatch } from "react-redux";
-import { updateQuantity, removeFromCart } from "@/store/cartSlice";
+import { updateQuantity } from "@/store/cartSlice";
 import { IMAGE_BASE_URL } from "../auth/axiosInstance";
+import { selectCartSubtotal } from "@/store/cartSelectors";
 import DeleteModal from "../sections/menu/DeleteModal";
+import CartDrawer from "../sections/product/CartDrawer";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -38,6 +37,7 @@ const Navbar = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const subtotal = useSelector(selectCartSubtotal);
   const [deleteId, setDeleteId] = useState<any | null>(null);
   const [optionsKeyData, setOptionsKeyData] = useState<any | null>(null);
   const [token, setToken] = useState<string | null>(null);
@@ -100,22 +100,12 @@ const Navbar = () => {
 
   const navLinks = [
     { name: "Home", href: "/" },
+    { name: "Special Menu", href: "/#menu-item", isScroll: true },
     { name: "Gallery", href: "/gallery" },
     { name: "Blog", href: "/blog" },
     { name: "About Us", href: "/about-us" },
     { name: "Contact", href: "/contact" },
   ];
-  const calculateTotal = () => {
-    return cartItems.reduce((total, item) => {
-      //@ts-ignore
-      const itemBasePrice = Number(item.price || item.base_price || 0);
-      const optionsPrice =
-        item.options?.reduce((optTotal: number, opt: any) => {
-          return optTotal + Number(opt.price_modifier || 0);
-        }, 0) || 0;
-      return total + (itemBasePrice + optionsPrice) * (item.quantity || 1);
-    }, 0);
-  };
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     // Pehle check karein ke hum Home page par hain ya nahi
     if (window.location.pathname === "/") {
@@ -134,7 +124,7 @@ const Navbar = () => {
     ${
       isTransparent
         ? "bg-transparent border-transparent"
-        : "bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm"
+        : "bg-transparent backdrop-blur-sm border-b border-gray-100 shadow-sm"
     }`}
       >
         <div className="flex items-center md:hidden justify-between px-4 py-2 text-sm font-semibold">
@@ -142,8 +132,8 @@ const Navbar = () => {
             onClick={() => setShowLocationModal(true)}
             className="flex items-center gap-1"
           >
-            <MapPin size={16} className="text-[#C7862F]" />
-            <span className="truncate max-w-[140px] text-[#C7862F]">
+            <MapPin size={16} className="text-[#FFEABF]" />
+            <span className="truncate max-w-[140px] text-[#FFEABF]">
               {displayLocation}
             </span>
           </button>
@@ -151,7 +141,7 @@ const Navbar = () => {
           <Link
             href="/#menu-item"
             onClick={handleScroll}
-            className="bg-[#C7862F] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase"
+            className="bg-[#2A2A28] hover:bg-[#3a3a37] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase"
           >
             Order Now
           </Link>
@@ -180,7 +170,7 @@ const Navbar = () => {
                 className="flex items-center gap-3 group"
               >
                 <MapPin
-                  className={isTransparent ? "text-white" : "text-[#C7862F]"}
+                  className={isTransparent ? "text-white" : "text-[#FFEABF]"}
                   size={24}
                 />
                 <div
@@ -295,8 +285,8 @@ const Navbar = () => {
               className={`hidden md:flex px-5 py-2 rounded-full font-bold uppercase text-sm
               ${
                 isTransparent
-                  ? "bg-white text-[#C7862F]"
-                  : "bg-[#C7862F] text-white"
+                  ? "bg-[#2A2A28] hover:bg-[#3a3a37] text-white"
+                  : "bg-[#2A2A28] hover:bg-[#3a3a37] text-white"
               }`}
             >
               Order Now
@@ -313,7 +303,7 @@ const Navbar = () => {
                 className={`p-1 rounded-full transition-colors ${
                   isTransparent
                     ? "text-white hover:bg-white/10"
-                    : "text-[#C7862F] hover:bg-gray-100"
+                    : "text-[#FFEABF] hover:bg-gray-100"
                 }`}
               >
                 <User size={28} className="ps-2" />
@@ -325,13 +315,12 @@ const Navbar = () => {
               {/* ✅ USER DROPDOWN (only when logged in) */}
               {token && isUserMenuOpen && (
                 <div className="absolute right-0 mt-3 w-44 bg-[#FFEABF] rounded-xl shadow-xl overflow-hidden z-50">
-                  <button className="w-full text-left px-4 py-3 text-sm hover:bg-[#1C1C19] hover:text-white">
-                    My Profile
-                  </button>
 
+                  <Link href="/my-orders">
                   <button className="w-full text-left px-4 py-3 text-sm hover:bg-[#1C1C19] hover:text-white">
                     My Orders
                   </button>
+                  </Link>
 
                   <button
                     onClick={() => {
@@ -356,7 +345,7 @@ const Navbar = () => {
             >
               <div className="relative">
                 <ShoppingCart
-                  className={isTransparent ? "text-white" : "text-[#C7862F]"}
+                  className={isTransparent ? "text-white" : "text-[#FFEABF]"}
                   size={28}
                 />
                 {cartItems.length > 0 && (
@@ -374,7 +363,7 @@ const Navbar = () => {
               className={`p-1 rounded-md transition-colors ${
                 isTransparent
                   ? "text-white hover:bg-white/10"
-                  : "text-[#C7862F] hover:bg-gray-100"
+                  : "text-[#FFEABF] hover:bg-gray-100"
               }`}
             >
               <MenuIcon size={32} />
@@ -418,10 +407,10 @@ const Navbar = () => {
                     <Link
                       href={link.href}
                       onClick={() => setIsSidebarOpen(false)}
-                      className={`text-lg font-medium block border-b border-transparent hover:border-[#C7862F] transition-all ${
+                      className={`text-lg font-medium block border-b border-transparent hover:border-[rgb(42,42,40)] transition-all ${
                         pathname === link.href
-                          ? "text-[#C7862F] font-bold"
-                          : "text-gray-800"
+                          ? "text-[#2A2A28] border-b border-transparent border-[rgb(42,42,40)] font-bold"
+                          : "text-gray-700"
                       }`}
                     >
                       {link.name}
@@ -453,11 +442,11 @@ const Navbar = () => {
           <button
             onClick={() => setIsCartOpen(true)}
             type="button"
-            className="bg-[#C7862F] hover:bg-[#b17323] w-full text-white flex items-center justify-between px-6 py-4 rounded-2xl shadow-[0_10px_30px_rgba(245,158,11,0.4)] transition-all active:scale-95 group"
+            className="bg-[#2A2A28] hover:bg-[#3a3a37] w-full text-white flex items-center justify-between px-6 py-4 rounded-2xl shadow-[0_10px_30px_rgba(245,158,11,0.4)] transition-all active:scale-95 group"
           >
             <div className="flex items-center gap-4">
               {/* Item Count Circle */}
-              <div className="w-8 h-8 bg-white text-[#C7862F] rounded-full flex items-center justify-center font-bold text-sm">
+              <div className="w-8 h-8 bg-white text-[#2A2A28] rounded-full flex items-center justify-center font-bold text-sm">
                 {cartItems.length}
               </div>
               <span className="font-bold text-lg tracking-wide uppercase">
@@ -467,7 +456,7 @@ const Navbar = () => {
 
             <div className="flex items-center gap-3">
               <span className="font-bold text-lg">
-                Rs. {calculateTotal().toFixed(2)}
+                Rs. {subtotal.toFixed(2)}
               </span>
               <div className="bg-white/20 p-1 rounded-full group-hover:translate-x-1 transition-transform">
                 <ChevronRight size={20} />
@@ -476,176 +465,16 @@ const Navbar = () => {
           </button>
         </div>
       )}
-      {/* Spacer removed because header is transparent and overlaying the hero section */}
-      {/* cart  */}
-      {/* CART DRAWER OVERLAY */}
-      <div
-        className={`fixed inset-0 z-[100] ${
-          isCartOpen ? "visible" : "invisible"
-        }`}
-      >
-        {/* Backdrop shadow */}
-        <div
-          className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
-            isCartOpen ? "opacity-100" : "opacity-0"
-          }`}
-          onClick={() => setIsCartOpen(false)}
-        />
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        subtotal={subtotal}
+        onDeleteRequest={(id, optionsKey) => {
+          setDeleteId(id);
+          setOptionsKeyData(optionsKey);
+        }}
+      />
 
-        {/* Drawer Content */}
-        <div
-          className={`absolute right-0 top-0 h-full w-full max-w-[400px] bg-white shadow-2xl transition-transform duration-500 ease-in-out transform ${
-            isCartOpen ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          {/* Header */}
-          <div className="p-6 flex justify-between items-center border-b">
-            <h2 className="text-2xl font-bold text-gray-800">Your Cart</h2>
-            <button
-              onClick={() => setIsCartOpen(false)}
-              className="bg-[#C7862F] text-white rounded-full p-1 hover:rotate-90 transition-transform"
-            >
-              <X size={20} />
-            </button>
-          </div>
-
-          {/* Cart Items List */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6 max-h-[calc(100vh-250px)]">
-            {cartItems.length > 0 ? (
-              cartItems.map((item) => {
-                const optionsTotal =
-                  item.options?.reduce(
-                    (acc: number, opt: any) => acc + Number(opt.price_modifier),
-                    0,
-                  ) || 0;
-                const itemTotal =
-                  (Number(item.price) + optionsTotal) * item.quantity;
-
-                return (
-                  <div key={item.id} className="border-b pb-6 last:border-0">
-                    <div className="flex gap-4">
-                      <div className="relative w-16 h-16 rounded-full overflow-hidden border">
-                        <Image
-                          src={IMAGE_BASE_URL + item.image}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-
-                      <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                          <h3 className="font-bold text-gray-800">
-                            {item.name}
-                          </h3>
-                          {/* Quantity Selector inside cart */}
-                          <div className="flex items-center gap-3 border rounded-full px-3 py-1 text-[#C7862F]">
-                            {/* MINUS / DELETE BUTTON */}
-                            <button
-                              className="text-red-500"
-                              onClick={() => {
-                                if (item.quantity === 1) {
-                                  // dispatch(
-                                  //   removeFromCart({
-                                  //     id: item.id,
-                                  //     optionsKey: item.optionsKey,
-                                  //   }),
-                                  // );
-                                  setDeleteId(item?.id);
-                                  setOptionsKeyData(item.optionsKey);
-                                } else {
-                                  dispatch(
-                                    updateQuantity({
-                                      id: item.id,
-                                      optionsKey: item.optionsKey, // 🔑 MUST
-                                      change: -1,
-                                    }),
-                                  );
-                                }
-                              }}
-                            >
-                              {item.quantity === 1 ? (
-                                <Trash2 size={14} />
-                              ) : (
-                                <Minus size={14} />
-                              )}
-                            </button>
-
-                            <span className="font-bold text-sm text-black">
-                              {item.quantity}
-                            </span>
-
-                            {/* PLUS BUTTON */}
-                            <button
-                              className="text-[#C7862F]"
-                              onClick={() =>
-                                dispatch(
-                                  updateQuantity({
-                                    id: item.id,
-                                    optionsKey: item.optionsKey, // 🔑 MUST
-                                    change: -1,
-                                  }),
-                                )
-                              }
-                            >
-                              <Plus size={14} />
-                            </button>
-                          </div>
-                        </div>
-                        <p className="font-bold text-[#C7862F]">
-                          Rs. {Number(item.price).toFixed(1)}
-                        </p>
-
-                        {/* Options List */}
-                        {item.options?.map((opt: any) => (
-                          <div
-                            key={opt.id}
-                            className="text-xs text-gray-500 flex justify-between mt-1"
-                          >
-                            <span>+ {opt.name}</span>
-                            {Number(opt.price_modifier) > 0 && (
-                              <span>Rs. {opt.price_modifier}</span>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="text-center py-20 text-gray-400">
-                Cart is empty
-              </div>
-            )}
-
-            {/* Add more items link */}
-            <button
-              onClick={() => setIsCartOpen(false)}
-              className="flex items-center gap-2 text-gray-500 font-medium hover:text-[#C7862F]"
-            >
-              <Plus size={18} /> Add more items
-            </button>
-          </div>
-
-          {/* Footer Section */}
-          <div className="absolute bottom-0 left-0 w-full p-6 bg-white border-t space-y-4">
-            <div className="flex justify-between items-center text-gray-600">
-              <span>Delivery Fee</span>
-              <span className="font-bold">Rs. 250.0</span>
-            </div>
-
-            <button className="w-full bg-[#C7862F] hover:bg-[#b17323] text-white py-4 rounded-2xl flex justify-between items-center px-6 font-bold transition-all shadow-lg">
-              <span className="text-lg">Checkout</span>
-              <div className="flex items-center gap-2">
-                <span>Rs. {(calculateTotal() + 250).toFixed(1)}</span>
-                <ChevronRight size={20} />
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
-      {/* CART DRAWER OVERLAY */}
       <Modal
         isOpen={showLocationModal}
         onClose={() => setShowLocationModal(false)}

@@ -1,16 +1,6 @@
 "use client";
 
-import {
-  User,
-  Mail,
-  Phone,
-  Info,
-  Pencil,
-  Instagram,
-  Facebook,
-  Twitter,
-  MessageCircle,
-} from "lucide-react";
+import { User, Mail, Info, Pencil, Instagram, Facebook } from "lucide-react";
 import { Card } from "../ui/card";
 import { useContactMutation } from "@/store/api/authApi";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -69,6 +59,23 @@ export default function Contact() {
       toast.error(error?.data?.message || "Something went wrong");
     }
   };
+  const socialLinks = [
+    {
+      name: "Facebook",
+      href: "https://www.facebook.com/share/1GUe2cv7Y2/",
+      Icon: Facebook,
+    },
+    {
+      name: "Instagram",
+      href: "https://www.instagram.com/accounts/login/?next=%2Fthedopaminecafe_&source=omni_redirect",
+      Icon: Instagram,
+    },
+    {
+      name: "TikTok",
+      href: "https://www.tiktok.com/@thedopaminecafe?_r=1&_t=ZS-93JsmAenl6W",
+      Icon: "tiktok",
+    },
+  ];
 
   return (
     <section id="contact" className="pt-20 bg-[#FFEABF] relative z-20">
@@ -84,9 +91,9 @@ export default function Contact() {
           <div>
             <address className="not-italic space-y-4 text-gray-600">
               <p>
-                Shop # 2 & 3, Dopamine (Restaurant & Coffee Bar), Sindhi
-                Muslim Cooperative Housing Society Block A Sindhi Muslim CHS
-                (SMCHS), Karachi
+                Shop # 2 & 3, Dopamine (Restaurant & Coffee Bar), Sindhi Muslim
+                Cooperative Housing Society Block A Sindhi Muslim CHS (SMCHS),
+                Karachi
               </p>
               <p>
                 <a
@@ -96,7 +103,7 @@ export default function Contact() {
                   info@thedopaminecafe.com
                 </a>
               </p>
-                <h6>Contact Number</h6>
+              <h6>Contact Number</h6>
               <p>
                 <a
                   href="https://wa.me/+923002444443"
@@ -117,16 +124,23 @@ export default function Contact() {
               </p>
             </address>
 
-            {/* Social Links */}
             <div className="flex gap-4 mt-10">
-              {[Facebook, Twitter, Instagram].map((Icon, i) => (
+              {socialLinks.map((item, i) => (
                 <a
                   key={i}
-                  href="#"
-                  aria-label={`Visit our ${Icon.name} page`}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visit our ${item.name} page`}
                   className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-[#C7862F] hover:text-white hover:border-[#C7862F] transition"
                 >
-                  <Icon className="w-4 h-4" />
+                  {item.Icon === "tiktok" ? (
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path d="M12.15 2h2.1c.15 1.2.75 2.4 1.8 3.3 1.05.9 2.25 1.35 3.45 1.5v2.1c-1.5 0-3-.45-4.35-1.35v6.9c0 3.45-2.85 6.3-6.3 6.3S2.7 18 2.7 14.55c0-3.3 2.55-6 5.85-6.3v2.25c-1.8.3-3.15 1.8-3.15 3.75 0 2.1 1.65 3.75 3.75 3.75s3.75-1.65 3.75-3.75V2z" />
+                    </svg>
+                  ) : (
+                    <item.Icon className="w-4 h-4" />
+                  )}
                 </a>
               ))}
             </div>

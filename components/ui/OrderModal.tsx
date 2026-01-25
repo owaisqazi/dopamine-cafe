@@ -83,7 +83,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
         formData.append(key, value.toString());
       }
     });
-
+    
     formData.append("subtotal", totalPrice.toString());
     formData.append("discount", discountAmount.toString());
     formData.append("total_amount", safeFinalTotal.toString());
@@ -193,7 +193,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                         className={`w-full border rounded-lg p-2.5 mt-1 outline-none ${
                           errors.name && touched.name
                             ? "border-red-500"
-                            : "focus:ring-2 focus:ring-amber-500"
+                            : "focus:ring-2 focus:ring-[#2A2A28]"
                         }`}
                         placeholder="Muhammad Hussnain"
                       />
@@ -213,7 +213,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                         className={`w-full border rounded-lg p-2.5 mt-1 outline-none ${
                           errors.email && touched.email
                             ? "border-red-500"
-                            : "focus:ring-2 focus:ring-amber-500"
+                            : "focus:ring-2 focus:ring-[#2A2A28]"
                         }`}
                         placeholder="ihasnain83@gmail.com"
                       />
@@ -233,7 +233,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       <PhoneField
                         name="phone"
                         className={
-                          "border rounded-lg p-2 mt-1 focus:ring-2 focus:ring-amber-500 outline-none bg-white"
+                          "border rounded-lg p-2 mt-1 focus:ring-2 focus:ring-[#2A2A28] outline-none bg-white"
                         }
                         placeholder="Enter your phone"
                       />
@@ -251,7 +251,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                         as="select"
                         name="order_type"
                         disabled
-                        className="w-full px-2 border rounded-lg py-3.5 mt-1 focus:ring-2 focus:ring-amber-500 outline-none bg-white"
+                        className="w-full px-2 border rounded-lg py-3.5 mt-1 focus:ring-2 focus:ring-[#2A2A28] outline-none bg-white"
                       >
                         {/* <option value="pickup">Pickup</option> */}
                         <option value="delivery">Delivery</option>
@@ -270,7 +270,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       className={`w-full border rounded-lg p-2.5 mt-1 outline-none ${
                         errors.address && touched.address
                           ? "border-red-500"
-                          : "focus:ring-2 focus:ring-amber-500"
+                          : "focus:ring-2 focus:ring-[#2A2A28]"
                       }`}
                       placeholder="House No A-1433..."
                     />
@@ -289,7 +289,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       <Field
                         as="select"
                         name="payment_method"
-                        className="w-full border rounded-lg p-2.5 mt-1 focus:ring-2 focus:ring-amber-500 outline-none bg-white"
+                        className="w-full border rounded-lg p-2.5 mt-1 focus:ring-2 focus:ring-[#2A2A28] outline-none bg-white"
                       >
                         <option value="cash on delivery">
                           Cash On Delivery
@@ -303,7 +303,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       </label>
                       <Field
                         name="notes"
-                        className="w-full border rounded-lg p-2.5 mt-1 focus:ring-2 focus:ring-amber-500 outline-none"
+                        className="w-full border rounded-lg p-2.5 mt-1 focus:ring-2 focus:ring-[#2A2A28] outline-none"
                         placeholder="Spicy All Item"
                       />
                     </div>
@@ -359,7 +359,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                     className={`mt-6 w-full py-3.5 text-white rounded-xl font-bold uppercase shadow-md transition-all flex justify-center items-center gap-2 ${
                       isLoading
                         ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-amber-500 hover:bg-[#C7862F]"
+                        : "bg-[#2A2A28] hover:bg-[#3a3a37]"
                     }`}
                   >
                     {isLoading && (

@@ -55,7 +55,7 @@ export default function Blog() {
                 >
                   <button
                     aria-label={`View ${item?.title} details`}
-                    className="absolute top-3 right-3 w-10 h-10 bg-[#C7862F] hover:bg-[#C7862F] text-white rounded-full flex items-center justify-center shadow-lg transition hover:scale-110"
+                    className="absolute top-3 right-3 w-10 h-10 bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-full flex items-center justify-center shadow-lg transition hover:scale-110"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +84,7 @@ export default function Blog() {
                     query: { data: encodeURIComponent(JSON.stringify(item)) },
                   }}
                 >
-                  <button className="w-full py-2 bg-gray-50 text-gray-800 text-sm font-semibold rounded-lg hover:bg-[#C7862F] hover:text-white transition-colors">
+                  <button className="w-full py-2 bg-gray-50 text-gray-800 text-sm font-semibold rounded-lg hover:bg-[#3a3a37] hover:text-white transition-colors">
                     View Details
                   </button>
                 </Link>

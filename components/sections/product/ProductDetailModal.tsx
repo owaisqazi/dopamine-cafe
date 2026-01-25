@@ -113,7 +113,7 @@ export default function ProductDetailModal({
         {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 z-50 bg-[#C7862F] text-white rounded-full p-1 hover:bg-[#bb6605] transition-colors"
+          className="absolute right-4 top-4 z-50 bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-full p-1 transition-colors"
         >
           <X size={24} />
         </button>
@@ -147,7 +147,7 @@ export default function ProductDetailModal({
             <div className="relative">
               <button
                 onClick={() => setShowShare(!showShare)}
-                className="bg-[#C7862F] text-white p-2 rounded-full hover:bg-[#bb6605]"
+                className="bg-[#2A2A28] hover:bg-[#3a3a37] text-white p-2 rounded-full"
               >
                 <Share2 size={20} />
               </button>
@@ -160,7 +160,7 @@ export default function ProductDetailModal({
                   <button className="p-2 bg-blue-600 text-white rounded-md shadow-lg hover:scale-110 transition">
                     <Facebook size={18} />
                   </button>
-                  <button className="p-2 bg-[#C7862F] text-white rounded-md shadow-lg hover:scale-110 transition">
+                  <button className="p-2 bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-md shadow-lg hover:scale-110 transition">
                     <ShoppingCart size={18} />
                   </button>
                   <button className="p-2 bg-sky-500 text-white rounded-md shadow-lg hover:scale-110 transition">
@@ -198,7 +198,7 @@ export default function ProductDetailModal({
                           checked={selectedOptions.includes(opt.id)}
                           onChange={() => handleOptionToggle(opt.id)}
                           className="w-5 h-5 rounded border-gray-300 
-             accent-[#C7862F] focus:ring-[#C7862F]"
+             accent-[#3a3a37] focus:ring-[#3a3a37]"
                         />
 
                         <div>
@@ -221,7 +221,7 @@ export default function ProductDetailModal({
               value={specialNote}
               onChange={(e) => setSpecialNote(e.target.value)}
               placeholder="Add any special instructions..."
-              className="w-full p-3 border rounded-lg border-gray-300 focus:ring-[#C7862F] focus:border-[#C7862F] resize-none"
+              className="w-full p-3 border rounded-lg border-gray-300 focus:ring-[#3a3a37] focus:border-[#3a3a37] resize-none"
               rows={3}
             />
           </div>
@@ -231,7 +231,7 @@ export default function ProductDetailModal({
             <div className="flex items-center w-full md:w-auto bg-gray-100 rounded-lg p-1 justify-center">
               <button
                 onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                className="w-10 h-10 flex items-center justify-center text-[#bb6605] hover:text-[#bb6605] rounded-lg"
+                className="w-10 h-10 flex items-center justify-center text-[#2A2A28] hover:text-[#2A2A28] rounded-lg"
               >
                 <Minus size={18} />
               </button>
@@ -240,7 +240,7 @@ export default function ProductDetailModal({
               </span>
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 flex items-center justify-center text-[#bb6605] hover:text-[#bb6605] rounded-lg"
+                className="w-10 h-10 flex items-center justify-center text-[#2A2A28] hover:text-[#2A2A28] rounded-lg"
               >
                 <Plus size={18} />
               </button>
@@ -249,7 +249,7 @@ export default function ProductDetailModal({
             {/* ADD TO CART BUTTON */}
             <button
               onClick={handleAddToCart}
-              className="flex-1 w-full md:w-auto bg-[#bb6605] text-white py-4 px-6 rounded-xl flex justify-between items-center font-bold text-sm hover:bg-[#a35c04] transition-all transform active:scale-[0.98]"
+              className="flex-1 w-full md:w-auto bg-[#2A2A28] text-white py-4 px-6 rounded-xl flex justify-between items-center font-bold text-sm hover:bg-[#3a3a37] transition-all transform active:scale-[0.98]"
             >
               <span>Rs. {totalPrice.toFixed(1)}</span>
               <span className="flex items-center gap-2">

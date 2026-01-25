@@ -8,7 +8,7 @@ import SkeletonLoader from "../Skeleton/SkeletonLoader";
 const slides = [
   {
     image: "/banner.jpeg",
-    title: "Your Daily Dose of Join Now",
+    title: "Your Daily Dopamine",
     subtitle: "The Dopamine Cafe",
   },
   {
@@ -78,7 +78,7 @@ export default function Hero() {
                 <h1 className="text-4xl md:text-6xl pt-20 md:pt-0 lg:text-7xl font-bold text-white leading-tight">
                   {slide.title}
                 </h1>
-                <p className="mt-4 text-xl text-[#C7862F]">
+                <p className="mt-4 text-xl text-[#FFEABF]">
                   {slide.subtitle}
                 </p>
               </div>
@@ -112,7 +112,7 @@ export default function Hero() {
       </button>
 
       {/* Scroll icon */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 md:block hidden text-[#C7862F] animate-bounce z-20">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 md:block hidden text-[#FFEABF] animate-bounce z-20">
         <ChevronDown size={36} />
       </div>
     </section>

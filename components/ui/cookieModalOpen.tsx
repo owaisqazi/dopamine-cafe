@@ -81,7 +81,7 @@ function CookieCategory({
                   value="enabled"
                   checked={selectedOption === "enabled"}
                   onChange={() => onChange("enabled")}
-                  className="w-5 h-5 text-[#C7862F] focus:ring-[#C7862F]"
+                  className="w-5 h-5 text-[#2A2A28] focus:ring-[#2A2A28]"
                 />
                 <span>Enabled</span>
               </label>
@@ -92,14 +92,14 @@ function CookieCategory({
                   value="disabled"
                   checked={selectedOption === "disabled"}
                   onChange={() => onChange("disabled")}
-                  className="w-5 h-5 text-[#C7862F] focus:ring-[#b17323]"
+                  className="w-5 h-5 text-[#2A2A28] focus:ring-[#b17323]"
                 />
                 <span>Disabled</span>
               </label>
             </div>
           )}
           {category.alwaysActive && (
-            <p className="italic text-[#C7862F] font-semibold">Always Active</p>
+            <p className="italic text-[#2A2A28] font-semibold">Always Active</p>
           )}
         </div>
       )}
@@ -156,7 +156,7 @@ export default function CookieModal({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-2 right-4 text-gray-500 hover:text-gray-900 text-3xl font-bold focus:outline-none"
+          className="absolute top-2 right-4 text-[#2A2A28] hover:text-gray-900 text-3xl font-bold focus:outline-none"
           aria-label="Close cookie preferences"
         >
           &times;
@@ -164,7 +164,7 @@ export default function CookieModal({
 
         <h2
           id="cookie-modal-title"
-          className="text-1xl font-bold mb-0 text-[#C7862F] tracking-wide"
+          className="text-1xl font-bold mb-0 text-[#2A2A28] tracking-wide"
         >
           Privacy Preference Center
         </h2>
@@ -179,7 +179,7 @@ export default function CookieModal({
         </p>
         <button
           onClick={() => setSettingshow(!settingshow)}
-          className="flex items-center gap-2 text-[#C7862F] hover:text-amber-800 text-sm font-semibold mb-2"
+          className="flex items-center gap-2 text-[#2A2A28] text-sm font-semibold mb-2 hover:bg-[#d4c3a2]"
         >
           <Settings className="w-6 h-6" />
           Cookie Settings
@@ -215,13 +215,13 @@ export default function CookieModal({
               });
               onClose();
             }}
-            className="bg-[#C7862F] hover:bg-[#b17323] text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
+            className="bg-[#2A2A28] hover:bg-[#3a3a37] text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
           >
             Reject All
           </button>
           <button
             onClick={() => onClose()}
-            className="bg-[#C7862F] hover:bg-[#b17323] text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
+            className="bg-[#2A2A28] hover:bg-[#3a3a37] text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
           >
             Confirm My Choices
           </button>

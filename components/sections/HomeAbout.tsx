@@ -58,7 +58,7 @@ export default function HomeAbout() {
                 className="group bg-[#1C1C19] hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
               >
                 <CardContent className="p-6 text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#1C1C19] text-[#C7862F] mb-4 group-hover:scale-110 transition-transform">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#1C1C19] text-[#FFEABF] border-[#FFEABF] mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="w-6 h-6" aria-hidden="true" />
                   </div>
                   <h3 className="font-semibold text-white mb-2">
@@ -82,26 +82,17 @@ export default function HomeAbout() {
               {items?.name}
             </h3>
             <p className="text-gray-900 mb-4 leading-relaxed">
-              Founded in 2024, The Dopamine Cafe was born from a simple idea: create
-              a space where people can escape the daily grind and find their
-              moment of joy. Named after the happiness hormone, we believe in
-              serving more than just coffee.
-            </p>
-            <p className="text-gray-900 leading-relaxed">
-              Our baristas are artists, our chefs are passionate creators, and
-              our space is designed to uplift your spirits. Whether you are
-              working, meeting friends, or enjoying some alone time, Dopamine
-              Cafe is your happy place.
+              {items?.description}
             </p>
           </div>
 
-         <div
+          <div
             className="order-1 md:order-2 overflow-hidden rounded-2xl shadow-2xl group"
             data-aos="flip-left"
             data-aos-offset="300"
           >
             <img
-              src={"/about.png"}
+              src={IMAGE_BASE_URL + items?.image || "/about.png"}
               alt={items?.name || "About Image"}
               className="w-full h-96 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
             />

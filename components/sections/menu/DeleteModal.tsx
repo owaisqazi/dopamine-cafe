@@ -56,10 +56,10 @@ export default function DeleteModal({
       <div className="bg-white rounded-2xl w-full max-w-xl shadow-2xl animate-in fade-in zoom-in duration-200">
         <div className="flex items-center justify-between p-2 border-b">
           <div className="flex items-center gap-2">
-            <Trash2 className="text-[#C7862F]" size={20} />
-            <h3 className="text-lg font-bold text-gray-800">Confirm Deletion</h3>
+            <Trash2 className="text-[#2A2A28]" size={20} />
+            <h3 className="text-lg font-bold text-[#2A2A28]">Confirm Deletion</h3>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+          <button onClick={onClose} className="text-[#2A2A28]">
             <X size={20} />
           </button>
         </div>
@@ -71,13 +71,13 @@ export default function DeleteModal({
         <div className="p-4 flex gap-3 bg-gray-50 rounded-b-2xl">
           <button
             onClick={onClose}
-            className="flex-1 py-3 bg-[#9E9E9E] text-white rounded-xl font-bold text-sm hover:bg-gray-500 transition-colors shadow-sm"
+            className="flex-1 py-3 hover:bg-[#d4c3a2] text-gray-700 rounded-xl font-bold text-sm bg-[#FFEABF] transition-colors shadow-sm"
           >
             Cancel
           </button>
           <button
             onClick={handleRemove}
-            className="flex-1 py-3 bg-[#C7862F] text-white rounded-xl font-bold text-sm hover:bg-[#b17323] transition-colors shadow-lg flex items-center justify-center gap-2"
+            className="flex-1 py-3 bg-[#2A2A28] text-white rounded-xl font-bold text-sm hover:bg-[#b17323] transition-colors shadow-lg flex items-center justify-center gap-2"
           >
             <Trash2 size={16} /> Remove
           </button>

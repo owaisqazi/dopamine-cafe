@@ -5,7 +5,6 @@ import {
   Heart,
   Facebook,
   Instagram,
-  Twitter,
   Cookie,
   MessageCircle,
   Phone,
@@ -88,11 +87,11 @@ export default function Footer({
                 height={150}
                 src="/dopamine_cafe.png"
                 alt="The Dopamine Cafe Logo"
-                className="w-28 h-28 rounded-full object-cover border-2 border-[#C7862F]/20"
+                className="w-28 h-28 rounded-full object-cover border-2 border-[#FFEABF]/20"
               />
               <div className="flex justify-center text-gray-500 text-sm">
                 <div className="flex items-start gap-2 text-start w-full">
-                  <MapPin className="w-10 h-10 text-[#C7862F] mt-1" />
+                  <MapPin className="w-10 h-10 text-[#FFEABF] mt-1" />
                   <span>
                     Shop # 2 & 3, Dopamine (Restaurant & Coffee Bar), Sindhi
                     Muslim Cooperative Housing Society Block A, Karachi
@@ -100,46 +99,77 @@ export default function Footer({
                 </div>
               </div>
               <div className="flex gap-4">
-                <Facebook className="w-5 h-5 text-gray-400 hover:text-[#b17323] cursor-pointer transition" />
-                <Instagram className="w-5 h-5 text-gray-400 hover:text-[#b17323] cursor-pointer transition" />
-                <Twitter className="w-5 h-5 text-gray-400 hover:text-[#b17323] cursor-pointer transition" />
+                {/* FACEBOOK */}
+                <a
+                  href="https://www.facebook.com/share/1GUe2cv7Y2/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                >
+                  <Facebook className="w-5 h-5 text-[#FFEABF] hover:text-[#d4c3a2] cursor-pointer transition" />
+                </a>
+
+                {/* INSTAGRAM */}
+                <a
+                  href="https://www.instagram.com/accounts/login/?next=%2Fthedopaminecafe_&source=omni_redirect"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-5 h-5 text-[#FFEABF] hover:text-[#d4c3a2] cursor-pointer transition" />
+                </a>
+
+                {/* TIKTOK */}
+                <a
+                  href="https://www.tiktok.com/@thedopaminecafe?_r=1&_t=ZS-93JsmAenl6W"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="TikTok"
+                >
+                  <svg
+                    className="w-5 h-5 text-[#FFEABF] hover:text-[#d4c3a2] cursor-pointer transition fill-current"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12.15 2h2.1c.15 1.2.75 2.4 1.8 3.3 1.05.9 2.25 1.35 3.45 1.5v2.1c-1.5 0-3-.45-4.35-1.35v6.9c0 3.45-2.85 6.3-6.3 6.3S2.7 18 2.7 14.55c0-3.3 2.55-6 5.85-6.3v2.25c-1.8.3-3.15 1.8-3.15 3.75 0 2.1 1.65 3.75 3.75 3.75s3.75-1.65 3.75-3.75V2z" />
+                  </svg>
+                </a>
               </div>
             </div>
 
             {/* COLUMN 2 : OPENING HOURS */}
             <div className="flex flex-col items-center md:items-start gap-4">
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-[#C7862F]">
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-[#FFEABF]">
                 Opening Hours
               </h4>
 
-              <div className="w-full space-y-2 text-sm text-gray-400">
+              <div className="w-full space-y-2 text-sm text-[#FFEABF]">
                 <div className="flex justify-between border-b border-gray-800 pb-1">
                   <span>Monday</span>
-                  <span>8:00 AM – 11:00 PM</span>
+                  <span>8:00 AM – 3:00 AM</span>
                 </div>
                 <div className="flex justify-between border-b border-gray-800 pb-1">
                   <span>Tuesday</span>
-                  <span>8:00 AM – 11:00 PM</span>
+                  <span>8:00 AM – 3:00 AM</span>
                 </div>
                 <div className="flex justify-between border-b border-gray-800 pb-1">
                   <span>Wednesday</span>
-                  <span>8:00 AM – 11:00 PM</span>
+                  <span>8:00 AM – 3:00 AM</span>
                 </div>
                 <div className="flex justify-between border-b border-gray-800 pb-1">
                   <span>Thursday</span>
-                  <span>8:00 AM – 11:00 PM</span>
+                  <span>8:00 AM – 3:00 AM</span>
                 </div>
                 <div className="flex justify-between border-b border-gray-800 pb-1">
                   <span>Friday</span>
-                  <span>8:00 AM – 11:00 PM</span>
+                  <span>8:00 AM – 3:00 AM</span>
                 </div>
                 <div className="flex justify-between border-b border-gray-800 pb-1">
                   <span>Saturday</span>
-                  <span>8:00 AM – 11:00 PM</span>
+                  <span>8:00 AM – 3:00 AM</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Sunday</span>
-                  <span>8:00 AM – 11:00 PM</span>
+                  <span>8:00 AM – 3:00 AM</span>
                 </div>
               </div>
             </div>
@@ -148,24 +178,24 @@ export default function Footer({
             <div className="flex flex-col items-center md:items-end gap-6">
               {/* LINKS */}
               <div className="flex flex-wrap justify-center md:justify-end gap-5 text-gray-500 font-medium">
-                <Link href="/" className="hover:text-[#b17323] transition">
+                <Link href="/" className="hover:text-[#d4c3a2] transition">
                   Home
                 </Link>
                 <Link
                   href="/gallery"
-                  className="hover:text-[#b17323] transition"
+                  className="hover:text-[#d4c3a2] transition"
                 >
                   Gallery
                 </Link>
-                <Link href="/blog" className="hover:text-[#b17323] transition">
+                <Link href="/blog" className="hover:text-[#d4c3a2] transition">
                   Blog
                 </Link>
-                <Link href="/about" className="hover:text-[#b17323] transition">
+                <Link href="/about" className="hover:text-[#d4c3a2] transition">
                   About
                 </Link>
                 <Link
                   href="/contact"
-                  className="hover:text-[#b17323] transition"
+                  className="hover:text-[#d4c3a2] transition"
                 >
                   Contact
                 </Link>
@@ -181,48 +211,57 @@ export default function Footer({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email address"
-                  className="w-full sm:w-60 px-4 py-2 rounded-full bg-[#2A2A28] text-white border border-transparent focus:border-[#C7862F] outline-none"
+                  className="w-full sm:w-60 px-4 py-2 rounded-full bg-[#2A2A28] text-white border border-transparent focus:border-[#FFEABF] outline-none"
                 />
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="px-6 py-2 rounded-full bg-[#C7862F] hover:bg-[#b17323] text-white transition disabled:opacity-60"
+                  className="px-6 py-2 rounded-full bg-[#FFEABF] hover:bg-[#d4c3a2] text-[#2A2A28] transition disabled:opacity-60"
                 >
                   {isLoading ? "..." : "Subscribe"}
                 </button>
               </form>
-
               {/* CONTACT */}
-              <div className="flex flex-col gap-2 text-gray-500 text-sm">
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-[#C7862F]" />
-                  <a
-                    href="tel:021-37229364"
-                    className="hover:text-[#b17323] transition"
-                  >
-                    021-37229364
-                  </a>
-                </div>
+              <div className="flex items-center justify-center gap-4">
+                <Image
+                  width={150}
+                  height={150}
+                  src="/barcode.jpeg"
+                  alt="The Dopamine Cafe Logo"
+                  className="w-40 h-40 object-contain rounded-lg"
+                />
+                {/* RIGHT INFO */}
+                <div className="flex flex-col gap-2 text-gray-500 text-sm">
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-4 h-4 text-[#FFEABF]" />
+                    <a
+                      href="tel:021-37229364"
+                      className="hover:text-[#d4c3a2] transition"
+                    >
+                      021-37229364
+                    </a>
+                  </div>
 
-                <div className="flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4 text-[#C7862F]" />
-                  <a
-                    href="https://wa.me/923002444443"
-                    target="_blank"
-                    className="hover:text-[#b17323] transition"
-                  >
-                    +92-300-2444443
-                  </a>
-                </div>
+                  <div className="flex items-center gap-2">
+                    <MessageCircle className="w-4 h-4 text-[#FFEABF]" />
+                    <a
+                      href="https://wa.me/923002444443"
+                      target="_blank"
+                      className="hover:text-[#d4c3a2] transition"
+                    >
+                      +92-300-2444443
+                    </a>
+                  </div>
 
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#C7862F]" />
-                  <a
-                    href="mailto:info@dopaminecafe.com"
-                    className="hover:text-[#b17323] transition"
-                  >
-                    info@dopaminecafe.com
-                  </a>
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-[#FFEABF]" />
+                    <a
+                      href="mailto:info@thedopaminecafe.com"
+                      className="hover:text-[#d4c3a2] transition"
+                    >
+                      info@thedopaminecafe.com
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -242,21 +281,21 @@ export default function Footer({
           <div className="flex justify-center flex-wrap gap-4 mt-4 text-sm text-gray-500">
             <Link
               href="/refund-policy"
-              className="hover:text-[#b17323] hover:underline"
+              className="hover:text-[#d4c3a2] hover:underline"
             >
               Refund Policy
             </Link>
             <span className="opacity-40">|</span>
             <Link
               href="/privacy-policy"
-              className="hover:text-[#b17323] hover:underline"
+              className="hover:text-[#d4c3a2] hover:underline"
             >
               Privacy Policy
             </Link>
             <span className="opacity-40">|</span>
             <Link
               href="/terms"
-              className="hover:text-[#b17323] hover:underline"
+              className="hover:text-[#d4c3a2] hover:underline"
             >
               Terms & Conditions
             </Link>
@@ -268,7 +307,7 @@ export default function Footer({
         className="fixed bottom-4 left-4 z-50 bg-[#2A2A28] p-3 rounded-full shadow-lg cursor-pointer hover:bg-[#3a3a37] transition"
         onClick={() => setCookieModalOpen(true)}
       >
-        <Cookie className="w-6 h-6 text-[#C7862F]" />
+        <Cookie className="w-6 h-6 text-[#FFEABF]" />
       </div>
       {/* Cookie Modal */}
       {cookieModalOpen && (

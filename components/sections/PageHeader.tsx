@@ -74,7 +74,7 @@ const PageHeader = ({
 
       {/* CONTENT */}
       <div className="relative z-20 text-center px-6">
-        <nav aria-label="Breadcrumb" className="flex justify-center items-center gap-2 text-amber-200 mb-4 text-sm md:text-base font-medium uppercase tracking-widest">
+        <nav aria-label="Breadcrumb" className="flex justify-center items-center gap-2 text-[#d4c3a2] mb-4 text-sm md:text-base font-medium uppercase tracking-widest">
           <ol className="flex gap-2">
             <li>
               <Link href="/" className="hover:text-white uppercase transition-colors">
@@ -97,7 +97,7 @@ const PageHeader = ({
         <h1 className="text-5xl md:text-7xl font-bold text-white uppercase tracking-tight">
           {title}
         </h1>
-        <div className="h-1.5 w-24 bg-[#C7862F] mx-auto mt-4 rounded-full" />
+        <div className="h-1.5 w-24 bg-[#FFEABF] mx-auto mt-4 rounded-full" />
       </div>
     </header>
   );

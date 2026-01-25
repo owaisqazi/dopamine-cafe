@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useGetByHomeAboutQuery } from "@/store/api/authApi";
 // import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 import SkeletonLoader from "../Skeleton/SkeletonLoader";
+import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 
 export default function About() {
   const { data, isLoading } = useGetByHomeAboutQuery();
@@ -79,16 +80,7 @@ export default function About() {
               {items?.name}
             </h3>
             <p className="text-gray-600 mb-4 leading-relaxed">
-              Founded in 2024, The Dopamine Cafe was born from a simple idea: create
-              a space where people can escape the daily grind and find their
-              moment of joy. Named after the happiness hormone, we believe in
-              serving more than just coffee.
-            </p>
-            <p className="text-gray-600 leading-relaxed">
-              Our baristas are artists, our chefs are passionate creators, and
-              our space is designed to uplift your spirits. Whether you are
-              working, meeting friends, or enjoying some alone time, Dopamine
-              Cafe is your happy place.
+             {items?.description}
             </p>
           </div>
 
@@ -98,7 +90,7 @@ export default function About() {
             data-aos-offset="300"
           >
             <img
-              src={"/about.png"}
+              src={IMAGE_BASE_URL + items?.image || "/about.png"}
               alt={items?.name || "About Image"}
               className="w-full h-96 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
             />

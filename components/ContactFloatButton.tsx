@@ -7,7 +7,7 @@ const ContactFloatButton = () => {
 
   return (
     <div
-      className="fixed bottom-3 right-5 z-50 flex flex-col items-end gap-3"
+      className="fixed bottom-[70px] left-4 z-30 flex flex-col items-end gap-3"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -46,8 +46,8 @@ const ContactFloatButton = () => {
       </a>
 
       {/* Main Floating Icon */}
-      <div className="bg-[#2A2A28] p-3 rounded-full shadow-lg cursor-pointer hover:bg-[#3a3a37] transition">
-        <Phone className="text-[#C7862F]" size={24} />
+      <div className="bg-[#2A2A28] hover:bg-[#3a3a37] p-3 rounded-full shadow-lg cursor-pointer  transition">
+        <Phone className="text-[#FFEABF]" size={24} />
       </div>
     </div>
   );

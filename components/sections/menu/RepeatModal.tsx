@@ -38,12 +38,12 @@ export default function RepeatModal({ item, cartItems, onClose, onChooseAgain }:
       <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[95vh] overflow-hidden shadow-2xl flex flex-col animate-in fade-in zoom-in duration-200">
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-[#C7862F] text-lg sm:text-2xl font-bold">
+          <h2 className="text-[#2A2A28] text-lg sm:text-2xl font-bold">
             Repeat Previous Customization?
           </h2>
           <button
             onClick={onClose}
-            className="bg-[#C7862F] text-white rounded-full p-1 hover:rotate-90 transition-transform"
+            className="bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-full p-1 hover:rotate-90 transition-transform"
           >
             <X size={18} />
           </button>
@@ -53,14 +53,14 @@ export default function RepeatModal({ item, cartItems, onClose, onChooseAgain }:
         <div className="p-4 sm:p-6 overflow-y-auto flex-1">
           <div className="flex flex-col md:flex-row gap-4 sm:gap-6">
             <div className="w-full md:flex-1">
-              <div className="relative w-40 h-40 sm:w-64 sm:h-64 mx-auto shadow-lg rounded-full overflow-hidden border-4 border-orange-50">
+              <div className="relative w-40 h-40 sm:w-64 sm:h-64 mx-auto shadow-lg rounded-full overflow-hidden border-4">
                 <Image src={IMAGE_BASE_URL + item.image} alt="product" fill className="object-contain rounded-full border-[12px] border-blue-50 shadow-xl" />
               </div>
             </div>
 
             <div className="flex-1 space-y-3 text-center md:text-left">
               <h3 className="text-xl font-bold text-gray-800">{item.name}</h3>
-              <p className="text-lg font-bold text-[#C7862F]">Rs. {item.base_price}</p>
+              <p className="text-lg font-bold text-[#2A2A28]">Rs. {item.base_price}</p>
               <p className="text-xs text-gray-400 leading-relaxed line-clamp-3">{item.description}</p>
 
               <div className="pt-2 bg-orange-50/50 p-3 rounded-xl border border-orange-100">
@@ -89,13 +89,13 @@ export default function RepeatModal({ item, cartItems, onClose, onChooseAgain }:
         <div className="p-4 sm:p-6 flex flex-col-reverse sm:flex-row justify-end gap-3 border-t bg-gray-50">
           <button
             onClick={handleChooseAgain}
-            className="w-full sm:w-auto px-6 py-3 bg-gray-200 text-gray-700 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-gray-300 transition-colors"
+            className="w-full sm:w-auto px-6 py-3 bg-[#FFEABF] text-gray-700 hover:bg-[#d4c3a2] font-bold rounded-xl flex items-center justify-center gap-2  transition-colors"
           >
             <X size={16} /> I&lsquo;ll Choose Again
           </button>
           <button
             onClick={handleRepeatOrder}
-            className="w-full sm:w-auto px-8 py-3 bg-[#C7862F] text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-[#b45309] shadow-lg shadow-orange-200 transition-all active:scale-95"
+            className="w-full sm:w-auto px-8 py-3 bg-[#2A2A28] hover:bg-[#3a3a37] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95"
           >
             Repeat Order ↻
           </button>
