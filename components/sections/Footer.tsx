@@ -222,17 +222,19 @@ export default function Footer({
                 </button>
               </form>
               {/* CONTACT */}
-              <div className="flex items-center justify-center gap-4">
+              <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-6 md:gap-4 text-center md:text-left">
+                {/* BARCODE */}
                 <Image
                   width={150}
                   height={150}
                   src="/barcode.jpeg"
-                  alt="The Dopamine Cafe Logo"
-                  className="w-40 h-40 object-contain rounded-lg"
+                  alt="The Dopamine Cafe Barcode"
+                  className="w-36 h-36 md:w-40 md:h-40 object-contain rounded-lg"
                 />
+
                 {/* RIGHT INFO */}
-                <div className="flex flex-col gap-2 text-gray-500 text-sm">
-                  <div className="flex items-center gap-2">
+                <div className="flex flex-col gap-3 text-gray-400 text-sm">
+                  <div className="flex items-center justify-center md:justify-start gap-2">
                     <Phone className="w-4 h-4 text-[#FFEABF]" />
                     <a
                       href="tel:021-37229364"
@@ -242,7 +244,7 @@ export default function Footer({
                     </a>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-center md:justify-start gap-2">
                     <MessageCircle className="w-4 h-4 text-[#FFEABF]" />
                     <a
                       href="https://wa.me/923002444443"
@@ -253,11 +255,11 @@ export default function Footer({
                     </a>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-center md:justify-start gap-2">
                     <Mail className="w-4 h-4 text-[#FFEABF]" />
                     <a
                       href="mailto:info@thedopaminecafe.com"
-                      className="hover:text-[#d4c3a2] transition"
+                      className="hover:text-[#d4c3a2] transition break-all"
                     >
                       info@thedopaminecafe.com
                     </a>
