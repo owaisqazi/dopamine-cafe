@@ -66,6 +66,7 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
     console.log("Auth Response:", res);
       toast.success(isSignup ? "Account created 🎉" : "Login successful 👋", { id: toastId });
       resetForm();
+      // console.log(res,"Welcome Back")
       window.location.reload();
     } catch (error: any) {
       toast.error(error?.data?.message || "Invalid credentials", { id: toastId });

@@ -35,39 +35,22 @@ export default function RootLayout({
           </AOSProvider>
         </ReduxProvider>
 
-        {/* Tawk.to Chatbot */}
         <Script
           id="tawk-to"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-
-            // ✅ Bottom se upar shift
-            Tawk_API.customStyle = {
-              visibility : {
-                desktop : {
-                  position : 'br',
-                  xOffset : 20,
-                  yOffset : 40   // 👈 jitna upar chahiye number barhao
-                },
-                mobile : {
-                  position : 'br',
-                  xOffset : 16,
-                  yOffset : 80  // 👈 mobile ke liye thora zyada
-                }
-              }
-            };
-
-            (function(){
-              var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-              s1.async=true;
-              s1.src='https://embed.tawk.to/6975f6445af22f1982ab2953/1jfqcjvmi';
-              s1.charset='UTF-8';
-              s1.setAttribute('crossorigin','*');
-              s0.parentNode.insertBefore(s1,s0);
-            })();
-          `,
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+          var s1=document.createElement("script"),
+              s0=document.getElementsByTagName("script")[0];
+          s1.async=true;
+          s1.src='https://embed.tawk.to/69774d7f96a6b519833ddad6/1jft0depc';
+          s1.charset='UTF-8';
+          s1.setAttribute('crossorigin','*');
+          s0.parentNode.insertBefore(s1,s0);
+        })();
+      `,
           }}
         />
       </body>

@@ -13,7 +13,6 @@ import Cookies from "js-cookie";
 import {
   useApplyPromoMutation,
   useGetBybranchQuery,
-  useGetByOrderQuery,
   useGetDeliveryAmountQuery,
 } from "@/store/api/authApi";
 import OrderModal from "@/components/ui/OrderModal";
@@ -44,8 +43,6 @@ const CartDrawer = ({
   const { data: branchData } = useGetBybranchQuery();
   const branch = branchData?.data || [];
   const { data: deliveryAmount } = useGetDeliveryAmountQuery();
-  const deliveryDataAmount = deliveryAmount?.data || [];
-  console.log(deliveryDataAmount, "deliveryDataAmount===>");
   const [applyPromo, { isLoading: promoLoading }] = useApplyPromoMutation();
   // Get user from cookie
   useEffect(() => {
@@ -215,7 +212,7 @@ const CartDrawer = ({
               <button
                 onClick={applyPromoCode}
                 disabled={promoLoading}
-                className="w-full mt-3 py-3 bg-[#FFEABF] text-gray-700 hover:bg-[#d4c3a2] rounded-xl mb-3"
+                className="w-full mt-3 py-3 bg-[#FFEABF] text-gray-700 border border-[#2A2A28] hover:bg-[#d4c3a2] rounded-xl mb-3"
               >
                 {promoLoading ? "Applying..." : "Apply Promo"}
               </button>

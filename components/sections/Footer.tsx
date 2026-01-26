@@ -13,14 +13,13 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import CookieModal from "../ui/cookieModalOpen";
-import { useNewsletterMutation } from "@/store/api/authApi";
+import { useGetTrackingQuery, useNewsletterMutation } from "@/store/api/authApi";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 
-// ✅ Footer accepts props to control cookie modal externally if needed
 interface FooterProps {
-  cookieModalOpen?: boolean; // optional, if controlled externally
-  onCloseCookieModal?: () => void; // optional callback
+  cookieModalOpen?: boolean;
+  onCloseCookieModal?: () => void;
 }
 
 export default function Footer({
@@ -28,30 +27,22 @@ export default function Footer({
   onCloseCookieModal: externalOnClose,
 }: FooterProps) {
   const [cookieModalOpen, setCookieModalOpen] = useState(false);
+  const { data: trackingData } = useGetTrackingQuery();
   const [email, setEmail] = useState<string>("");
 
   const [newsletter, { isLoading }] = useNewsletterMutation();
 
   useEffect(() => {
-    // If parent controls modal, use external value
-    if (externalCookieOpen !== undefined) {
-      setCookieModalOpen(externalCookieOpen);
-      return;
-    }
-
-    // Show modal only once per session
-    const cookieClosed = sessionStorage.getItem("cookieClosed");
-    if (!cookieClosed) {
+    const consent = localStorage.getItem("cookie-consent");
+    if (!consent) {
       setCookieModalOpen(true);
     }
-  }, [externalCookieOpen]);
+  }, []);
 
-  const handleCloseCookieModal = () => {
+  // Accept buttons ke liye
+  const handleCookieAccept = (type: "all" | "essential") => {
+    localStorage.setItem("cookie-consent", type);
     setCookieModalOpen(false);
-    sessionStorage.setItem("cookieClosed", "true");
-
-    // Call external handler if provided
-    if (externalOnClose) externalOnClose();
   };
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
@@ -182,16 +173,19 @@ export default function Footer({
                   Home
                 </Link>
                 <Link
-                  href="/gallery"
+                  href="#menu-item"
                   className="hover:text-[#d4c3a2] transition"
                 >
+                  Special Menu
+                </Link>
+                <Link href="/gallery" className="hover:text-[#d4c3a2] transition">
                   Gallery
                 </Link>
                 <Link href="/blog" className="hover:text-[#d4c3a2] transition">
                   Blog
                 </Link>
                 <Link href="/about" className="hover:text-[#d4c3a2] transition">
-                  About
+                  About Us
                 </Link>
                 <Link
                   href="/contact"
@@ -306,18 +300,16 @@ export default function Footer({
       </footer>
 
       <div
-        className="fixed bottom-4 left-4 z-50 bg-[#2A2A28] p-3 rounded-full shadow-lg cursor-pointer hover:bg-[#3a3a37] transition"
+        className="fixed bottom-4 left-4 z-30 bg-[#2A2A28] p-3 rounded-full shadow-lg cursor-pointer hover:bg-[#3a3a37] transition"
         onClick={() => setCookieModalOpen(true)}
       >
         <Cookie className="w-6 h-6 text-[#FFEABF]" />
       </div>
       {/* Cookie Modal */}
-      {cookieModalOpen && (
-        <CookieModal
-          isOpen={cookieModalOpen}
-          onClose={handleCloseCookieModal}
-        />
-      )}
+      <CookieModal
+        isOpen={cookieModalOpen}
+        handleCookieAccept={handleCookieAccept}
+      />
     </>
   );
 }

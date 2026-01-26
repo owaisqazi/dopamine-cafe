@@ -3,17 +3,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useGetProductsQuery } from "@/store/api/authApi";
-import Image from "next/image";
-import { Plus, Trash2, Minus, X } from "lucide-react";
-import { IMAGE_BASE_URL } from "../../auth/axiosInstance";
 import SkeletonLoader from "../../Skeleton/SkeletonLoader";
 import ProductDetailModal from "../product/ProductDetailModal";
 import SearchInput from "./SearchInput";
 import CategoryHeader from "./CategoryHeader";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
-import { addToCart, updateQuantity, removeFromCart } from "@/store/cartSlice";
-import toast from "react-hot-toast";
+import { addToCart, updateQuantity } from "@/store/cartSlice";
 import ProductCard from "./ProductCard";
 import DeleteModal from "./DeleteModal";
 import RepeatModal from "./RepeatModal";

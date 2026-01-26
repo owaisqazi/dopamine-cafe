@@ -1,229 +1,45 @@
 "use client";
 
-import { useState } from "react";
-import { Settings } from "lucide-react";
+import React from "react";
 
-const COOKIE_CATEGORIES = [
-  {
-    name: "Strictly Necessary Cookies",
-    description:
-      "These cookies are essential for the website to function properly. They are always active.",
-    alwaysActive: true,
-  },
-  {
-    name: "Performance Cookies",
-    description:
-      "These cookies help us understand how visitors interact with the site by collecting anonymous data.",
-  },
-  {
-    name: "Functional Cookies",
-    description:
-      "These cookies enable enhanced functionality and personalization.",
-  },
-  {
-    name: "Targeting Cookies",
-    description:
-      "These cookies are used to deliver relevant advertisements to you and measure campaign effectiveness.",
-  },
-];
-
-interface CookieCategoryProps {
-  category: (typeof COOKIE_CATEGORIES)[0];
+interface CookieModalProps {
   isOpen: boolean;
-  onToggle: () => void;
-  selectedOption: string;
-  onChange: (value: string) => void;
-}
-
-function CookieCategory({
-  category,
-  isOpen,
-  onToggle,
-  selectedOption,
-  onChange,
-}: CookieCategoryProps) {
-  return (
-    <li className="border rounded-lg overflow-hidden shadow-sm">
-      {/* Header */}
-      <button
-        onClick={onToggle}
-        className="w-full flex justify-between items-center p-4 bg-gray-100 hover:bg-gray-200 focus:outline-none"
-        aria-expanded={isOpen}
-      >
-        <span className="font-semibold text-gray-900">{category.name}</span>
-        <svg
-          className={`w-5 h-5 text-gray-600 transform transition-transform duration-300 ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
-
-      {/* Content */}
-      {isOpen && (
-        <div className="bg-white p-4 border-t text-gray-700 text-sm leading-relaxed">
-          <p className="mb-3">{category.description}</p>
-          {!category.alwaysActive && (
-            <div className="flex gap-6">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name={category.name}
-                  value="enabled"
-                  checked={selectedOption === "enabled"}
-                  onChange={() => onChange("enabled")}
-                  className="w-5 h-5 text-[#2A2A28] focus:ring-[#2A2A28]"
-                />
-                <span>Enabled</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name={category.name}
-                  value="disabled"
-                  checked={selectedOption === "disabled"}
-                  onChange={() => onChange("disabled")}
-                  className="w-5 h-5 text-[#2A2A28] focus:ring-[#b17323]"
-                />
-                <span>Disabled</span>
-              </label>
-            </div>
-          )}
-          {category.alwaysActive && (
-            <p className="italic text-[#2A2A28] font-semibold">Always Active</p>
-          )}
-        </div>
-      )}
-    </li>
-  );
+  handleCookieAccept: (type: "all" | "essential") => void;
 }
 
 export default function CookieModal({
   isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const [settingshow, setSettingshow] = useState<boolean>(false);
-  const [preferences, setPreferences] = useState<Record<string, string>>({
-    "Performance Cookies": "enabled",
-    "Functional Cookies": "enabled",
-    "Targeting Cookies": "enabled",
-  });
-
-  const toggleOpen = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
-  const handlePreferenceChange = (categoryName: string, value: string) => {
-    setPreferences((prev) => ({ ...prev, [categoryName]: value }));
-  };
-
+  handleCookieAccept,
+}: CookieModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed bottom-4 left-4 z-50 rounded-xl shadow-2xl overflow-hidden"
-      role="dialog"
-      aria-modal="true"
-      data-aos="flip-left"
-      data-aos-duration="500"
-      data-aos-easing="ease-out-cubic"
-      data-aos-anchor-placement="top-bottom"
-      aria-labelledby="cookie-modal-title"
-    >
-      <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
+    <div className="fixed bottom-0 inset-x-0 z-40">
+      <div className="relative">
+        {/* Background image */}
+        <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center" />
+        <div className="absolute inset-0 -z-10 bg-[#fdeabf]/90 backdrop-blur" />
 
-      {/* OVERLAY (same as homepage) */}
-      <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
-      <div
-        className={`rounded-xl shadow-2xl max-w-sm w-full border-b-2 py-4 px-4 relative flex flex-col ${
-          settingshow === true ? "h-auto" : "md:h-[220px] h-[220px]"
-        }`}
-      >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-4 text-[#2A2A28] hover:text-gray-900 text-3xl font-bold focus:outline-none"
-          aria-label="Close cookie preferences"
-        >
-          &times;
-        </button>
+        <div className="max-w-7xl relative z-20 mx-auto px-6 py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-t border-[#2A2A28]/20">
+          <p className="text-sm font-bold text-[#0c0c0c] max-w-xl">
+            This site uses cookies. Visit our cookies policy page or click the link in any footer for more information and to change your preferences.
+          </p>
 
-        <h2
-          id="cookie-modal-title"
-          className="text-1xl font-bold mb-0 text-[#2A2A28] tracking-wide"
-        >
-          Privacy Preference Center
-        </h2>
+          <div className="flex gap-2 flex-wrap">
+            <button
+              onClick={() => handleCookieAccept("all")}
+              className="bg-[#2A2A28] text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-[#3a3a37] transition"
+            >
+              Accept all cookies
+            </button>
 
-        <p className="text-gray-700 text-[11px] leading-relaxed">
-          When you visit any website, it may store or retrieve information on
-          your browser, mostly in the form of cookies. This information might be
-          about you, your preferences, or your device and is mostly used to make
-          the site work as you expect it to. The information does not usually
-          identify you directly, but can give you a more personalized
-          experience.
-        </p>
-        <button
-          onClick={() => setSettingshow(!settingshow)}
-          className="flex items-center gap-2 text-[#2A2A28] text-sm font-semibold mb-2 hover:bg-[#d4c3a2]"
-        >
-          <Settings className="w-6 h-6" />
-          Cookie Settings
-        </button>
-        {settingshow && (
-          <>
-            <h3 className="font-semibold text-gray-900 mb-2 text-md tracking-wide">
-              Manage Consent Preferences
-            </h3>
-            <ul className="space-y-3 md:h-[200px] md:overflow-y-auto mb-8">
-              {COOKIE_CATEGORIES.map((cat, idx) => (
-                <CookieCategory
-                  key={cat.name}
-                  category={cat}
-                  isOpen={openIndex === idx}
-                  onToggle={() => toggleOpen(idx)}
-                  selectedOption={preferences[cat.name] || "enabled"}
-                  onChange={(val) => handlePreferenceChange(cat.name, val)}
-                />
-              ))}
-            </ul>
-          </>
-        )}
-
-        <div className="flex justify-end gap-4">
-          <button
-            onClick={() => {
-              // Reset all to disabled except necessary
-              setPreferences({
-                "Performance Cookies": "disabled",
-                "Functional Cookies": "disabled",
-                "Targeting Cookies": "disabled",
-              });
-              onClose();
-            }}
-            className="bg-[#2A2A28] hover:bg-[#3a3a37] text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
-          >
-            Reject All
-          </button>
-          <button
-            onClick={() => onClose()}
-            className="bg-[#2A2A28] hover:bg-[#3a3a37] text-sm md:text-sm text-white font-semibold px-6 py-2 rounded-lg shadow-md transition"
-          >
-            Confirm My Choices
-          </button>
+            <button
+              onClick={() => handleCookieAccept("essential")}
+              className="bg-white border border-[#2A2A28] px-4 py-2 rounded-md text-sm font-semibold hover:bg-[#2A2A28] hover:text-white transition"
+            >
+              Accept only essential cookies
+            </button>
+          </div>
         </div>
       </div>
     </div>

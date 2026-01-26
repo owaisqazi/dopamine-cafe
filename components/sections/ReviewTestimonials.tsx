@@ -99,7 +99,10 @@ export default function ReviewTestimonials() {
                 </div>
 
                 {/* Text Section with 4-line limit */}
-                <p title={reviewItem?.review} className="text-white text-sm flex-1 line-clamp-4 overflow-hidden text-ellipsis cursor-pointer">
+                <p
+                  title={reviewItem?.review}
+                  className="text-white text-sm flex-1 line-clamp-4 overflow-hidden text-ellipsis cursor-pointer"
+                >
                   {reviewItem?.review}
                 </p>
 
@@ -112,13 +115,22 @@ export default function ReviewTestimonials() {
           ))}
         </Swiper>
         {/* BUTTON TO OPEN MODAL */}
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center gap-4 items-center">
           <button
             onClick={() => handleOpenModal()}
             className="mt-3 px-4 py-2 text-center bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-xl text-sm transition"
           >
             Rate & Review
           </button>
+
+          <a
+            href="https://g.page/r/CT0eQM0wQsfFEAI/review"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 px-4 py-2 text-center bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-xl text-sm transition inline-block"
+          >
+            Google Review
+          </a>
         </div>
       </div>
 

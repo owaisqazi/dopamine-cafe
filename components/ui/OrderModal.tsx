@@ -78,37 +78,49 @@ const OrderModal: React.FC<OrderModalProps> = ({
     setIsLoading(true);
     const token = Cookies.get("token");
     const formData = new FormData();
+
     Object.entries(values).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, value.toString());
       }
     });
-    
+
     formData.append("subtotal", totalPrice.toString());
+
     formData.append("discount", discountAmount.toString());
+
     formData.append("total_amount", safeFinalTotal.toString());
 
     cartItems.forEach((item, itemIndex) => {
       formData.append(`products[${itemIndex}][product_id]`, item.id.toString());
+
       formData.append(
         `products[${itemIndex}][quantity]`,
+
         item.quantity.toString(),
       );
+
       formData.append(`products[${itemIndex}][price]`, item.price.toString());
+
       formData.append(
         `products[${itemIndex}][description]`,
+
         item.description || "",
       );
+
       formData.append(
         `products[${itemIndex}][total_price]`,
+
         (item.price * item.quantity).toString(),
       );
 
       const options = item?.options || [];
+
       if (options.length > 0) {
         options.forEach((opt: any, optIndex: number) => {
           formData.append(
             `products[${itemIndex}][options][${optIndex}]`,
+
             opt.id.toString(),
           );
         });
@@ -119,21 +131,43 @@ const OrderModal: React.FC<OrderModalProps> = ({
       const res = await axiosInstance.post(
         token ? "/user/user/order" : "/user/order",
         formData,
-        {
-          responseType: "json",
-        },
+        { responseType: "json" },
       );
-      console.log(res,'forms---->')
-      if (res.data?.order?.payment_method === "cash on delivery") {
-        toast.success(res.data.message || "Order successfully submitted! 🎉");
-        dispatch(clearCart());
-        router.push("/");
-      } else {
-        const win = window.open("", "_self");
-        win?.document.open();
-        win?.document.write(res.data);
-        win?.document.close();
-        dispatch(clearCart());
+
+      if (res.status === 200 || res.status === 201) {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const currentTimeInMinutes = hours * 60 + minutes;
+
+        const isLateNightOrder =
+          currentTimeInMinutes >= 180 && currentTimeInMinutes < 510;
+
+        if (res.data?.order?.payment_method === "cash on delivery") {
+          if (isLateNightOrder) {
+            toast.success(
+              "Apka order mil gaya hai! Yeh order subha 9:30 per deliver hoga.",
+              {
+                duration: 6000,
+                icon: "⏰",
+              },
+            );
+          } else {
+            toast.success(
+              res.data.message || "Order successfully submitted! 🎉",
+            );
+          }
+
+          dispatch(clearCart());
+          router.push("/");
+        } else {
+          // Online Payment Flow
+          const win = window.open("", "_self");
+          win?.document.open();
+          win?.document.write(res.data);
+          win?.document.close();
+          dispatch(clearCart());
+        }
       }
 
       setIsModalOpen(false);
@@ -141,11 +175,11 @@ const OrderModal: React.FC<OrderModalProps> = ({
     } catch (err: any) {
       console.error("Payment Error", err);
       setIsLoading(false);
-      toast.error("Payment gateway open nahi ho saka");
+      toast.error("Order process nahi ho saka, dobara koshish karein.");
     }
   };
 
-  console.log("Payment cartItems", cartItems);
+  // console.log("Payment cartItems", cartItems);
 
   return (
     <>
@@ -155,16 +189,21 @@ const OrderModal: React.FC<OrderModalProps> = ({
         onClose={() => setIsModalOpen(false)}
         maxWidth="max-w-6xl"
       >
-        <section className="flex flex-col md:h-full h-full max-h-[90vh] md:max-h-[85vh]">
+        <section className="relative flex flex-col md:h-full h-full max-h-[90vh] md:max-h-[85vh] overflow-hidden">
+          {/* 🔹 BACKGROUND IMAGE */}
+          <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
+
+          {/* 🔹 OVERLAY */}
+          <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
           {/* Header */}
-          <header className="p-6 border-b flex justify-between items-center bg-white sticky top-0 z-10">
+          <header className="p-6 flex justify-between items-center sticky top-0 z-10">
             <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
               Complete Checkout
             </h2>
             <button
               onClick={() => setIsModalOpen(false)}
               aria-label="Close Modal"
-              className="text-gray-400 hover:text-red-500 transition-colors text-3xl"
+              className="text-[#2A2A28] hover:text-gray-900 text-3xl font-bold focus:outline-none"
             >
               &times;
             </button>
@@ -311,7 +350,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                 </div>
 
                 {/* Right Side: Order Summary */}
-                <div className="w-full md:w-[350px] bg-gray-50 p-6 flex flex-col">
+                <div className="w-full shadow-xl border-t border-[#2A2A28] md:w-[350px] p-6 flex flex-col">
                   <h3 className="font-semibold text-lg text-gray-700 mb-4">
                     Summary
                   </h3>

@@ -21,16 +21,12 @@ import Cookies from "js-cookie";
 import Modal from "../ui/Modal";
 import OrderTypeContent from "../order-manager-city/OrderTypeContent";
 import AuthForm from "../forms/AuthForm";
-import { useDispatch } from "react-redux";
-import { updateQuantity } from "@/store/cartSlice";
-import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 import { selectCartSubtotal } from "@/store/cartSelectors";
 import DeleteModal from "../sections/menu/DeleteModal";
 import CartDrawer from "../sections/product/CartDrawer";
 
 const Navbar = () => {
   const pathname = usePathname();
-  const dispatch = useDispatch();
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -48,16 +44,6 @@ const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isTransparent, setIsTransparent] = useState(true);
   const lastScrollY = useRef(0);
-  useEffect(() => {
-    // Agar location already selected nahi hai
-    const hasSession = sessionStorage.getItem("location_session");
-    const hasCookie = Cookies.get("user_location");
-
-    if (!hasSession && !hasCookie) {
-      setShowLocationModal(true);
-    }
-  }, []);
-
   const syncLocation = () => {
     const loc = Cookies.get("user_location");
     const parsed = loc ? JSON.parse(loc) : {};
@@ -303,7 +289,7 @@ const Navbar = () => {
                 className={`p-1 rounded-full transition-colors ${
                   isTransparent
                     ? "text-white hover:bg-white/10"
-                    : "text-[#FFEABF] hover:bg-gray-100"
+                    : "text-[#FFEABF] hover:bg-gray-100 "
                 }`}
               >
                 <User size={28} className="ps-2" />
@@ -314,7 +300,16 @@ const Navbar = () => {
 
               {/* ✅ USER DROPDOWN (only when logged in) */}
               {token && isUserMenuOpen && (
-                <div className="absolute right-0 mt-3 w-44 bg-[#FFEABF] rounded-xl shadow-xl overflow-hidden z-50">
+                <div
+                  onClick={() => {
+                  if (token) {
+                    setIsUserMenuOpen((prev) => !prev);
+                  } else {
+                    setShowAuthModal(true);
+                  }
+                }}
+                  className="absolute right-0 mt-3 w-44 bg-[#FFEABF] rounded-xl shadow-xl overflow-hidden z-50"
+                >
                   <Link href="/my-orders">
                     <button className="w-full text-left px-4 py-3 text-sm hover:bg-[#1C1C19] hover:text-white">
                       My Orders
@@ -403,8 +398,11 @@ const Navbar = () => {
               <h2 className="text-xl font-bold uppercase tracking-widest">
                 Menu
               </h2>
-              <button onClick={() => setIsSidebarOpen(false)}>
-                <X size={28} className="text-gray-500 hover:text-black" />
+              <button
+                className="text-[#2A2A28] hover:text-gray-900 text-3xl font-bold focus:outline-none"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                &times;
               </button>
             </div>
 
@@ -517,10 +515,10 @@ const Navbar = () => {
           {/* ❌ Close Button */}
           <button
             onClick={() => setShowAuthModal(false)}
-            className="absolute top-4 right-4 text-gray-600 hover:text-black transition"
-            aria-label="Close"
+            className="absolute top-2 right-4 text-[#2A2A28] hover:text-gray-900 text-3xl font-bold focus:outline-none"
+            aria-label="Close Create"
           >
-            ✕
+            &times;
           </button>
 
           <h2 className="text-2xl font-bold text-center mb-6 text-[#2A2A28]">
