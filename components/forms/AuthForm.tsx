@@ -32,7 +32,9 @@ const signupSchema = Yup.object({
   name: Yup.string().required("Name required"),
   email: Yup.string().email("Invalid email").required("Email required"),
   phone: Yup.string().min(8, "Invalid phone number").required("Phone required"),
-  password: Yup.string().min(6, "Min 6 characters").required("Password required"),
+  password: Yup.string()
+    .min(6, "Min 6 characters")
+    .required("Password required"),
 });
 
 const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
@@ -41,35 +43,44 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
 
   const handleSubmit = async (
     values: AuthFormValues,
-    { setSubmitting, resetForm }: FormikHelpers<AuthFormValues>
+    { setSubmitting, resetForm }: FormikHelpers<AuthFormValues>,
   ) => {
-    const toastId = toast.loading(isSignup ? "Creating account..." : "Logging in...");
+    const toastId = toast.loading(
+      isSignup ? "Creating account..." : "Logging in...",
+    );
+
     try {
-      // FormData banayein
       const formData = new FormData();
       Object.entries({
         ...values,
-        phone: formatPhoneForApi(values.phone), // format phone for API
+        phone: formatPhoneForApi(values.phone),
       }).forEach(([key, value]) => formData.append(key, value));
 
       const res = isSignup
         ? await register(formData).unwrap()
         : await login(formData).unwrap();
-      // Store token and user in cookies
-      if (res?.token) {
-      Cookies.set("token", res.token, { expires: 7 }); // 7 days expiry 
-    }
 
-    if (res?.data) {
-      Cookies.set("user", JSON.stringify(res.data), { expires: 7 });
-    }
-    console.log("Auth Response:", res);
-      toast.success(isSignup ? "Account created 🎉" : "Login successful 👋", { id: toastId });
-      resetForm();
-      // console.log(res,"Welcome Back")
-      window.location.reload();
+      if (res?.token) {
+        Cookies.set("token", res.token, { expires: 7 });
+      }
+
+      if (res?.status === true && res?.data) {
+        Cookies.set("user", JSON.stringify(res.data), { expires: 7 });
+        toast.success(
+          isSignup
+            ? "Account created 🎉"
+            : res?.message || "Login successful 👋",
+          { id: toastId },
+        );
+        resetForm();
+        window.location.reload();
+      } else if (res?.status === false) {
+        toast.error(res?.message || "Something went wrong ❌", { id: toastId });
+      }
     } catch (error: any) {
-      toast.error(error?.data?.message || "Invalid credentials", { id: toastId });
+      toast.error(error?.data?.message || "Invalid credentials", {
+        id: toastId,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -89,7 +100,11 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
               <div>
                 <div className="flex items-center gap-3 border-b pb-2.5">
                   <User size={16} />
-                  <Field name="name" placeholder="Full Name" className="w-full outline-none bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black" />
+                  <Field
+                    name="name"
+                    placeholder="Full Name"
+                    className="w-full outline-none bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black"
+                  />
                 </div>
                 {touched.name && errors.name && (
                   <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -98,7 +113,11 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
 
               {/* Phone */}
               <div>
-                <PhoneField name="phone" className={"border-b"} placeholder="Enter your phone" />
+                <PhoneField
+                  name="phone"
+                  className={"border-b"}
+                  placeholder="Enter your phone"
+                />
               </div>
             </div>
           )}
@@ -113,7 +132,9 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
               className="w-full outline-none bg-transparent text-black placeholder-[#FFEABF] placeholder:text-black"
             />
           </div>
-          {touched.email && errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          {touched.email && errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
 
           {/* Password */}
           <div className="flex items-center gap-3 border-b pb-2">
