@@ -4,7 +4,7 @@
   export const authApi = createApi({
     reducerPath: "authApi",
     baseQuery: fetchBaseQuery({
-      baseUrl: "https://practice.devssh.xyz/api",
+      baseUrl: "https://portal.thedopaminecafe.com/api",
       prepareHeaders: (headers) => {
         const token = Cookies.get("token");
         if (token) {

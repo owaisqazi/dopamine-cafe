@@ -5,7 +5,7 @@ import cartReducer from "./cartSlice";
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
-    cart: cartReducer, // ✅ add your cart slice here
+    cart: cartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(authApi.middleware),

@@ -3,8 +3,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 
-export const API_BASE_URL = "https://practice.devssh.xyz/api";
-export const IMAGE_BASE_URL = "https://practice.devssh.xyz/storage/";
+export const API_BASE_URL = "https://portal.thedopaminecafe.com/api";
+// export const API_BASE_URL = "https://practice.devssh.xyz/api";
+export const IMAGE_BASE_URL = "https://portal.thedopaminecafe.com/storage/";
 
 let isNetworkToastShown = false; 
 
