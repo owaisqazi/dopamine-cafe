@@ -146,7 +146,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
         if (res.data?.order?.payment_method === "cash on delivery") {
           if (isLateNightOrder) {
             toast.success(
-              "Apka order mil gaya hai! Yeh order subha 9:30 per deliver hoga.",
+              "Your order has been successfully received. It will be delivered at 9:30 AM.",
               {
                 duration: 6000,
                 icon: "⏰",
@@ -175,7 +175,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
     } catch (err: any) {
       console.error("Payment Error", err);
       setIsLoading(false);
-      toast.error("Order process nahi ho saka, dobara koshish karein.");
+      toast.error("We were unable to process your order. Please try again");
     }
   };
 
@@ -379,16 +379,16 @@ const OrderModal: React.FC<OrderModalProps> = ({
                     {discountAmount !== 0 && (
                       <div className="flex justify-between text-green-500">
                         <span>Discount</span>
-                        <span>Rs.{discountAmount.toFixed(2)}</span>
+                        <span>Rs.{Number(discountAmount)?.toFixed(2)}</span>
                       </div>
                     )}
                     <div className="flex justify-between">
                       <span>Delivery</span>
-                      <span>Rs.{delivery.toFixed(2)}</span>
+                      <span>Rs.{Number(delivery)?.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between font-bold text-lg pt-2 border-t mt-2">
                       <span>Total</span>
-                      <span>Rs.{finalTotal?.toFixed(2)}</span>
+                      <span>Rs.{Number(finalTotal)?.toFixed(2)}</span>
                     </div>
                   </div>
 

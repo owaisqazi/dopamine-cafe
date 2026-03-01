@@ -66,14 +66,15 @@ const CartDrawer = ({
 
   const delivery = deliveryAmount?.data?.delivery_charges || 0;
 
-  const discount = useMemo(() => {
-    if (!discountData) return 0;
-    return discountData.type === "percentage"
-      ? (subtotal * Number(discountData.amount)) / 100
-      : Number(discountData.amount);
-  }, [discountData, subtotal]);
+ const discount = useMemo(() => {
+  if (!discountData) return 0;
 
-  const finalTotal = subtotal + delivery - discount;
+  return discountData.type === "percentage"
+    ? (Number(subtotal) * Number(discountData.amount)) / 100
+    : Number(discountData.amount);
+}, [discountData, subtotal]);
+
+  const finalTotal = Number(subtotal) + Number(delivery) - Number(discount);
 
   return (
     <>
@@ -225,7 +226,7 @@ const CartDrawer = ({
               >
                 <span>Checkout</span>
                 <span className="flex items-center gap-2">
-                  Rs. {finalTotal?.toFixed(2)}
+                  Rs. {Number(finalTotal)?.toFixed(2)}
                   <ChevronRight size={18} />
                 </span>
               </button>

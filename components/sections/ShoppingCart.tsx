@@ -255,14 +255,15 @@ export default function ShoppingCartTabs() {
 
   const delivery = subtotal > 0 ? 200 : 0;
 
-  const discount = useMemo(() => {
-    if (!discountData) return 0;
-    return discountData.type === "percentage"
-      ? (subtotal * Number(discountData.amount)) / 100
-      : Number(discountData.amount);
-  }, [discountData, subtotal]);
+const discount = useMemo(() => {
+  if (!discountData) return 0;
 
-  const finalTotal = subtotal + delivery - discount;
+  return discountData.type === "percentage"
+    ? (Number(subtotal) * Number(discountData.amount)) / 100
+    : Number(discountData.amount);
+}, [discountData, subtotal]);
+
+const finalTotal = Number(subtotal) + Number(delivery) - Number(discount);
 
   // Quantity handler
   const handleQuantity = (item: CartItem, type: "inc" | "dec" | "remove") => {
@@ -417,16 +418,16 @@ export default function ShoppingCartTabs() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>Rs.{subtotal.toFixed(2)}</span>
+                <span>Rs.{Number(subtotal)?.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Delivery</span>
-                <span>Rs.{delivery.toFixed(2)}</span>
+                <span>Rs.{Number(delivery)?.toFixed(2)}</span>
               </div>
               {discount > 0 && (
                 <div className="flex justify-between text-green-600">
                   <span>Discount</span>
-                  <span>- Rs.{discount.toFixed(2)}</span>
+                  <span>- Rs.{Number(discount)?.toFixed(2)}</span>
                 </div>
               )}
             </div>
@@ -448,7 +449,7 @@ export default function ShoppingCartTabs() {
             <div className="border-t mt-4 pt-4">
               <div className="flex justify-between font-bold text-xl">
                 <span>Total</span>
-                <span>Rs.{finalTotal.toFixed(2)}</span>
+                <span>Rs.{Number(finalTotal).toFixed(2)}</span>
               </div>
 
               <button

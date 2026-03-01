@@ -2,7 +2,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface Category {
   category_id: number;
@@ -35,7 +35,22 @@ export default function CategoryHeader({
     const prevCatId = categoryIds[prevIndex];
     scrollToCategory(prevCatId);
   };
+  useEffect(() => {
+    if (!activeCat || !scrollContainerRef.current) return;
 
+    const activeButton = scrollContainerRef.current.querySelector(
+      `[aria-current="true"]`,
+    ) as HTMLElement | null;
+
+    if (activeButton) {
+      activeButton.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+  }, [activeCat]);
+  
   const scrollRightCategory = () => {
     if (!activeCat) return;
     const currentIndex = categoryIds.indexOf(activeCat);
