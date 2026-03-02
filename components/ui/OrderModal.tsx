@@ -59,9 +59,9 @@ const OrderModal: React.FC<OrderModalProps> = ({
     }
     return Math.min(discountData.amount, totalPrice);
   };
-
   const discountAmount = calculateDiscount();
   const safeFinalTotal = Math.max(totalPrice - discountAmount, 0);
+
   const initialValues = {
     name: "",
     email: "",
@@ -84,12 +84,11 @@ const OrderModal: React.FC<OrderModalProps> = ({
         formData.append(key, value.toString());
       }
     });
-
+    console.log(cartItems, "discountData===?");
     formData.append("subtotal", totalPrice.toString());
-
     formData.append("discount", discountAmount.toString());
-
-    formData.append("total_amount", safeFinalTotal.toString());
+    formData.append("delivery_charges", delivery.toString());
+    formData.append("total_amount", finalTotal.toString());
 
     cartItems.forEach((item, itemIndex) => {
       formData.append(`products[${itemIndex}][product_id]`, item.id.toString());
@@ -355,20 +354,59 @@ const OrderModal: React.FC<OrderModalProps> = ({
                     Summary
                   </h3>
                   <div className="flex-1 overflow-y-auto space-y-3 mb-4 pr-1">
-                    {cartItems.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex justify-between text-sm bg-white p-2 rounded border border-gray-100"
-                      >
-                        <span className="text-gray-700">
-                          {item.name}{" "}
-                          <b className="text-gray-400">Qty {item.quantity}</b>
-                        </span>
-                        <span className="font-semibold">
-                          Rs.{(item.price * item.quantity).toFixed(2)}
-                        </span>
-                      </div>
-                    ))}
+                    {cartItems.map((item) => {
+                      const options = item?.options || [];
+
+                      const optionsTotal = options.reduce(
+                        (sum: number, opt: any) =>
+                          sum + Number(opt?.price_modifier ?? 0),
+                        0,
+                      );
+
+                      const itemTotal =
+                        (Number(item.price) + optionsTotal) *
+                        Number(item.quantity);
+
+                      return (
+                        <div
+                          key={item.id}
+                          className="bg-white p-3 rounded border border-gray-100 space-y-2"
+                        >
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-700">
+                              {item.name}{" "}
+                              <b className="text-gray-400">
+                                Qty {item.quantity}
+                              </b>
+                            </span>
+                            <span className="font-semibold">
+                              Rs.{itemTotal.toFixed(2)}
+                            </span>
+                          </div>
+
+                          {/* ✅ Show Selected Options */}
+                          {options.length > 0 && (
+                            <div className="ml-2 space-y-1">
+                              {options.map((opt: any) => {
+                                const optionPrice = Number(
+                                  opt?.price_modifier ?? 0,
+                                );
+
+                                return (
+                                  <div
+                                    key={opt.id}
+                                    className="flex justify-between text-xs text-gray-500"
+                                  >
+                                    <span>+ {opt.name}</span>
+                                    <span>Rs.{optionPrice.toFixed(2)}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
 
                   <div className="border-t pt-4 space-y-2 text-sm">

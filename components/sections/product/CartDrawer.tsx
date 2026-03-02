@@ -66,13 +66,13 @@ const CartDrawer = ({
 
   const delivery = deliveryAmount?.data?.delivery_charges || 0;
 
- const discount = useMemo(() => {
-  if (!discountData) return 0;
+  const discount = useMemo(() => {
+    if (!discountData) return 0;
 
-  return discountData.type === "percentage"
-    ? (Number(subtotal) * Number(discountData.amount)) / 100
-    : Number(discountData.amount);
-}, [discountData, subtotal]);
+    return discountData.type === "percentage"
+      ? (Number(subtotal) * Number(discountData.amount)) / 100
+      : Number(discountData.amount);
+  }, [discountData, subtotal]);
 
   const finalTotal = Number(subtotal) + Number(delivery) - Number(discount);
 
@@ -115,71 +115,125 @@ const CartDrawer = ({
             </div>
 
             {/* ITEMS */}
-            <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(100vh-250px)]">
+            <div className="p-6 space-y-6 overflow-y-auto max-h-[calc(100vh-250px)] m-1">
               {cartItems.length ? (
-                cartItems.map((item) => (
-                  <div key={item.id} className="border-b pb-6">
-                    <div className="flex gap-4">
-                      <div className="relative w-16 h-16 rounded-full overflow-hidden">
-                        <Image
-                          src={IMAGE_BASE_URL + item.image}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
+                cartItems.map((item) => {
+                  const options = item?.options || [];
 
-                      <div className="flex-1">
-                        <div className="flex justify-between">
-                          <h3 className="font-bold">{item.name}</h3>
+                  const basePrice = Number(item?.price ?? 0);
+                  const quantity = Number(item?.quantity ?? 1);
 
-                          <div className="flex items-center gap-3 border rounded-full px-3 py-1">
-                            <button
-                              className="text-red-500"
-                              onClick={() =>
-                                item.quantity === 1
-                                  ? onDeleteRequest(item.id, item.optionsKey)
-                                  : dispatch(
-                                      updateQuantity({
-                                        id: item.id,
-                                        optionsKey: item.optionsKey,
-                                        change: -1,
-                                      }),
-                                    )
-                              }
-                            >
-                              {item.quantity === 1 ? (
-                                <Trash2 size={14} />
-                              ) : (
-                                <Minus size={14} />
-                              )}
-                            </button>
+                  const optionsTotal = options.reduce(
+                    (sum: number, opt: any) =>
+                      sum + Number(opt?.price_modifier ?? 0),
+                    0,
+                  );
 
-                            <span className="font-bold">{item.quantity}</span>
+                  const singleItemTotal = basePrice + optionsTotal;
+                  const finalItemTotal = singleItemTotal * quantity;
 
-                            <button
-                              onClick={() =>
-                                dispatch(
-                                  updateQuantity({
-                                    id: item.id,
-                                    optionsKey: item.optionsKey,
-                                    change: +1,
-                                  }),
-                                )
-                              }
-                            >
-                              <Plus size={14} />
-                            </button>
-                          </div>
+                  return (
+                    <div
+                      key={item?.id + item?.optionsKey}
+                      className="border-b pb-6"
+                    >
+                      <div className="flex gap-4">
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden">
+                          <Image
+                            src={IMAGE_BASE_URL + item?.image}
+                            alt={item?.name}
+                            fill
+                            className="object-cover"
+                          />
                         </div>
 
-                        <p className="text-[#2A2A28] font-bold">
-                          Rs. {item.price}
-                        </p>
+                        <div className="flex-1">
+                          <div className="flex justify-between">
+                            <h3 className="font-bold">{item?.name}</h3>
+
+                            <div className="flex items-center gap-3 border rounded-full px-3 py-1">
+                              <button
+                                className="text-red-500"
+                                onClick={() =>
+                                  quantity === 1
+                                    ? onDeleteRequest(item?.id, item?.optionsKey)
+                                    : dispatch(
+                                        updateQuantity({
+                                          id: item?.id,
+                                          optionsKey: item?.optionsKey,
+                                          change: -1,
+                                        }),
+                                      )
+                                }
+                              >
+                                {quantity === 1 ? (
+                                  <Trash2 size={14} />
+                                ) : (
+                                  <Minus size={14} />
+                                )}
+                              </button>
+
+                              <span className="font-bold">{quantity}</span>
+
+                              <button
+                                onClick={() =>
+                                  dispatch(
+                                    updateQuantity({
+                                      id: item?.id,
+                                      optionsKey: item?.optionsKey,
+                                      change: +1,
+                                    }),
+                                  )
+                                }
+                              >
+                                <Plus size={14} />
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* ✅ Base Price */}
+                          <div className="flex justify-between text-sm font-bold text-[#2A2A28] mt-2">
+                            <span>Price</span>
+                            <span>Rs. {basePrice.toFixed(2)}</span>
+                          </div>
+
+                          {/* ✅ Extras Label */}
+                          {options.length > 0 && (
+                            <div className="mt-2">
+                              <p className="text-xs font-bold text-[#2A2A28]">
+                                Extra:
+                              </p>
+
+                              <div className="space-y-1 mt-1">
+                                {options.map((opt: any) => {
+                                  const optionPrice = Number(
+                                    opt?.price_modifier ?? 0,
+                                  );
+
+                                  return (
+                                    <div
+                                      key={opt.id}
+                                      className="flex justify-between text-xs font-bold text-[#2A2A28]"
+                                    >
+                                      <span>+ {opt.name}</span>
+                                      <span>Rs. {optionPrice.toFixed(2)}</span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* ✅ Final Total */}
+                          <div className="flex justify-between font-bold text-[#2A2A28] mt-3">
+                            <span>Total</span>
+                            <span>Rs. {finalItemTotal.toFixed(2)}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <p className="text-center text-gray-400 py-20">Cart is empty</p>
               )}

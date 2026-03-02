@@ -236,7 +236,7 @@ export default function ProductDetailModal({
                         </div>
                       </div>
                       <span className="text-gray-600 font-semibold">
-                        Rs. {opt.price_modifier}
+                        Rs. {opt?.price_modifier}
                       </span>
                     </label>
                   ))}

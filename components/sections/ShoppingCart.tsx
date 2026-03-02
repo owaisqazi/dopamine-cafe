@@ -304,6 +304,7 @@ const finalTotal = Number(subtotal) + Number(delivery) - Number(discount);
       toast.error(err?.data?.message || "Invalid promo");
     }
   };
+  console.log(activeCartItems,'activeCartItems===>')
 
   if (orderLoading) {
     return (
