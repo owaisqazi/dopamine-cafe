@@ -120,6 +120,9 @@
       getTracking: builder.query<any, void>({
         query: () => `/user/tracking`,
       }),
+      getTiming: builder.query<any, void>({
+        query: () => `/user/timing`,
+      }),
     }),
   });
-  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetProductsQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery,useGetDeliveryAmountQuery,useGetTrackingQuery} = authApi;
+  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetProductsQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery,useGetDeliveryAmountQuery,useGetTrackingQuery,useGetTimingQuery} = authApi;

@@ -16,7 +16,7 @@ export default function HomeGallery() {
       style={{ backgroundAttachment: "fixed" }}
       aria-label="Gallery of The Dopamine Cafe"
     >
-      <div className="container mx-auto max-w-7xl">
+      <div className="filler mx-auto max-w-7xl">
         {/* Heading */}
         <header className="text-center mb-8">
           <h2 className="text-5xl font-bold text-gray-800 mb-4">Gallery</h2>
@@ -35,7 +35,7 @@ export default function HomeGallery() {
                   <img
                     src={IMAGE_BASE_URL + items[0].image}
                     alt={items[0].caption}
-                    className="w-full h-[400px] md:h-[600px] object-contain transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-[400px] md:h-[600px] object-fill transition-transform duration-700 group-hover:scale-110"
                   />
 
                   {/* Overlay */}
@@ -59,7 +59,7 @@ export default function HomeGallery() {
                     <img
                       src={IMAGE_BASE_URL + item.image}
                       alt={item.caption}
-                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
+                      className="w-full h-full object-fill transition-transform duration-700 group-hover:scale-110"
                     />
 
                     {/* Overlay */}

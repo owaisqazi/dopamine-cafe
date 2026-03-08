@@ -21,13 +21,14 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
+  output: 'export',
   poweredByHeader: false,
   eslint: { ignoreDuringBuilds: true },
   images: { unoptimized: true },
-  webpack: (config) => { config.cache = false; return config; },
-  async headers() {
-    return [{ source: "/(.*)", headers: securityHeaders }];
-  },
+  webpack: (config) => { 
+    config.cache = false; 
+    return config; 
+  }
 };
 
 module.exports = nextConfig;

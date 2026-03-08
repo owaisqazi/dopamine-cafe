@@ -13,7 +13,11 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import CookieModal from "../ui/cookieModalOpen";
-import { useGetTrackingQuery, useNewsletterMutation } from "@/store/api/authApi";
+import {
+  useGetTrackingQuery,
+  useNewsletterMutation,
+  useGetTimingQuery,
+} from "@/store/api/authApi";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 
@@ -28,8 +32,9 @@ export default function Footer({
 }: FooterProps) {
   const [cookieModalOpen, setCookieModalOpen] = useState(false);
   const { data: trackingData } = useGetTrackingQuery();
+  const { data: timingData } = useGetTimingQuery();
   const [email, setEmail] = useState<string>("");
-
+  console.log("timingData", timingData?.data);
   const [newsletter, { isLoading }] = useNewsletterMutation();
 
   useEffect(() => {
@@ -134,33 +139,40 @@ export default function Footer({
               </h4>
 
               <div className="w-full space-y-2 text-sm text-[#FFEABF]">
-                <div className="flex justify-between border-b border-gray-800 pb-1">
-                  <span>Monday</span>
-                  <span>8:00 AM – 3:00 AM</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-800 pb-1">
-                  <span>Tuesday</span>
-                  <span>8:00 AM – 3:00 AM</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-800 pb-1">
-                  <span>Wednesday</span>
-                  <span>8:00 AM – 3:00 AM</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-800 pb-1">
-                  <span>Thursday</span>
-                  <span>8:00 AM – 3:00 AM</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-800 pb-1">
-                  <span>Friday</span>
-                  <span>8:00 AM – 3:00 AM</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-800 pb-1">
-                  <span>Saturday</span>
-                  <span>8:00 AM – 3:00 AM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Sunday</span>
-                  <span>8:00 AM – 3:00 AM</span>
+                <div className="w-full space-y-2 text-sm text-[#FFEABF]">
+                  {timingData?.data?.length ? (
+                    timingData?.data?.map((item: any, index: number) => (
+                      <div
+                        key={item?.id}
+                        className={`flex justify-between ${
+                          index !== timingData.data.length - 1
+                            ? "border-b border-gray-800 pb-1"
+                            : ""
+                        }`}
+                      >
+                        <span>{item?.day}</span>
+                        <span>
+                          {new Date(
+                            `1970-01-01T${item?.start_time}`,
+                          ).toLocaleTimeString([], {
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })}{" "}
+                          –{" "}
+                          {new Date(
+                            `1970-01-01T${item?.end_time}`,
+                          ).toLocaleTimeString([], {
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center text-gray-400">
+                      No timing available
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -178,7 +190,10 @@ export default function Footer({
                 >
                   Special Menu
                 </Link>
-                <Link href="/gallery" className="hover:text-[#d4c3a2] transition">
+                <Link
+                  href="/gallery"
+                  className="hover:text-[#d4c3a2] transition"
+                >
                   Gallery
                 </Link>
                 <Link href="/blog" className="hover:text-[#d4c3a2] transition">
