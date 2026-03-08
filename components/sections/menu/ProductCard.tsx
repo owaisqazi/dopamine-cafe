@@ -31,8 +31,9 @@ export default function ProductCard({
       onClick={() => openModal(item)}
       className="group relative cursor-pointer rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex h-44 overflow-hidden bg-cover bg-center"
       style={{
-        backgroundImage: "url(/product-cart.png)",
-        backgroundSize: "100% 100%",
+        backgroundImage:
+          "url(/product-cart.png)",
+          backgroundSize:"100% 100%"
       }}
     >
       {/* Left Content */}
@@ -51,8 +52,8 @@ export default function ProductCard({
       </div>
 
       {/* Image */}
-      <div className="flex-1 relative flex items-center justify-end md:pr-4 pr-2 pt-3">
-        <div className="relative rounded-full overflow-hidden shadow-xl border-white w-36 h-36 -rotate-[18deg]">
+      <div className="flex-1 relative flex items-center justify-center pr-4">
+        <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-md">
           <Image
             src={IMAGE_BASE_URL + item.image}
             alt={item.name}
