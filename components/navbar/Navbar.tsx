@@ -22,11 +22,14 @@ import Modal from "../ui/Modal";
 import OrderTypeContent from "../order-manager-city/OrderTypeContent";
 import AuthForm from "../forms/AuthForm";
 import { selectCartSubtotal } from "@/store/cartSelectors";
+import { useGetByHomeAboutQuery } from "@/store/api/authApi";
 import DeleteModal from "../sections/menu/DeleteModal";
 import CartDrawer from "../sections/product/CartDrawer";
 
 const Navbar = () => {
   const pathname = usePathname();
+   const { data, isLoading } = useGetByHomeAboutQuery();
+    const items = data?.data || [];
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -127,7 +130,7 @@ const Navbar = () => {
           <Link
             href="/#menu-item"
             onClick={handleScroll}
-            className="bg-[#2A2A28] hover:bg-[#3a3a37] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase"
+            className="bg-[#566b30] hover:bg-[#566b30c9] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase"
           >
             Order Now
           </Link>
@@ -139,7 +142,7 @@ const Navbar = () => {
             <div className="md:hidden">
               <Link href="/">
                 <Image
-                  src="/dopamine_cafe.png"
+                  src={items?.logo!==null?items?.logo:"/dopamine_cafe.png"}
                   alt="Logo"
                   width={50}
                   height={50}
@@ -271,8 +274,8 @@ const Navbar = () => {
               className={`hidden md:flex px-5 py-2 rounded-full font-bold uppercase text-sm
               ${
                 isTransparent
-                  ? "bg-[#2A2A28] hover:bg-[#3a3a37] text-white"
-                  : "bg-[#2A2A28] hover:bg-[#3a3a37] text-white"
+                  ? "bg-[#566b30] hover:bg-[#566b30c9] text-white"
+                  : "bg-[#566b30] hover:bg-[#566b30c9] text-white"
               }`}
             >
               Order Now
@@ -390,16 +393,16 @@ const Navbar = () => {
           <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
 
           {/* 🔹 OVERLAY */}
-          <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
+          <div className="absolute inset-0 -z-10 bg-[#e2e2e2a6]/40" />
 
           {/* 🔹 CONTENT */}
-          <div className="relative flex flex-col h-full p-6 text-[#2A2A28]">
+          <div className="relative flex flex-col h-full p-6 text-[#566b30]">
             <div className="flex justify-between items-center mb-10">
               <h2 className="text-xl font-bold uppercase tracking-widest">
                 Menu
               </h2>
               <button
-                className="text-[#2A2A28] hover:text-gray-900 text-3xl font-bold focus:outline-none"
+                className="text-[#566b30] hover:text-gray-900 text-3xl font-bold focus:outline-none"
                 onClick={() => setIsSidebarOpen(false)}
               >
                 &times;
@@ -449,11 +452,11 @@ const Navbar = () => {
           <button
             onClick={() => setIsCartOpen(true)}
             type="button"
-            className="bg-[#2A2A28] hover:bg-[#3a3a37] w-full text-white flex items-center justify-between px-6 py-4 rounded-2xl shadow-[0_10px_30px_rgba(245,158,11,0.4)] transition-all active:scale-95 group"
+            className="bg-[#566b30] hover:bg-[#566b30c9] w-full text-white flex items-center justify-between px-6 py-4 rounded-2xl shadow-[0_10px_30px_rgba(245,158,11,0.4)] transition-all active:scale-95 group"
           >
             <div className="flex items-center gap-4">
               {/* Item Count Circle */}
-              <div className="w-8 h-8 bg-white text-[#2A2A28] rounded-full flex items-center justify-center font-bold text-sm">
+              <div className="w-8 h-8 bg-white text-[#566b30] rounded-full flex items-center justify-center font-bold text-sm">
                 {cartItems.length}
               </div>
               <span className="font-bold text-lg tracking-wide uppercase">
@@ -491,7 +494,7 @@ const Navbar = () => {
         <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
 
         {/* 🔹 OVERLAY */}
-        <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
+        <div className="absolute inset-0 -z-10 bg-[#e2e2e2a6]/40" />
 
         {/* 🔹 CONTENT */}
         <div className="relative  rounded-2xl p-6 w-full max-w-xl">
@@ -508,20 +511,20 @@ const Navbar = () => {
         <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
 
         {/* 🔹 OVERLAY */}
-        <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
+        <div className="absolute inset-0 -z-10 bg-[#e2e2e2a6]/40" />
 
         {/* 🔹 CONTENT */}
         <div className="relative shadow-xl rounded-2xl p-8 w-full max-w-md">
           {/* ❌ Close Button */}
           <button
             onClick={() => setShowAuthModal(false)}
-            className="absolute top-2 right-4 text-[#2A2A28] hover:text-gray-900 text-3xl font-bold focus:outline-none"
+            className="absolute top-2 right-4 text-[#566b30] hover:text-gray-900 text-3xl font-bold focus:outline-none"
             aria-label="Close Create"
           >
             &times;
           </button>
 
-          <h2 className="text-2xl font-bold text-center mb-6 text-[#2A2A28]">
+          <h2 className="text-2xl font-bold text-center mb-6 text-[#566b30]">
             {isSignup ? "Create Account" : "Welcome Back"}
           </h2>
 

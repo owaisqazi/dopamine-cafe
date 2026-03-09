@@ -155,9 +155,10 @@ export default function HomeMenu() {
           >
             <h2
               className="text-center font-extrabold mb-8 text-4xl md:text-[50px] uppercase tracking-tighter
+              bg-[#566b30]
              bg-cover bg-center bg-no-repeat 
              bg-clip-text text-transparent"
-              style={{ backgroundImage: "url('/banner-image-hero.png')" }} 
+              // style={{ backgroundImage: "url('/banner-image-hero.png')" }} 
             >
               {cat?.category_name}
             </h2>

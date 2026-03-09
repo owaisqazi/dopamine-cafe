@@ -118,7 +118,7 @@ export default function ReviewTestimonials() {
         <div className="flex justify-center gap-4 items-center">
           <button
             onClick={() => handleOpenModal()}
-            className="mt-3 px-4 py-2 text-center bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-xl text-sm transition"
+            className="mt-3 px-4 py-2 text-center bg-[#566b30] hover:bg-[#566b30c9] text-white rounded-xl text-sm transition"
           >
             Rate & Review
           </button>
@@ -127,7 +127,7 @@ export default function ReviewTestimonials() {
             href="https://g.page/r/CT0eQM0wQsfFEAI/review"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 px-4 py-2 text-center bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-xl text-sm transition inline-block"
+            className="mt-3 px-4 py-2 text-center bg-[#566b30] hover:bg-[#566b30c9] text-white rounded-xl text-sm transition inline-block"
           >
             Google Review
           </a>
@@ -183,7 +183,7 @@ export default function ReviewTestimonials() {
                 className={`flex-1 py-2 rounded-xl text-white transition flex justify-center items-center ${
                   ratingLoading || rating === 0
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-[#2A2A28] hover:bg-[#3a3a37]"
+                    : "bg-[#566b30] hover:bg-[#3a3a37]"
                 }`}
               >
                 {ratingLoading ? (

@@ -29,12 +29,12 @@ export default function ProductCard({
   return (
     <div
       onClick={() => openModal(item)}
-      className="group relative cursor-pointer rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex h-44 overflow-hidden bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "url(/product-cart.png)",
-          backgroundSize:"100% 100%"
-      }}
+      className="group relative cursor-pointer rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all flex h-48 overflow-hidden bg-cover bg-center"
+      // style={{
+      //   backgroundImage:
+      //     "url(/product-cart.png)",
+      //     backgroundSize:"100% 100%"
+      // }}
     >
       {/* Left Content */}
       <div className="flex-[1.5] p-4 flex flex-col justify-between">
@@ -53,7 +53,7 @@ export default function ProductCard({
 
       {/* Image */}
       <div className="flex-1 relative flex items-center justify-center pr-4">
-        <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-md">
+        <div className="relative w-28 h-28 rounded-xl overflow-hidden shadow-md">
           <Image
             src={IMAGE_BASE_URL + item.image}
             alt={item.name}
@@ -71,15 +71,15 @@ export default function ProductCard({
         {totalQuantity === 0 ? (
           <button
             onClick={() => openModal(item)}
-            className="w-9 h-9 bg-[#2A2A28] text-[#FFEABF] rounded-full flex items-center justify-center shadow-lg hover:bg-[#3a3a37] transition-transform active:scale-90"
+            className="w-9 h-9 bg-[#566b30] text-[#FFEABF] rounded-full flex items-center justify-center shadow-lg hover:bg-[#566b30c9] transition-transform active:scale-90"
           >
             <Plus size={20} />
           </button>
         ) : totalQuantity === 1 ? (
-          <div className="bg-white border border-[#2A2A28]/20 flex items-center p-1 rounded-full shadow-sm">
+          <div className="bg-white border border-[#566b30]/20 flex items-center p-1 rounded-full shadow-sm">
             <button
               onClick={() => setDeleteId(item)}
-              className="w-8 h-8 bg-white border border-[#2A2A28] text-[#2A2A28] rounded-full flex items-center justify-center hover:bg-red-50 transition-colors"
+              className="w-8 h-8 bg-white border border-[#566b30] text-[#566b30] rounded-full flex items-center justify-center hover:bg-red-50 transition-colors"
             >
               <Trash2 size={14} />
             </button>
@@ -88,13 +88,13 @@ export default function ProductCard({
             </span>
             <button
               onClick={() => handlePlusClick(item)}
-              className="w-8 h-8 bg-[#2A2A28] text-white rounded-full flex items-center justify-center hover:bg-[#3a3a37]"
+              className="w-8 h-8 bg-[#566b30] text-white rounded-full flex items-center justify-center hover:bg-[#3a3a37]"
             >
               <Plus size={16} />
             </button>
           </div>
         ) : (
-          <div className="bg-[#fdf2f2] border border-[#2A2A28]/20 flex items-center p-1 rounded-full shadow-sm">
+          <div className="bg-[#fdf2f2] border border-[#566b30]/20 flex items-center p-1 rounded-full shadow-sm">
             <button
               onClick={() => {
                 const last = productCartItems[productCartItems.length - 1];
@@ -115,7 +115,7 @@ export default function ProductCard({
                   );
                 }
               }}
-              className="w-8 h-8 bg-white border border-[#2A2A28] text-[#2A2A28] rounded-full flex items-center justify-center hover:bg-red-50 transition-colors"
+              className="w-8 h-8 bg-white border border-[#566b30] text-[#566b30] rounded-full flex items-center justify-center hover:bg-red-50 transition-colors"
             >
               <Minus size={16} />
             </button>
@@ -124,7 +124,7 @@ export default function ProductCard({
             </span>
             <button
               onClick={() => handlePlusClick(item)}
-              className="w-8 h-8 bg-[#2A2A28] text-white rounded-full flex items-center justify-center hover:bg-[#3a3a37]"
+              className="w-8 h-8 bg-[#566b30] text-white rounded-full flex items-center justify-center hover:bg-[#3a3a37]"
             >
               <Plus size={16} />
             </button>

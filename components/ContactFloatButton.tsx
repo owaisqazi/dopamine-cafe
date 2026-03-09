@@ -46,7 +46,7 @@ const ContactFloatButton = () => {
       </a>
 
       {/* Main Floating Icon */}
-      <div className="bg-[#2A2A28] hover:bg-[#3a3a37] p-3 rounded-full shadow-lg cursor-pointer  transition">
+      <div className="bg-[#566b30] hover:bg-[#566b30c9] p-3 rounded-full shadow-lg cursor-pointer  transition">
         <Phone className="text-[#FFEABF]" size={24} />
       </div>
     </div>

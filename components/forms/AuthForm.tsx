@@ -153,7 +153,7 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-[#2A2A28] hover:bg-[#3a3a37]"
+            className="w-full bg-[#566b30] hover:bg-[#3a3a37]"
           >
             {isSubmitting ? "Please wait..." : isSignup ? "Sign Up" : "Login"}
           </Button>
@@ -163,7 +163,7 @@ const AuthForm: FC<AuthFormProps> = ({ isSignup, toggleSignup }) => {
             <button
               type="button"
               onClick={toggleSignup}
-              className="text-[#2A2A28] ml-1 font-medium"
+              className="text-[#566b30] ml-1 font-medium"
             >
               {isSignup ? "Login" : "Sign Up"}
             </button>

@@ -9,7 +9,7 @@ interface ContentProps {
   onClose: () => void;
 }
 
-const ACCENT = "#2A2A28";
+const ACCENT = "#566b30";
 
 const CITY_ICONS: Record<string, string[]> = {
   karachi: ["🏛️"],

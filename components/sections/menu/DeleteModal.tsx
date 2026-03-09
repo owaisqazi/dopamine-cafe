@@ -56,10 +56,10 @@ export default function DeleteModal({
       <div className="bg-white rounded-2xl w-full max-w-xl shadow-2xl animate-in fade-in zoom-in duration-200">
         <div className="flex items-center justify-between p-2 border-b">
           <div className="flex items-center gap-2">
-            <Trash2 className="text-[#2A2A28]" size={20} />
-            <h3 className="text-lg font-bold text-[#2A2A28]">Confirm Deletion</h3>
+            <Trash2 className="text-[#566b30]" size={20} />
+            <h3 className="text-lg font-bold text-[#566b30]">Confirm Deletion</h3>
           </div>
-          <button onClick={onClose} className="text-[#2A2A28]">
+          <button onClick={onClose} className="text-[#566b30]">
             <X size={20} />
           </button>
         </div>
@@ -77,7 +77,7 @@ export default function DeleteModal({
           </button>
           <button
             onClick={handleRemove}
-            className="flex-1 py-3 bg-[#2A2A28] text-white rounded-xl font-bold text-sm hover:bg-[#b17323] transition-colors shadow-lg flex items-center justify-center gap-2"
+            className="flex-1 py-3 bg-[#566b30] text-white rounded-xl font-bold text-sm hover:bg-[#b17323] transition-colors shadow-lg flex items-center justify-center gap-2"
           >
             <Trash2 size={16} /> Remove
           </button>

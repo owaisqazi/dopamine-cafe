@@ -45,17 +45,17 @@ export default function RepeatModal({ item, cartItems, onClose, onChooseAgain }:
         fill
         className="object-cover"
       />
-      <div className="absolute inset-0 bg-[#fdeabf]/40" /> {/* overlay for readability */}
+      <div className="absolute inset-0 bg-[#e2e2e2a6]/40" /> {/* overlay for readability */}
     </div>
 
     {/* HEADER */}
     <div className="flex justify-between items-center p-4 border-b">
-      <h2 className="text-[#2A2A28] text-lg sm:text-2xl font-bold">
+      <h2 className="text-[#566b30] text-lg sm:text-2xl font-bold">
         Repeat Previous Customization?
       </h2>
       <button
         onClick={onClose}
-        className="bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-full p-1 hover:rotate-90 transition-transform"
+        className="bg-[#566b30] hover:bg-[#566b30c9] text-white rounded-full p-1 hover:rotate-90 transition-transform"
       >
         <X size={18} />
       </button>
@@ -79,7 +79,7 @@ export default function RepeatModal({ item, cartItems, onClose, onChooseAgain }:
         {/* Product Info */}
         <div className="flex-1 space-y-3 text-center md:text-left">
           <h3 className="text-xl font-bold text-gray-800">{item.name}</h3>
-          <p className="text-lg font-bold text-[#2A2A28]">Rs. {item.base_price}</p>
+          <p className="text-lg font-bold text-[#566b30]">Rs. {item.base_price}</p>
           <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">{item.description}</p>
 
           {/* Previous Add-ons */}
@@ -115,7 +115,7 @@ export default function RepeatModal({ item, cartItems, onClose, onChooseAgain }:
       </button>
       <button
         onClick={handleRepeatOrder}
-        className="w-full sm:w-auto px-8 py-3 bg-[#2A2A28] hover:bg-[#3a3a37] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95"
+        className="w-full sm:w-auto px-8 py-3 bg-[#566b30] hover:bg-[#566b30c9] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95"
       >
         Repeat Order ↻
       </button>

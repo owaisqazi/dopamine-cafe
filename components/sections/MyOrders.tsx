@@ -207,13 +207,13 @@ export default function MyOrders() {
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-[#fdeabf]/40" />
+              <div className="absolute inset-0 bg-[#e2e2e2a6]/40" />
             </div>
 
             {/* HEADER */}
             <div className="flex justify-between items-center p-4 sm:p-6 border-b sticky top-0 bg-white z-10">
               <div>
-                <h2 className="text-[#2A2A28] text-lg sm:text-2xl font-bold">
+                <h2 className="text-[#566b30] text-lg sm:text-2xl font-bold">
                   Order Details
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-500 font-medium uppercase tracking-widest">
@@ -222,7 +222,7 @@ export default function MyOrders() {
               </div>
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-full p-1 hover:rotate-90 transition-transform"
+                className="bg-[#566b30] hover:bg-[#566b30c9] text-white rounded-full p-1 hover:rotate-90 transition-transform"
               >
                 <X size={18} />
               </button>
@@ -233,7 +233,7 @@ export default function MyOrders() {
               {/* Customer & Address Info */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-gray-50 p-4 rounded-2xl flex items-start gap-3">
-                  <MapPin className="text-[#2A2A28] mt-1" size={18} />
+                  <MapPin className="text-[#566b30] mt-1" size={18} />
                   <div>
                     <p className="text-xs font-bold text-gray-400 uppercase">
                       Delivery Address
@@ -244,7 +244,7 @@ export default function MyOrders() {
                   </div>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-2xl flex items-start gap-3">
-                  <Calendar className="text-[#2A2A28] mt-1" size={18} />
+                  <Calendar className="text-[#566b30] mt-1" size={18} />
                   <div>
                     <p className="text-xs font-bold text-gray-400 uppercase">
                       Order Date
@@ -310,7 +310,7 @@ export default function MyOrders() {
               </div>
 
               {/* Order Summary */}
-              <div className="bg-[#2A2A28] text-white p-6 rounded-[24px]">
+              <div className="bg-[#566b30] text-white p-6 rounded-[24px]">
                 <div className="space-y-2 border-b border-white/10 pb-4 mb-4">
                   <div className="flex justify-between text-sm opacity-80">
                     <span>Subtotal</span>

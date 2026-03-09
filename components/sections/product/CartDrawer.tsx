@@ -99,7 +99,7 @@ const CartDrawer = ({
           <div className="absolute inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
 
           {/* 🔹 OVERLAY */}
-          <div className="absolute inset-0 -z-10 bg-[#fdeabf]/40" />
+          <div className="absolute inset-0 -z-10 bg-[#e2e2e2a6]/40" />
 
           {/* CONTENT */}
           <div className="relative flex flex-col h-full ">
@@ -108,7 +108,7 @@ const CartDrawer = ({
               <h2 className="text-2xl font-bold">Your Cart</h2>
               <button
                 onClick={onClose}
-                className="bg-[#2A2A28] text-white rounded-full p-1 hover:rotate-90 transition"
+                className="bg-[#566b30] text-white rounded-full p-1 hover:rotate-90 transition"
               >
                 <X size={20} />
               </button>
@@ -192,7 +192,7 @@ const CartDrawer = ({
                           </div>
 
                           {/* ✅ Base Price */}
-                          <div className="flex justify-between text-sm font-bold text-[#2A2A28] mt-2">
+                          <div className="flex justify-between text-sm font-bold text-[#566b30] mt-2">
                             <span>Price</span>
                             <span>Rs. {basePrice.toFixed(2)}</span>
                           </div>
@@ -200,7 +200,7 @@ const CartDrawer = ({
                           {/* ✅ Extras Label */}
                           {options.length > 0 && (
                             <div className="mt-2">
-                              <p className="text-xs font-bold text-[#2A2A28]">
+                              <p className="text-xs font-bold text-[#566b30]">
                                 Extra:
                               </p>
 
@@ -213,7 +213,7 @@ const CartDrawer = ({
                                   return (
                                     <div
                                       key={opt.id}
-                                      className="flex justify-between text-xs font-bold text-[#2A2A28]"
+                                      className="flex justify-between text-xs font-bold text-[#566b30]"
                                     >
                                       <span>+ {opt.name}</span>
                                       <span>Rs. {optionPrice.toFixed(2)}</span>
@@ -225,7 +225,7 @@ const CartDrawer = ({
                           )}
 
                           {/* ✅ Final Total */}
-                          <div className="flex justify-between font-bold text-[#2A2A28] mt-3">
+                          <div className="flex justify-between font-bold text-[#566b30] mt-3">
                             <span>Total</span>
                             <span>Rs. {finalItemTotal.toFixed(2)}</span>
                           </div>
@@ -240,7 +240,7 @@ const CartDrawer = ({
 
               <button
                 onClick={onClose}
-                className="flex items-center gap-2 text-gray-500 hover:text-[#2A2A28]"
+                className="flex items-center gap-2 text-gray-500 hover:text-[#566b30]"
               >
                 <Plus size={18} /> Add more items
               </button>
@@ -267,7 +267,7 @@ const CartDrawer = ({
               <button
                 onClick={applyPromoCode}
                 disabled={promoLoading}
-                className="w-full mt-3 py-3 bg-[#FFEABF] text-gray-700 border border-[#2A2A28] hover:bg-[#d4c3a2] rounded-xl mb-3"
+                className="w-full mt-3 py-3 bg-[#566b306b] text-white border border-[#566b30] hover:bg-[#000000c9] rounded-xl mb-3"
               >
                 {promoLoading ? "Applying..." : "Apply Promo"}
               </button>
@@ -276,7 +276,7 @@ const CartDrawer = ({
                   setIsModalOpen(true);
                   onClose();
                 }}
-                className="w-full bg-[#2A2A28] hover:bg-[#3a3a37] text-white py-4 rounded-2xl flex justify-between px-6 font-bold"
+                className="w-full bg-[#566b30] hover:bg-[#566b30c9] text-white py-4 rounded-2xl flex justify-between px-6 font-bold"
               >
                 <span>Checkout</span>
                 <span className="flex items-center gap-2">

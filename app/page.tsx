@@ -17,7 +17,7 @@ export default function HomePage() {
       <div className="fixed inset-0 -z-10 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat" />
 
       {/* OPTIONAL DARK OVERLAY */}
-      <div className="fixed inset-0 -z-10 bg-[#fdeabf]/40" />
+      <div className="fixed inset-0 -z-10 bg-[#e2e2e2a6]/40" />
 
       <Navbar />
       <Hero />

@@ -101,13 +101,13 @@ const SkeletonLoader: React.FC<Props> = ({ type, count = 6 }) => {
               {/* Left Content */}
               <div className="flex-[1.5] p-4 flex flex-col justify-between">
                 <div className="space-y-2">
-                  <div className="h-6 w-3/4 bg-[#2A2A28] rounded"></div>
-                  <div className="h-4 w-full bg-[#2A2A28] rounded"></div>
+                  <div className="h-6 w-3/4 bg-[#566b30] rounded"></div>
+                  <div className="h-4 w-full bg-[#566b30] rounded"></div>
                 </div>
               </div>
               {/* Right Image */}
               <div className="flex-1 relative flex items-center justify-center pr-4">
-                <div className="w-20 h-20 rounded-full bg-[#2A2A28]"></div>
+                <div className="w-20 h-20 rounded-full bg-[#566b30]"></div>
               </div>
             </div>
           ))}

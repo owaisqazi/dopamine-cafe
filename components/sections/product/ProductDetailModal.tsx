@@ -115,12 +115,12 @@ export default function ProductDetailModal({
             fill
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-[#fdeabf]/40 " />
+          <div className="absolute inset-0 bg-[#e2e2e2a6]/40 " />
         </div>
         {/* CLOSE BUTTON */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 z-50 bg-[#2A2A28] hover:bg-[#3a3a37] text-white rounded-full p-1 transition-colors"
+          className="absolute right-4 top-4 z-50 bg-[#566b30] hover:bg-[#566b30c9] text-white rounded-full p-1 transition-colors"
         >
           <X size={24} />
         </button>
@@ -132,7 +132,7 @@ export default function ProductDetailModal({
               src={IMAGE_BASE_URL + (parsedImages[0] || item.image)}
               alt={item.name}
               fill
-              className="object-contain rounded-full border-[12px] border-blue-50 shadow-xl"
+              className="object-cover rounded-xl border-[12px] border-blue-50 shadow-xl"
             />
           </div>
         </div>
@@ -154,13 +154,13 @@ export default function ProductDetailModal({
             <div className="relative">
               <button
                 onClick={() => setShowShare(!showShare)}
-                className="bg-[#2A2A28] hover:bg-[#3a3a37] text-white p-2 rounded-full"
+                className="bg-[#566b30] hover:bg-[#566b30c9] text-white p-2 rounded-full"
               >
                 <Share2 size={20} />
               </button>
 
               {showShare && (
-                <div className="absolute top-12 right-0 flex flex-col gap-2 z-50 animate-in fade-in slide-in-from-top-2 bg-[#2A2A28] p-3 rounded-md shadow-lg">
+                <div className="absolute top-12 right-0 flex flex-col gap-2 z-50 animate-in fade-in slide-in-from-top-2 bg-[#566b30] p-3 rounded-md shadow-lg">
                   <div className="flex gap-4">
                     {/* FACEBOOK */}
                     <a
@@ -259,7 +259,7 @@ export default function ProductDetailModal({
             <div className="flex items-center w-full md:w-auto bg-gray-100 rounded-lg p-1 justify-center">
               <button
                 onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                className="w-10 h-10 flex items-center justify-center text-[#2A2A28] hover:text-[#2A2A28] rounded-lg"
+                className="w-10 h-10 flex items-center justify-center text-[#566b30] hover:text-[#566b30] rounded-lg"
               >
                 <Minus size={18} />
               </button>
@@ -268,7 +268,7 @@ export default function ProductDetailModal({
               </span>
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 flex items-center justify-center text-[#2A2A28] hover:text-[#2A2A28] rounded-lg"
+                className="w-10 h-10 flex items-center justify-center text-[#566b30] hover:text-[#566b30] rounded-lg"
               >
                 <Plus size={18} />
               </button>
@@ -277,7 +277,7 @@ export default function ProductDetailModal({
             {/* ADD TO CART BUTTON */}
             <button
               onClick={handleAddToCart}
-              className="flex-1 w-full md:w-auto bg-[#2A2A28] text-white py-4 px-6 rounded-xl flex justify-between items-center font-bold text-sm hover:bg-[#3a3a37] transition-all transform active:scale-[0.98]"
+              className="flex-1 w-full md:w-auto bg-[#566b30] text-white py-4 px-6 rounded-xl flex justify-between items-center font-bold text-sm hover:bg-[#566b30c9] transition-all transform active:scale-[0.98]"
             >
               <span>Rs. {totalPrice.toFixed(1)}</span>
               <span className="flex items-center gap-2">
