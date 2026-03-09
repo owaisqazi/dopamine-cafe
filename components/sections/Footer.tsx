@@ -21,6 +21,7 @@ import {
 } from "@/store/api/authApi";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 
 interface FooterProps {
   cookieModalOpen?: boolean;
@@ -35,7 +36,7 @@ export default function Footer({
   const { data: trackingData } = useGetTrackingQuery();
   const { data: timingData } = useGetTimingQuery();
   const { data } = useGetByHomeAboutQuery();
-      const items = data?.data || [];
+  const items = data?.data || [];
   const [email, setEmail] = useState<string>("");
   console.log("timingData", timingData?.data);
   const [newsletter, { isLoading }] = useNewsletterMutation();
@@ -84,7 +85,11 @@ export default function Footer({
               <Image
                 width={150}
                 height={150}
-                src="/dopamine_cafe.png"
+                src={
+                  items?.logo !== null
+                    ? IMAGE_BASE_URL + items?.logo
+                    : "/dopamine_cafe.png"
+                }
                 alt="The Dopamine Cafe Logo"
                 className="w-28 h-28 rounded-full object-cover border-2 border-[#ffffff]"
               />
@@ -183,19 +188,14 @@ export default function Footer({
             <div className="flex flex-col items-center md:items-end gap-6">
               {/* LINKS */}
               <div className="flex flex-wrap justify-center md:justify-end gap-5 text-white font-medium">
-                <Link href="/" className="hover:text-[#fff] transition">
-                
-                </Link>
+                <Link href="/" className="hover:text-[#fff] transition"></Link>
                 <Link
                   href="#menu-item"
                   className="hover:text-[#fff] transition"
                 >
                   Special Menu
                 </Link>
-                <Link
-                  href="/gallery"
-                  className="hover:text-[#fff] transition"
-                >
+                <Link href="/gallery" className="hover:text-[#fff] transition">
                   Gallery
                 </Link>
                 <Link href="/blog" className="hover:text-[#fff] transition">
@@ -204,10 +204,7 @@ export default function Footer({
                 <Link href="/about" className="hover:text-[#fff] transition">
                   About Us
                 </Link>
-                <Link
-                  href="/contact"
-                  className="hover:text-[#fff] transition"
-                >
+                <Link href="/contact" className="hover:text-[#fff] transition">
                   Contact
                 </Link>
               </div>
@@ -306,10 +303,7 @@ export default function Footer({
               Privacy Policy
             </Link>
             <span className="opacity-40">|</span>
-            <Link
-              href="/terms"
-              className="hover:text-[#fff] hover:underline"
-            >
+            <Link href="/terms" className="hover:text-[#fff] hover:underline">
               Terms & Conditions
             </Link>
           </div>

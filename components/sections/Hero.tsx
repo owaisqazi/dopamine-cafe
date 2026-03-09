@@ -19,8 +19,8 @@ const slides = [
 ];
 
 const sideImages = [
-  { id: 1, image: "/banner-image-hero.png" },
-  { id: 2, image: "/banner-image-hero2.png" },
+  { id: 1, image: "/slider1.png" },
+  { id: 2, image: "/slider2.png" },
 ];
 
 export default function Hero() {
@@ -89,7 +89,7 @@ export default function Hero() {
           <img
             src={sideImages[current]?.image}
             alt={`Side Image ${current + 1}`}
-            className="rounded-2xl object-cover w-full max-w-md h-auto shadow-lg"
+            className="rounded-2xl object-cover w-full max-w-md h-[250px] md:h-[400px] shadow-lg"
           />
         </div>
       </main>

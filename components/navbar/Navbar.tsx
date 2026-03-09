@@ -25,11 +25,12 @@ import { selectCartSubtotal } from "@/store/cartSelectors";
 import { useGetByHomeAboutQuery } from "@/store/api/authApi";
 import DeleteModal from "../sections/menu/DeleteModal";
 import CartDrawer from "../sections/product/CartDrawer";
+import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 
 const Navbar = () => {
   const pathname = usePathname();
-   const { data, isLoading } = useGetByHomeAboutQuery();
-    const items = data?.data || [];
+  const { data, isLoading } = useGetByHomeAboutQuery();
+  const items = data?.data || [];
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -142,7 +143,9 @@ const Navbar = () => {
             <div className="md:hidden">
               <Link href="/">
                 <Image
-                  src={items?.logo!==null?items?.logo:"/dopamine_cafe.png"}
+                  src={
+                    items?.logo !== null ? IMAGE_BASE_URL + items?.logo : "/dopamine_cafe.png"
+                  }
                   alt="Logo"
                   width={50}
                   height={50}
@@ -252,7 +255,9 @@ const Navbar = () => {
           <div className="hidden md:flex absolute top-2 left-1/2 -translate-x-1/2 items-center justify-center">
             <Link href="/">
               <Image
-                src="/dopamine_cafe.png"
+                src={
+                    items?.logo !== null ? IMAGE_BASE_URL+ items?.logo : "/dopamine_cafe.png"
+                  }
                 alt="Logo"
                 width={100}
                 height={100}
@@ -305,12 +310,12 @@ const Navbar = () => {
               {token && isUserMenuOpen && (
                 <div
                   onClick={() => {
-                  if (token) {
-                    setIsUserMenuOpen((prev) => !prev);
-                  } else {
-                    setShowAuthModal(true);
-                  }
-                }}
+                    if (token) {
+                      setIsUserMenuOpen((prev) => !prev);
+                    } else {
+                      setShowAuthModal(true);
+                    }
+                  }}
                   className="absolute right-0 mt-3 w-44 bg-[#FFEABF] rounded-xl shadow-xl overflow-hidden z-50"
                 >
                   <Link href="/my-orders">
