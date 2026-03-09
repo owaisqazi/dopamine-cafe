@@ -17,6 +17,7 @@ import {
   useGetTrackingQuery,
   useNewsletterMutation,
   useGetTimingQuery,
+  useGetByHomeAboutQuery,
 } from "@/store/api/authApi";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
@@ -33,6 +34,8 @@ export default function Footer({
   const [cookieModalOpen, setCookieModalOpen] = useState(false);
   const { data: trackingData } = useGetTrackingQuery();
   const { data: timingData } = useGetTimingQuery();
+  const { data } = useGetByHomeAboutQuery();
+      const items = data?.data || [];
   const [email, setEmail] = useState<string>("");
   console.log("timingData", timingData?.data);
   const [newsletter, { isLoading }] = useNewsletterMutation();
@@ -89,8 +92,7 @@ export default function Footer({
                 <div className="flex items-start gap-2 text-start w-full">
                   <MapPin className="w-10 h-10 text-[#ffffff] mt-1" />
                   <span>
-                    Shop # 2 & 3, Dopamine (Restaurant & Coffee Bar), Sindhi
-                    Muslim Cooperative Housing Society Block A, Karachi
+                    {items?.address || "123 Main Street, Karachi, Pakistan"}
                   </span>
                 </div>
               </div>
