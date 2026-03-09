@@ -147,7 +147,7 @@
 background:none !important;
 }
 select option:hover {
-  background: #C7862F !important; /* amber-500 */
+  background: #3c570a80 !important; /* amber-500 */
   color: white;
 }
 

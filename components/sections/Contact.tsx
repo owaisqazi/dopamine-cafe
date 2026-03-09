@@ -98,7 +98,7 @@ export default function Contact() {
               <p>
                 <a
                   href="mailto:info@thedopaminecafe.com"
-                  className="text-gray-800 hover:text-[#C7862F] transition"
+                  className="text-gray-800 hover:text-[#3c570a] transition"
                 >
                   info@thedopaminecafe.com
                 </a>
@@ -109,7 +109,7 @@ export default function Contact() {
                   href="https://wa.me/+923002444443"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-800 font-medium hover:text-[#C7862F] transition"
+                  className="text-gray-800 font-medium hover:text-[#3c570a] transition"
                 >
                   +92 300 2444443
                 </a>
@@ -117,7 +117,7 @@ export default function Contact() {
               <p>
                 <a
                   href="tel:021-37229364"
-                  className="text-gray-800 font-medium hover:text-[#C7862F] transition"
+                  className="text-gray-800 font-medium hover:text-[#3c570a] transition"
                 >
                   021-37229364
                 </a>
@@ -132,7 +132,7 @@ export default function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Visit our ${item.name} page`}
-                  className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-[#C7862F] hover:text-white hover:border-[#C7862F] transition"
+                  className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-[#3c570a] hover:text-white hover:border-[#3c570a] transition"
                 >
                   {item.Icon === "tiktok" ? (
                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -216,7 +216,7 @@ export default function Contact() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-[#C7862F] text-white px-10 py-3 rounded-full hover:opacity-90 transition flex items-center gap-2"
+                      className="bg-[#3c570a] text-white px-10 py-3 rounded-full hover:opacity-90 transition flex items-center gap-2"
                     >
                       {isSubmitting ? "Submitting..." : "✈ Get In Touch"}
                     </button>

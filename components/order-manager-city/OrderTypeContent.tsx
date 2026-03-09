@@ -9,7 +9,7 @@ interface ContentProps {
   onClose: () => void;
 }
 
-const ACCENT = "#566b30";
+const ACCENT = "#3c570a";
 
 const CITY_ICONS: Record<string, string[]> = {
   karachi: ["🏛️"],
@@ -96,10 +96,10 @@ const OrderTypeContent = ({ onClose }: ContentProps) => {
                   className="cursor-pointer flex flex-col items-center min-w-[80px]"
                 >
                   <div
-                    className={`w-24 h-24 border-2 rounded-2xl flex items-center justify-center gap-1 mb-1 transition ${
+                    className={`w-24 h-24 border-2 hover:bg-[#3c570a80] rounded-2xl flex items-center justify-center gap-1 mb-1 transition ${
                       city === cityKey ? "shadow-md" : "opacity-60"
                     }`}
-                    style={{ borderColor: city === cityKey ? ACCENT : "#eee" }}
+                    style={{ borderColor: city === cityKey ? ACCENT : "#fff" }}
                   >
                     {icons?.map((icon, i) => (
                       <span key={i} className="text-2xl">
@@ -109,7 +109,7 @@ const OrderTypeContent = ({ onClose }: ContentProps) => {
                   </div>
                   <p
                     className="text-xs font-bold uppercase text-center"
-                    style={{ color: city === cityKey ? ACCENT : "#9ca3af" }}
+                    style={{ color: city === cityKey ? ACCENT : "#3c570af" }}
                   >
                     {cityName}
                   </p>
