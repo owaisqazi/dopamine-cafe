@@ -7,20 +7,20 @@ import SkeletonLoader from "../Skeleton/SkeletonLoader";
 
 const slides = [
   {
-    image: "/banner.jpeg",
+    image: "/slider1.png",
     title: "Your Daily Dopamine",
     subtitle: "The Dopamine Cafe",
   },
   {
-    image: "/banner2.png",
+    image: "/slider2.png",
     title: "Happiness Starts With a Cup",
     subtitle: "The Dopamine Cafe",
   },
 ];
 
 const sideImages = [
-  { id: 1, image: "/slider1.png" },
-  { id: 2, image: "/slider2.png" },
+  { id: 1, image: "/banner-image-hero.png" },
+  { id: 2, image: "/banner-image-hero2.png" },
 ];
 
 export default function Hero() {
@@ -89,7 +89,7 @@ export default function Hero() {
           <img
             src={sideImages[current]?.image}
             alt={`Side Image ${current + 1}`}
-            className="rounded-2xl object-cover w-full max-w-md h-[250px] md:h-[400px] shadow-lg"
+            className="rounded-2xl object-cover w-full max-w-md h-auto shadow-lg"
           />
         </div>
       </main>
