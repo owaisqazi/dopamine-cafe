@@ -123,6 +123,9 @@
       getTiming: builder.query<any, void>({
         query: () => `/user/timing`,
       }),
+      getSlider: builder.query<any, void>({
+        query: () => `/user/slider`,
+      }),
     }),
   });
-  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetProductsQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery,useGetDeliveryAmountQuery,useGetTrackingQuery,useGetTimingQuery} = authApi;
+  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetProductsQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery,useGetDeliveryAmountQuery,useGetTrackingQuery,useGetTimingQuery,useGetSliderQuery} = authApi;

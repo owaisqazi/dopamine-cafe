@@ -4,56 +4,44 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import SkeletonLoader from "../Skeleton/SkeletonLoader";
-
-const slides = [
-  {
-    image: "/slider1.png",
-    title: "Your Daily Dopamine",
-    subtitle: "The Dopamine Cafe",
-  },
-  {
-    image: "/slider2.png",
-    title: "Happiness Starts With a Cup",
-    subtitle: "The Dopamine Cafe",
-  },
-];
-
-const sideImages = [
-  { id: 1, image: "/banner-image-hero.png" },
-  { id: 2, image: "/banner-image-hero2.png" },
-];
+import { useGetSliderQuery } from "@/store/api/authApi";
+import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 
 export default function Hero() {
-  const [current, setCurrent] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useGetSliderQuery();
 
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const slides = data?.data || [];
+
+  const [current, setCurrent] = useState(0);
 
   /* Autoplay */
   useEffect(() => {
+    if (!slides.length) return;
+
     const timer = setInterval(() => {
       setCurrent((c) => (c + 1) % slides.length);
     }, 9000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [slides]);
 
-  if (loading) return <SkeletonLoader type="hero" />;
+  if (isLoading) return <SkeletonLoader type="hero" />;
+
+  if (!slides.length) return null;
 
   return (
     <section className="relative h-screen overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
-        {slides.map((slide, index) => (
+        {slides.map((slide: any, index: number) => (
           <div
-            key={index}
+            key={slide.id}
             className={`absolute inset-0 transition-opacity duration-1000 ${
               index === current ? "opacity-100" : "opacity-0"
             }`}
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(${slide.image})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(${IMAGE_BASE_URL+slide.image})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -66,9 +54,9 @@ export default function Hero() {
         <div className="w-full md:flex items-center justify-between md:mx-20 max-w-7xl mt-10 md:mt-20">
           {/* Text */}
           <div className="relative md:w-full max-w-xl min-h-[260px]">
-            {slides.map((slide, index) => (
+            {slides.map((slide: any, index: number) => (
               <div
-                key={index}
+                key={slide.id}
                 className={`absolute inset-0 transition-all duration-700 ${
                   index === current
                     ? "opacity-100 translate-y-0"
@@ -78,19 +66,22 @@ export default function Hero() {
                 <h1 className="text-4xl md:text-6xl pt-20 md:pt-0 lg:text-7xl font-bold text-white leading-tight">
                   {slide.title}
                 </h1>
+
                 <p className="mt-4 text-xl text-[#FFEABF]">
-                  {slide.subtitle}
+                  {slide.description}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Side Image (always visible now) */}
-          <img
-            src={sideImages[current]?.image}
-            alt={`Side Image ${current + 1}`}
-            className="rounded-2xl object-cover w-full max-w-md h-auto shadow-lg"
-          />
+          {/* Side Image */}
+          {slides?.[current]?.top_image && (
+            <img
+              src={`${IMAGE_BASE_URL + slides[current]?.top_image}`}
+              alt="Side Image"
+              className="rounded-2xl object-cover w-full max-w-md h-auto shadow-lg"
+            />
+          )}
         </div>
       </main>
 
