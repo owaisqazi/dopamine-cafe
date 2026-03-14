@@ -22,7 +22,7 @@ import {
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 import { IMAGE_BASE_URL } from "../auth/axiosInstance";
-import UnderConstruction from "../ui/UnderConstruction";
+// import UnderConstruction from "../ui/UnderConstruction";
 
 interface FooterProps {
   cookieModalOpen?: boolean;
