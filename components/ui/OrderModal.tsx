@@ -11,6 +11,10 @@ import { useRouter } from "next/navigation";
 import axiosInstance from "../auth/axiosInstance";
 //@ts-ignore
 import Cookies from "js-cookie";
+import {
+  useGetOrderTypesQuery,
+  useGetPaymentMethodsQuery,
+} from "@/store/api/authApi";
 
 interface OrderModalProps {
   isModalOpen: boolean;
@@ -51,6 +55,8 @@ const OrderModal: React.FC<OrderModalProps> = ({
   const router = useRouter();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const { data: orderTypes } = useGetOrderTypesQuery();
+  const { data: paymentMethods } = useGetPaymentMethodsQuery();
   const calculateDiscount = () => {
     if (!discountData) return 0;
     if (discountData?.type === "percentage") {
@@ -74,6 +80,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
     promo_code_id: discountData?.id || "",
   };
 
+  console.log(orderTypes,paymentMethods, "discountData===?");
   const handleSubmit = async (values: typeof initialValues) => {
     setIsLoading(true);
     const token = Cookies.get("token");
@@ -214,9 +221,9 @@ const OrderModal: React.FC<OrderModalProps> = ({
             onSubmit={handleSubmit}
           >
             {({ errors, touched }) => (
-              <Form className="flex flex-col md:flex-row overflow-hidden">
+              <Form className="flex flex-col md:flex-row md:overflow-hidden overflow-auto h-[500px]">
                 {/* Left Side: Form Fields */}
-                <div className="flex-1 p-6 overflow-y-scroll space-y-4 md:border-r">
+                <div className="flex-1 p-6 md:overflow-y-scroll space-y-4 md:border-r">
                   <h3 className="font-semibold text-lg text-gray-700 mb-4">
                     Delivery Information
                   </h3>
@@ -228,7 +235,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       </label>
                       <Field
                         name="name"
-                        className={`w-full border rounded-lg p-2.5 mt-1 outline-none ${
+                        className={`w-full border rounded-lg font-bold p-2.5 mt-1 outline-none ${
                           errors.name && touched.name
                             ? "border-red-500"
                             : "focus:ring-2 focus:ring-[#566b30]"
@@ -248,7 +255,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       <Field
                         name="email"
                         type="email"
-                        className={`w-full border rounded-lg p-2.5 mt-1 outline-none ${
+                        className={`w-full border rounded-lg font-bold p-2.5 mt-1 outline-none ${
                           errors.email && touched.email
                             ? "border-red-500"
                             : "focus:ring-2 focus:ring-[#566b30]"
@@ -271,7 +278,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       <PhoneField
                         name="phone"
                         className={
-                          "border rounded-lg p-2 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none bg-white"
+                          "border rounded-lg font-bold p-2 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none bg-white"
                         }
                         placeholder="Enter your phone"
                       />
@@ -285,14 +292,19 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       <label className="text-sm font-medium text-gray-600">
                         Order Type
                       </label>
+
                       <Field
                         as="select"
                         name="order_type"
-                        disabled
-                        className="w-full px-2 border rounded-lg py-3.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none bg-white"
+                        className="w-full px-2 border rounded-lg font-bold py-3.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none bg-white"
                       >
-                        {/* <option value="pickup">Pickup</option> */}
-                        <option value="delivery">Delivery</option>
+                        <option value="">Select Order Type</option>
+
+                        {orderTypes?.data?.map((item: any) => (
+                          <option key={item.id} value={item.value}>
+                            {item.name}
+                          </option>
+                        ))}
                       </Field>
                     </div>
                   </div>
@@ -305,7 +317,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       as="textarea"
                       name="address"
                       rows={2}
-                      className={`w-full border rounded-lg p-2.5 mt-1 outline-none ${
+                      className={`w-full border rounded-lg font-bold p-2.5 mt-1 outline-none ${
                         errors.address && touched.address
                           ? "border-red-500"
                           : "focus:ring-2 focus:ring-[#566b30]"
@@ -324,15 +336,19 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       <label className="text-sm font-medium text-gray-600">
                         Payment Method
                       </label>
+
                       <Field
                         as="select"
                         name="payment_method"
-                        className="w-full border rounded-lg p-2.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none bg-white"
+                        className="w-full border rounded-lg font-bold p-2.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none bg-white"
                       >
-                        <option value="cash on delivery">
-                          Cash On Delivery
-                        </option>
-                        <option value="online">Online</option>
+                        <option value="">Select Payment</option>
+
+                        {paymentMethods?.data?.map((item: any) => (
+                          <option key={item.id} value={item.value}>
+                            {item.name}
+                          </option>
+                        ))}
                       </Field>
                     </div>
                     <div>
@@ -341,7 +357,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       </label>
                       <Field
                         name="notes"
-                        className="w-full border rounded-lg p-2.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none"
+                        className="w-full border rounded-lg font-bold p-2.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none"
                         placeholder="Spicy All Item"
                       />
                     </div>

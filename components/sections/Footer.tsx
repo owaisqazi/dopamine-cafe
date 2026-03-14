@@ -317,7 +317,7 @@ export default function Footer({
       >
         <Cookie className="w-6 h-6 text-[#ffffff]" />
       </div>
-      <UnderConstruction />
+      {/* <UnderConstruction /> */}
       {/* Cookie Modal */}
       <CookieModal
         isOpen={cookieModalOpen}

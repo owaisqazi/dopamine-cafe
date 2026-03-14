@@ -126,6 +126,13 @@
       getSlider: builder.query<any, void>({
         query: () => `/user/slider`,
       }),
+       getOrderTypes: builder.query<any, void>({
+      query: () => "/user/order-type",
+    }),
+
+    getPaymentMethods: builder.query<any, void>({
+      query: () => "/user/payment-method",
+    }),
     }),
   });
-  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetProductsQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery,useGetDeliveryAmountQuery,useGetTrackingQuery,useGetTimingQuery,useGetSliderQuery} = authApi;
+  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetProductsQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery,useGetDeliveryAmountQuery,useGetTrackingQuery,useGetTimingQuery,useGetSliderQuery,useGetOrderTypesQuery,useGetPaymentMethodsQuery} = authApi;
