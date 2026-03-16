@@ -29,9 +29,9 @@ interface OrderModalProps {
 
 const OrderSchema = Yup.object().shape({
   name: Yup.string().min(3, "Too short").required("Full name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
+  // email: Yup.string()
+  //   .email("Invalid email address")
+  //   .required("Email is required"),
   phone: Yup.string()
     .min(10, "Invalid phone number")
     .required("Phone is required"),
@@ -70,7 +70,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
 
   const initialValues = {
     name: "",
-    email: "",
+    // email: "",
     phone: "",
     address: "",
     notes: "",
@@ -209,7 +209,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
             <button
               onClick={() => setIsModalOpen(false)}
               aria-label="Close Modal"
-              className="text-[#566b30] hover:text-gray-900 text-3xl font-bold focus:outline-none"
+              className="text-[#000] hover:text-gray-900 text-3xl placeholder-[#000] font-bold  focus:outline-none"
             >
               &times;
             </button>
@@ -224,23 +224,23 @@ const OrderModal: React.FC<OrderModalProps> = ({
               <Form className="flex flex-col md:flex-row md:overflow-hidden overflow-auto h-[500px]">
                 {/* Left Side: Form Fields */}
                 <div className="flex-1 p-6 md:overflow-y-scroll space-y-4 md:border-r">
-                  <h3 className="font-semibold text-lg text-gray-700 mb-4">
+                  <h3 className="font-semibold text-lg text-gray-900 mb-4">
                     Delivery Information
                   </h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-gray-600">
+                    <div className="col-span-2">
+                      <label className="text-md font-bold text-gray-900">
                         Full Name
                       </label>
                       <Field
                         name="name"
-                        className={`w-full border rounded-lg font-bold p-2.5 mt-1 outline-none ${
+                        className={`w-full border rounded-lg placeholder-[#000] font-bold bg-[#566b30] p-2.5 mt-1 outline-none ${
                           errors.name && touched.name
                             ? "border-red-500"
                             : "focus:ring-2 focus:ring-[#566b30]"
                         }`}
-                        placeholder="Muhammad Hussnain"
+                        placeholder="Enter Your Name"
                       />
                       <ErrorMessage
                         name="name"
@@ -248,39 +248,39 @@ const OrderModal: React.FC<OrderModalProps> = ({
                         className="text-red-500 text-xs mt-1"
                       />
                     </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-600">
+                    {/* <div>
+                      <label className="text-md font-bold text-gray-900">
                         Email
                       </label>
                       <Field
                         name="email"
                         type="email"
-                        className={`w-full border rounded-lg font-bold p-2.5 mt-1 outline-none ${
+                        className={`w-full border rounded-lg placeholder-[#000] font-bold bg-[#566b30] p-2.5 mt-1 outline-none ${
                           errors.email && touched.email
                             ? "border-red-500"
                             : "focus:ring-2 focus:ring-[#566b30]"
                         }`}
-                        placeholder="ihasnain83@gmail.com"
+                        placeholder="Enter your email"
                       />
                       <ErrorMessage
                         name="email"
                         component="div"
                         className="text-red-500 text-xs mt-1"
                       />
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-gray-600">
+                      <label className="text-md font-bold text-gray-900">
                         Phone
                       </label>
                       <PhoneField
                         name="phone"
                         className={
-                          "border rounded-lg font-bold p-2 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none bg-white"
+                          "border rounded-lg placeholder-[#000] font-bold bg-[#566b30] p-2 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none"
                         }
-                        placeholder="Enter your phone"
+                        placeholder="Enter Your Phone"
                       />
                       <ErrorMessage
                         name="phone"
@@ -289,14 +289,14 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-600">
+                      <label className="text-md font-bold text-gray-900">
                         Order Type
                       </label>
 
                       <Field
                         as="select"
                         name="order_type"
-                        className="w-full px-2 border rounded-lg font-bold py-3.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none bg-white"
+                        className="w-full px-2 border rounded-lg placeholder-[#000] font-bold bg-[#566b30] py-3.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none"
                       >
                         <option value="">Select Order Type</option>
 
@@ -310,19 +310,19 @@ const OrderModal: React.FC<OrderModalProps> = ({
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium text-gray-600">
+                    <label className="text-md font-bold text-gray-900">
                       Address
                     </label>
                     <Field
                       as="textarea"
                       name="address"
                       rows={2}
-                      className={`w-full border rounded-lg font-bold p-2.5 mt-1 outline-none ${
+                      className={`w-full border rounded-lg placeholder-[#000] font-bold bg-[#566b30] p-2.5 mt-1 outline-none ${
                         errors.address && touched.address
                           ? "border-red-500"
                           : "focus:ring-2 focus:ring-[#566b30]"
                       }`}
-                      placeholder="House No A-1433..."
+                      placeholder="Enter Your Address"
                     />
                     <ErrorMessage
                       name="address"
@@ -333,14 +333,14 @@ const OrderModal: React.FC<OrderModalProps> = ({
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-gray-600">
+                      <label className="text-md font-bold text-gray-900">
                         Payment Method
                       </label>
 
                       <Field
                         as="select"
                         name="payment_method"
-                        className="w-full border rounded-lg font-bold p-2.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none bg-white"
+                        className="w-full border capitalize rounded-lg placeholder-[#000] font-bold bg-[#566b30] p-2.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none "
                       >
                         <option value="">Select Payment</option>
 
@@ -352,21 +352,21 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       </Field>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-600">
+                      <label className="text-md font-bold text-gray-900">
                         Notes
                       </label>
                       <Field
                         name="notes"
-                        className="w-full border rounded-lg font-bold p-2.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none"
-                        placeholder="Spicy All Item"
+                        className="w-full border rounded-lg placeholder-[#000] font-bold bg-[#566b30] p-2.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none"
+                        placeholder="Enter Your Notes (e.g., Spicy All Item)"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Right Side: Order Summary */}
-                <div className="w-full shadow-xl border-t border-[#566b30] md:w-[350px] p-6 flex flex-col">
-                  <h3 className="font-semibold text-lg text-gray-700 mb-4">
+                <div className="w-full shadow-xl border-t  md:w-[350px] p-6 flex flex-col">
+                  <h3 className="font-semibold text-lg text-gray-900 mb-4">
                     Summary
                   </h3>
                   <div className="flex-1 overflow-y-auto space-y-3 mb-4 pr-1">
@@ -388,8 +388,8 @@ const OrderModal: React.FC<OrderModalProps> = ({
                           key={item.id}
                           className="bg-white p-3 rounded border border-gray-100 space-y-2"
                         >
-                          <div className="flex justify-between text-sm">
-                            <span className="text-gray-700">
+                          <div className="flex justify-between text-md">
+                            <span className="text-gray-900">
                               {item.name}{" "}
                               <b className="text-gray-400">
                                 Qty {item.quantity}
@@ -411,7 +411,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                                 return (
                                   <div
                                     key={opt.id}
-                                    className="flex justify-between text-xs text-gray-500"
+                                    className="flex justify-between text-xs text-gray-900"
                                   >
                                     <span>+ {opt.name}</span>
                                     <span>Rs.{optionPrice.toFixed(2)}</span>
@@ -425,7 +425,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                     })}
                   </div>
 
-                  <div className="border-t pt-4 space-y-2 text-sm">
+                  <div className="border-t pt-4 space-y-2 text-md">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
                       <span>Rs.{totalPrice?.toFixed(2)}</span>
@@ -440,7 +440,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       <span>Delivery</span>
                       <span>Rs.{Number(delivery)?.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between font-bold text-lg pt-2 border-t mt-2">
+                    <div className="flex justify-between placeholder-[#000] font-bold text-lg pt-2 border-t mt-2">
                       <span>Total</span>
                       <span>Rs.{Number(finalTotal)?.toFixed(2)}</span>
                     </div>
@@ -449,7 +449,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className={`mt-6 w-full py-3.5 text-white rounded-xl font-bold uppercase shadow-md transition-all flex justify-center items-center gap-2 ${
+                    className={`mt-6 w-full py-3.5 text-white rounded-xl placeholder-[#000] font-bold bg-[#566b30] uppercase shadow-md transition-all flex justify-center items-center gap-2 ${
                       isLoading
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-[#566b30] hover:bg-[#3a3a37]"
