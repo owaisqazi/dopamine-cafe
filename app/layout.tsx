@@ -53,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
             <ContactFloatButton />
             <TawkTo />
+            
           </AOSProvider>
         </ReduxProvider>
       </body>
