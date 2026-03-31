@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 
 export const API_BASE_URL = "https://portal.thedopaminecafe.com/api";
 // export const API_BASE_URL = "https://practice.devssh.xyz/api";
-export const IMAGE_BASE_URL = "https://portal.thedopaminecafe.com/storage/";
+export const IMAGE_BASE_URL = "https://dopamine-cafe.s3.eu-north-1.amazonaws.com/media/";
 
 let isNetworkToastShown = false; 
 
