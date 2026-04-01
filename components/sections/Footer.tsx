@@ -183,6 +183,10 @@ export default function Footer({
                   )}
                 </div>
               </div>
+              {/* <div className="flex justify-between w-full border-b border-white pb-1">
+                <span>All Days</span>
+                <span>24/7</span>
+              </div> */}
             </div>
 
             {/* COLUMN 3 : LINKS + NEWSLETTER + CONTACT */}
@@ -318,7 +322,7 @@ export default function Footer({
         <Cookie className="w-6 h-6 text-[#ffffff]" />
       </div>
       {/* <UnderConstruction /> */}
-      
+
       {/* Cookie Modal */}
       <CookieModal
         isOpen={cookieModalOpen}

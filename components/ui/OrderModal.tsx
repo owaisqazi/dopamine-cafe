@@ -80,7 +80,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
     promo_code_id: discountData?.id || "",
   };
 
-  console.log(orderTypes,paymentMethods, "discountData===?");
+  console.log(orderTypes, paymentMethods, "discountData===?");
   const handleSubmit = async (values: typeof initialValues) => {
     setIsLoading(true);
     const token = Cookies.get("token");
@@ -165,9 +165,17 @@ const OrderModal: React.FC<OrderModalProps> = ({
           }
 
           dispatch(clearCart());
-          router.push("/");
+          // router.push("/");
+          // router.push("/thank-you");
+          console.log("Order ID===>", res.data);
+          router.push(
+            `/thank-you?orderDetail=${encodeURIComponent(
+              JSON.stringify(res.data),
+            )}`,
+          );
         } else {
           // Online Payment Flow
+          // +923183213456
           const win = window.open("", "_self");
           win?.document.open();
           win?.document.write(res.data);
@@ -296,7 +304,7 @@ const OrderModal: React.FC<OrderModalProps> = ({
                       <Field
                         as="select"
                         name="order_type"
-                        className="w-full px-2 border rounded-lg placeholder-[#000] font-bold bg-[#566b30] py-3.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none"
+                        className="w-full px-2 border capitalize rounded-lg placeholder-[#000] font-bold bg-[#566b30] py-3.5 mt-1 focus:ring-2 focus:ring-[#566b30] outline-none"
                       >
                         <option value="">Select Order Type</option>
 
