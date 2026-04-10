@@ -5,6 +5,7 @@ import Footer from "@/components/sections/Footer";
 
 // ✅ Hero SSR (important for LCP)
 import Hero from "@/components/sections/Hero";
+import ToastProvider from "@/components/ToastProvider";
 
 // ✅ Lazy load heavy sections
 const HomeManu = dynamic(() => import("@/components/sections/menu/HomeManu"), {
@@ -24,12 +25,6 @@ const ReviewTestimonials = dynamic(
   {
     loading: () => <p className="text-center py-10">Loading...</p>,
   },
-);
-
-// ✅ Toaster lazy
-const Toaster = dynamic(
-  () => import("react-hot-toast").then((m) => m.Toaster),
-  { ssr: false },
 );
 
 export default function HomePage() {
@@ -59,7 +54,7 @@ export default function HomePage() {
       <ReviewTestimonials />
 
       <Footer />
-      <Toaster position="top-right" />
+      <ToastProvider />
     </main>
   );
 }
