@@ -25,6 +25,7 @@ const nextConfig = {
   poweredByHeader: false,
   eslint: { ignoreDuringBuilds: true },
   images: { unoptimized: true },
+  modern: true,
   webpack: (config) => { 
     config.cache = false; 
     return config; 

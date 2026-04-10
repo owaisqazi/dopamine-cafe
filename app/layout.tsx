@@ -1,13 +1,19 @@
-import AOSProvider from "@/components/aos/AOSProvider";
 import ReduxProvider from "@/store/provider";
 import "./globals.css";
 import "swiper/css";
 import "swiper/css/pagination";
+import Script from "next/script"; // ✅ ADD THIS
+import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import ContactFloatButton from "@/components/ContactFloatButton";
-import TawkTo from "@/components/TawkTo";
-import Script from "next/script"; // ✅ ADD THIS
+const AOSProvider = dynamic(() => import("@/components/aos/AOSProvider"), {
+  ssr: false,
+});
+
+const TawkTo = dynamic(() => import("@/components/TawkTo"), {
+  ssr: false,
+});
 
 const poppins = localFont({
   src: "../public/font/Poppins/Poppins-Regular.ttf",
@@ -28,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* ✅ Meta Pixel */}
         <Script
           id="facebook-pixel"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)

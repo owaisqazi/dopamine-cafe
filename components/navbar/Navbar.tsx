@@ -95,6 +95,7 @@ const Navbar = () => {
     { name: "Blog", href: "/blog" },
     { name: "About Us", href: "/about-us" },
     { name: "Contact", href: "/contact" },
+    { name: "Tracking Order", href: "/tracking-order" },
   ];
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     // Pehle check karein ke hum Home page par hain ya nahi
