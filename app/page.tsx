@@ -2,52 +2,49 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/sections/Footer";
-
-// ✅ Hero SSR (important for LCP)
 import Hero from "@/components/sections/Hero";
 import ToastProvider from "@/components/ToastProvider";
 
-// ✅ Lazy load heavy sections
+// ✅ Lazy sections
 const HomeManu = dynamic(() => import("@/components/sections/menu/HomeManu"), {
-  loading: () => <p className="text-center py-10">Loading...</p>,
+  ssr: false,
 });
 
 const Gallery = dynamic(() => import("@/components/sections/HomeGallery"), {
-  loading: () => <p className="text-center py-10">Loading...</p>,
+  ssr: false,
 });
 
 const HomeAbout = dynamic(() => import("@/components/sections/HomeAbout"), {
-  loading: () => <p className="text-center py-10">Loading...</p>,
+  ssr: false,
 });
 
 const ReviewTestimonials = dynamic(
   () => import("@/components/sections/ReviewTestimonials"),
-  {
-    loading: () => <p className="text-center py-10">Loading...</p>,
-  },
+  { ssr: false }
 );
 
 export default function HomePage() {
   return (
-    <main className="relative min-h-screen overflow-hidden">
-      {/* ✅ Optimized Background Image */}
-      <div className="fixed inset-0 -z-10">
+    <main className="relative min-h-screen overflow-x-hidden bg-white">
+
+      {/* ✅ FIX: remove fixed LCP killer layer */}
+      <div className="absolute inset-0 -z-10">
         <Image
           src="/main.jpeg"
           alt="background"
           fill
-          priority
-          quality={70}
+          sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-[#e2e2e2a6]/40" />
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
-      {/* Content */}
       <Navbar />
+
+      {/* ✅ Hero should be LCP priority */}
       <Hero />
 
-      {/* Lazy sections */}
+      {/* Lazy loaded sections */}
       <HomeManu />
       <Gallery />
       <HomeAbout />
