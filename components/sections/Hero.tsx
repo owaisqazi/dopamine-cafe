@@ -6,6 +6,7 @@ import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import SkeletonLoader from "../Skeleton/SkeletonLoader";
 import { useGetSliderQuery } from "@/store/api/authApi";
 import { IMAGE_BASE_URL } from "../auth/axiosInstance";
+import Image from "next/image";
 
 export default function Hero() {
   const { data, isLoading } = useGetSliderQuery();
@@ -41,7 +42,7 @@ export default function Hero() {
               index === current ? "opacity-100" : "opacity-0"
             }`}
             style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(${IMAGE_BASE_URL+slide.image})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)), url(${IMAGE_BASE_URL + slide.image})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -73,14 +74,19 @@ export default function Hero() {
               </div>
             ))}
           </div>
-
-          {/* Side Image */}
           {slides?.[current]?.top_image && (
-            <img
-              src={`${IMAGE_BASE_URL + slides[current]?.top_image}`}
-              alt="Side Image"
-              className="rounded-2xl object-cover w-full max-w-md h-auto shadow-lg"
-            />
+            <div className="relative w-full max-w-md h-64 md:h-80 rounded-2xl overflow-hidden shadow-lg">
+              <Image
+                src={IMAGE_BASE_URL + slides[current].top_image}
+                alt="Side Image"
+                fill
+                sizes="(max-width: 768px) 100vw, 400px"
+                loading="lazy"
+                placeholder="blur"
+                blurDataURL="/blur.png"
+                className="object-cover"
+              />
+            </div>
           )}
         </div>
       </main>

@@ -26,7 +26,7 @@ export default function Blog() {
 
         {/* BLOG GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {items?.map((item:any, index:number) => (
+          {items?.map((item: any, index: number) => (
             <article
               key={item?.id}
               data-aos="fade-down"
@@ -38,11 +38,14 @@ export default function Blog() {
               <div className="relative h-52 overflow-hidden">
                 {item?.images?.[0] && (
                   <Image
-                    src={`${IMAGE_BASE_URL+item?.images[0]}`}
-                    alt={item?.title}
+                    src={IMAGE_BASE_URL + item.images[0]}
+                    alt={item?.title || "product image"}
                     fill
-                    sizes="(max-width: 768px) 100vw, 25vw"
-                    className="object-cover group-hover:scale-110 transition duration-500"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                    priority={index < 2}
+                    placeholder="blur"
+                    blurDataURL="/blur.png"
+                    className="object-cover md:group-hover:scale-110 transition duration-500"
                   />
                 )}
 
@@ -65,7 +68,11 @@ export default function Blog() {
                       stroke="currentColor"
                       strokeWidth={2}
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
                   </button>
                 </Link>
@@ -73,7 +80,9 @@ export default function Blog() {
 
               {/* CONTENT */}
               <div className="p-5">
-                <h2 className="text-lg font-bold text-gray-800 mb-2">{item?.title}</h2>
+                <h2 className="text-lg font-bold text-gray-800 mb-2">
+                  {item?.title}
+                </h2>
                 <p className="text-sm text-gray-500 mb-4 line-clamp-2">
                   {item?.description}
                 </p>

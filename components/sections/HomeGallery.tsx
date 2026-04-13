@@ -3,7 +3,8 @@
 
 import { useGetByHomeGalleryQuery } from "@/store/api/authApi";
 import { IMAGE_BASE_URL } from "../auth/axiosInstance";
-import SkeletonLoader from "@/components/Skeleton/SkeletonLoader"; 
+import SkeletonLoader from "@/components/Skeleton/SkeletonLoader";
+import Image from "next/image";
 
 export default function HomeGallery() {
   const { data, isLoading } = useGetByHomeGalleryQuery();
@@ -35,6 +36,8 @@ export default function HomeGallery() {
                   <img
                     src={IMAGE_BASE_URL + items[0].image}
                     alt={items[0].caption}
+                    loading="lazy"
+  decoding="async"
                     className="w-full h-[400px] md:h-[600px] object-fill transition-transform duration-700 group-hover:scale-110"
                   />
 
@@ -56,11 +59,18 @@ export default function HomeGallery() {
                     key={index}
                     className="relative group overflow-hidden rounded-sm h-[200px] md:h-[292px] cursor-pointer"
                   >
-                    <img
-                      src={IMAGE_BASE_URL + item.image}
-                      alt={item.caption}
-                      className="w-full h-full object-fill transition-transform duration-700 group-hover:scale-110"
-                    />
+                    <div className="relative w-full h-full overflow-hidden">
+                      <Image
+                        src={IMAGE_BASE_URL + item.image}
+                        alt={item.caption || "image"}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        loading="lazy"
+                        placeholder="blur"
+                        blurDataURL="/blur.png"
+                        className="object-cover transition-transform duration-700 md:group-hover:scale-110"
+                      />
+                    </div>
 
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-black/50 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -83,11 +93,18 @@ export default function HomeGallery() {
                     key={index}
                     className="relative group overflow-hidden rounded-sm h-[250px] cursor-pointer"
                   >
-                    <img
-                      src={IMAGE_BASE_URL + item.image}
-                      alt={item.caption}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
+                    <div className="relative w-full h-full overflow-hidden">
+                      <Image
+                        src={IMAGE_BASE_URL + item.image}
+                        alt={item.caption || "image"}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        loading="lazy"
+                        placeholder="blur"
+                        blurDataURL="/blur.png"
+                        className="object-cover transition-transform duration-700 md:group-hover:scale-110"
+                      />
+                    </div>
 
                     <div className="absolute inset-0 bg-black/50 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                       <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">

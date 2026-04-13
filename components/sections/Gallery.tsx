@@ -2,8 +2,9 @@
 "use client";
 
 import { useGetByHomeGalleryQuery } from "@/store/api/authApi";
-import SkeletonLoader from "@/components/Skeleton/SkeletonLoader"; 
+import SkeletonLoader from "@/components/Skeleton/SkeletonLoader";
 import { IMAGE_BASE_URL } from "../auth/axiosInstance";
+import Image from "next/image";
 export default function Gallery() {
   const { data, isLoading } = useGetByHomeGalleryQuery();
   const items = data?.data || [];
@@ -25,10 +26,13 @@ export default function Gallery() {
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               {items[0] && (
                 <div className="md:col-span-3 relative group overflow-hidden rounded-sm cursor-pointer">
-                  <img
+                  <Image
                     src={IMAGE_BASE_URL + items[0].image}
-                    alt={items[0].caption}
-                    className="w-full h-[400px] md:h-[600px] object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt={items[0].caption || "image"}
+                    fill
+                    sizes="100vw"
+                    loading="lazy"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-black/40 flex flex-col justify-center p-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -47,10 +51,13 @@ export default function Gallery() {
                     key={index}
                     className="relative group overflow-hidden rounded-sm h-[200px] md:h-[292px] cursor-pointer"
                   >
-                    <img
+                    <Image
                       src={IMAGE_BASE_URL + item.image}
-                      alt={item.caption}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      alt={item.caption || "image"}
+                      fill
+                      sizes="100vw"
+                      priority
+                      className="object-cover transition-transform duration-700 md:group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-black/50 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                       <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -72,10 +79,13 @@ export default function Gallery() {
                     key={index}
                     className="relative group overflow-hidden rounded-sm h-[250px] cursor-pointer"
                   >
-                    <img
+                    <Image
                       src={IMAGE_BASE_URL + item.image}
-                      alt={item.caption}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      alt={item.caption || "image"}
+                      fill
+                      sizes="100vw"
+                      priority
+                      className="object-cover transition-transform duration-700 md:group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-black/50 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                       <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">

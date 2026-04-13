@@ -1,16 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
-'use client';
+"use client";
 
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { IMAGE_BASE_URL } from '@/components/auth/axiosInstance';
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { IMAGE_BASE_URL } from "@/components/auth/axiosInstance";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
-} from '@/components/ui/carousel';
+} from "@/components/ui/carousel";
+import Image from "next/image";
 
 interface BlogData {
   id: number;
@@ -21,7 +22,7 @@ interface BlogData {
 
 export default function BlogDetail() {
   const searchParams = useSearchParams();
-  const data = searchParams?.get('data'); // ✅ get query param safely
+  const data = searchParams?.get("data"); // ✅ get query param safely
 
   const [blog, setBlog] = useState<BlogData | null>(null);
 
@@ -31,7 +32,7 @@ export default function BlogDetail() {
       const parsed: BlogData = JSON.parse(decodeURIComponent(data));
       setBlog(parsed);
     } catch (err) {
-      console.error('Invalid blog data', err);
+      console.error("Invalid blog data", err);
     }
   }, [data]);
 
@@ -56,10 +57,13 @@ export default function BlogDetail() {
               {blog.images.map((img, index) => (
                 <CarouselItem key={index}>
                   <div className="relative w-full h-96 rounded-2xl overflow-hidden">
-                    <img
+                    <Image
                       src={IMAGE_BASE_URL + img}
                       alt={`${blog.title} image ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="100vw"
+                      priority
+                      className="object-cover"
                     />
                   </div>
                 </CarouselItem>

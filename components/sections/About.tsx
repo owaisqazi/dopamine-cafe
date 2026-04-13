@@ -7,6 +7,7 @@ import { useGetByHomeAboutQuery } from "@/store/api/authApi";
 // import { IMAGE_BASE_URL } from "../auth/axiosInstance";
 import SkeletonLoader from "../Skeleton/SkeletonLoader";
 import { IMAGE_BASE_URL } from "../auth/axiosInstance";
+import Image from "next/image";
 
 export default function About() {
   const { data, isLoading } = useGetByHomeAboutQuery();
@@ -31,7 +32,10 @@ export default function About() {
   ];
   if (isLoading) return <SkeletonLoader type="about" count={3} />;
   return (
-    <section id="about" className="py-20 px-4 relative z-20 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat">
+    <section
+      id="about"
+      className="py-20 px-4 relative z-20 bg-[url('/main.jpeg')] bg-cover bg-center bg-no-repeat"
+    >
       <div className="container mx-auto">
         {/* SECTION HEADING */}
         {/* <header className="text-center mb-12" data-aos="flip-up">
@@ -89,10 +93,17 @@ export default function About() {
             data-aos="flip-left"
             data-aos-offset="300"
           >
-            <img
-              src={IMAGE_BASE_URL + items?.image || "/about.png"}
+            <Image
+              src={items?.image ? IMAGE_BASE_URL + items.image : "/about.png"}
               alt={items?.name || "About Image"}
-              className="w-full h-96 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
+              width={800}
+              height={400}
+              sizes="(max-width: 768px) 100vw, 800px"
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="/blur.png"
+              quality={75}
+              className="w-full h-96 object-cover rounded-2xl md:group-hover:scale-105 transition-transform duration-700"
             />
           </div>
         </div>

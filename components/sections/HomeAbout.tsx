@@ -94,6 +94,8 @@ export default function HomeAbout() {
             <img
               src={IMAGE_BASE_URL + items?.image || "/about.png"}
               alt={items?.name || "About Image"}
+              loading="lazy"
+  decoding="async"
               className="w-full h-96 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
             />
           </div>

@@ -57,8 +57,11 @@ export default function ProductCard({
           <Image
             src={IMAGE_BASE_URL + item.image}
             alt={item.name}
-            fill
-            className="object-cover group-hover:scale-110 transition duration-500"
+            width={112}
+            height={112}
+            sizes="112px"
+            loading="lazy"
+            className="object-cover rounded-xl group-hover:scale-110 transition duration-500"
           />
         </div>
       </div>

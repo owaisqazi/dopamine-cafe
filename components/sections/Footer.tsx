@@ -238,10 +238,13 @@ export default function Footer({
               <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-6 md:gap-4 text-center md:text-left">
                 {/* BARCODE */}
                 <Image
-                  width={150}
-                  height={150}
                   src="/barcode.jpeg"
                   alt="The Dopamine Cafe Barcode"
+                  width={150}
+                  height={150}
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="/blur.png"
                   className="w-36 h-36 md:w-40 md:h-40 object-contain rounded-lg"
                 />
 

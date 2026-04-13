@@ -141,8 +141,12 @@ const CartDrawer = ({
                         <div className="relative w-16 h-16 rounded-full overflow-hidden">
                           <Image
                             src={IMAGE_BASE_URL + item?.image}
-                            alt={item?.name}
+                            alt={item?.name || "product image"}
                             fill
+                            sizes="(max-width: 768px) 100px, 120px"
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL="/blur.png"
                             className="object-cover"
                           />
                         </div>
@@ -156,7 +160,10 @@ const CartDrawer = ({
                                 className="text-red-500"
                                 onClick={() =>
                                   quantity === 1
-                                    ? onDeleteRequest(item?.id, item?.optionsKey)
+                                    ? onDeleteRequest(
+                                        item?.id,
+                                        item?.optionsKey,
+                                      )
                                     : dispatch(
                                         updateQuantity({
                                           id: item?.id,

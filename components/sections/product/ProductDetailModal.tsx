@@ -8,14 +8,7 @@ import { AppDispatch } from "@/store/store";
 import { addToCart } from "@/store/cartSlice";
 import toast from "react-hot-toast";
 import { IMAGE_BASE_URL } from "../../auth/axiosInstance";
-import {
-  X,
-  Share2,
-  Facebook,
-  Minus,
-  Plus,
-  Instagram,
-} from "lucide-react";
+import { X, Share2, Facebook, Minus, Plus, Instagram } from "lucide-react";
 
 interface MenuItem {
   id: string | number;
@@ -110,9 +103,11 @@ export default function ProductDetailModal({
         {/* BACKGROUND IMAGE + OVERLAY */}
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/main.jpeg" // yahan apni background image ka path
+            src="/main.jpeg"
             alt="background"
             fill
+            priority
+            sizes="(max-width: 768px) 100px, 120px"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-[#e2e2e2a6]/40 " />
@@ -130,8 +125,13 @@ export default function ProductDetailModal({
           <div className="relative w-full aspect-square max-w-[400px]">
             <Image
               src={IMAGE_BASE_URL + (parsedImages[0] || item.image)}
-              alt={item.name}
-              fill
+              alt={item.name || "product image"}
+              width={500}
+              height={300}
+              sizes="(max-width: 768px) 100vw, 500px"
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="/blur.png"
               className="object-cover rounded-xl border-[12px] border-blue-50 shadow-xl"
             />
           </div>

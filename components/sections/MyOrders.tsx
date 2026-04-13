@@ -117,6 +117,8 @@ export default function MyOrders() {
                     src={"/product-cart.png"}
                     alt="background"
                     fill
+                    loading="lazy"
+  decoding="async"
                     className="object-cover"
                   />
                   {/* optional overlay for readability */}
@@ -175,6 +177,8 @@ export default function MyOrders() {
                       src={IMAGE_BASE_URL + firstProduct?.image}
                       alt="order"
                       fill
+                      loading="lazy"
+  decoding="async"
                       className="object-cover group-hover:scale-110 transition duration-500"
                     />
                   </div>
@@ -205,6 +209,8 @@ export default function MyOrders() {
                 src="/main.jpeg"
                 alt="background"
                 fill
+                loading="lazy"
+  decoding="async"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-[#e2e2e2a6]/40" />
@@ -275,6 +281,8 @@ export default function MyOrders() {
                           src={IMAGE_BASE_URL + prod.image}
                           alt={prod.name}
                           fill
+                          loading="lazy"
+  decoding="async"
                           className="object-cover"
                         />
                       </div>

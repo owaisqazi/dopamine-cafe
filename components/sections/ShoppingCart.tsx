@@ -36,6 +36,8 @@ function CartItemCard({ item, handleQuantity, readOnly }: CartItemProps) {
         <img
           src={IMAGE_BASE_URL + (item?.image || item?.product?.image)}
           alt={item?.name || item?.product?.name || "Product"}
+          loading="lazy"
+          decoding="async"
           className="w-full h-48 md:h-24 rounded-xl object-cover"
         />
       </div>
@@ -255,15 +257,15 @@ export default function ShoppingCartTabs() {
 
   const delivery = subtotal > 0 ? 200 : 0;
 
-const discount = useMemo(() => {
-  if (!discountData) return 0;
+  const discount = useMemo(() => {
+    if (!discountData) return 0;
 
-  return discountData.type === "percentage"
-    ? (Number(subtotal) * Number(discountData.amount)) / 100
-    : Number(discountData.amount);
-}, [discountData, subtotal]);
+    return discountData.type === "percentage"
+      ? (Number(subtotal) * Number(discountData.amount)) / 100
+      : Number(discountData.amount);
+  }, [discountData, subtotal]);
 
-const finalTotal = Number(subtotal) + Number(delivery) - Number(discount);
+  const finalTotal = Number(subtotal) + Number(delivery) - Number(discount);
 
   // Quantity handler
   const handleQuantity = (item: CartItem, type: "inc" | "dec" | "remove") => {
@@ -304,7 +306,7 @@ const finalTotal = Number(subtotal) + Number(delivery) - Number(discount);
       toast.error(err?.data?.message || "Invalid promo");
     }
   };
-  console.log(activeCartItems,'activeCartItems===>')
+  console.log(activeCartItems, "activeCartItems===>");
 
   if (orderLoading) {
     return (
@@ -330,8 +332,8 @@ const finalTotal = Number(subtotal) + Number(delivery) - Number(discount);
               {tab === "cart"
                 ? "Shopping Cart"
                 : tab === "unpaid"
-                ? "Unpaid Orders"
-                : "Paid Orders"}
+                  ? "Unpaid Orders"
+                  : "Paid Orders"}
             </button>
           ))}
         </div>
