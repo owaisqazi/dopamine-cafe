@@ -41,6 +41,7 @@ function CartItemCard({ item, handleQuantity, readOnly }: CartItemProps) {
           className="w-full h-48 md:h-24 rounded-xl object-cover"
         />
       </div>
+      
 
       {/* NAME + PRICE */}
       <div className="col-span-1 md:col-span-6 flex flex-col justify-center">
