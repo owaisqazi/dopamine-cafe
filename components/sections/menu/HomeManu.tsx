@@ -10,7 +10,7 @@ import CategoryHeader from "./CategoryHeader";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import { addToCart, updateQuantity } from "@/store/cartSlice";
-import ProductCard from "./ProductCard";
+import  ProductCard from "./ProductCard";
 import DeleteModal from "./DeleteModal";
 import RepeatModal from "./RepeatModal";
 

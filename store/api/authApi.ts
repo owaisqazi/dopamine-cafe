@@ -57,6 +57,13 @@
           body: formData,
         }),
       }),
+     orderTracking: builder.mutation<any, FormData>({
+        query: (formData) => ({
+          url: "/user/order/tracking",
+          method: "POST",
+          body: formData,
+        }),
+      }),
       getMenuByMainCategory: builder.query<any, void>({
       query: () => `/user/main-category`,
       }),
@@ -135,4 +142,4 @@
     }),
     }),
   });
-  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetProductsQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery,useGetDeliveryAmountQuery,useGetTrackingQuery,useGetTimingQuery,useGetSliderQuery,useGetOrderTypesQuery,useGetPaymentMethodsQuery} = authApi;
+  export const { useLoginMutation, useRegisterMutation,useContactMutation,useOrderMutation,useNewsletterMutation,useApplyPromoMutation,useOrderTrackingMutation,useRatingReviewMutation, useGetMenuByMainCategoryQuery,useGetMenuByCategoryQuery,useGetByHomeGalleryQuery,useGetByHomeAboutQuery,useGetByBlogQuery,useGetByHomeSliderQuery,useGetByHomeImageQuery,useGetProductsQuery,useGetBybranchQuery,useGetByOrderQuery,useGetRatingReviewsQuery,useGetCityQuery,useGetAreaQuery,useGetDeliveryAmountQuery,useGetTrackingQuery,useGetTimingQuery,useGetSliderQuery,useGetOrderTypesQuery,useGetPaymentMethodsQuery} = authApi;

@@ -132,7 +132,7 @@ export default function ProductDetailModal({
               loading="lazy"
               placeholder="blur"
               blurDataURL="/blur.png"
-              className="object-cover rounded-xl border-[12px] border-blue-50 shadow-xl"
+              className="object-cover h-full w-full rounded-xl border-[12px] border-blue-50 shadow-xl"
             />
           </div>
         </div>
@@ -202,7 +202,7 @@ export default function ProductDetailModal({
             </div>
           </div>
 
-          <p className="text-gray-500 text-sm mb-6 leading-relaxed">
+          <p className="text-gray-900 text-sm font-medium mb-6 leading-relaxed">
             {item.description}
           </p>
 

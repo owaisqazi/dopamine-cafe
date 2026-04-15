@@ -1,17 +1,19 @@
 "use client";
 
 import { CheckCircle } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation"; // Added useRouter
 
 export default function ThankYou() {
+  const router = useRouter(); // Initialize router
   const searchParams = useSearchParams();
   const orderDetailParam = searchParams.get("orderDetail");
 
   const orderDetail = orderDetailParam
     ? JSON.parse(decodeURIComponent(orderDetailParam))
     : null;
+    
   const orderNumber = orderDetail?.order?.order_number || "N/A";
-  // console.log(orderDetail?.order, "orderDetail===?");
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-black pt-20 px-4">
       <div className="bg-white shadow-xl rounded-2xl p-8 md:p-12 max-w-lg w-full text-center">
@@ -24,7 +26,7 @@ export default function ThankYou() {
         </h1>
 
         {orderNumber && (
-          <p className="text-sm text-gray-500 mb-2">Order ID: #{orderNumber}</p>
+          <p className="text-sm text-gray-500 mb-2">Tracking Order ID: {orderNumber}</p>
         )}
 
         <p className="text-gray-600 mb-6">
@@ -36,18 +38,20 @@ export default function ThankYou() {
         </div>
 
         <div className="flex flex-col md:flex-row gap-3 justify-center">
+          {/* Home Button */}
           <button
-            // onClick={() => router.push("/")}
-            className="px-6 py-2 rounded-lg bg-[#566b30] text-white"
+            onClick={() => router.push("/")}
+            className="px-6 py-2 rounded-lg bg-[#566b30] text-white hover:bg-[#455626] transition-colors"
           >
             Back to Home
           </button>
 
+          {/* Tracking Order Button */}
           <button
-            // onClick={() => router.push("/shopping")}
-            className="px-6 py-2 rounded-lg border"
+            onClick={() => router.push(`/tracking-order`)}
+            className="px-6 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
           >
-            View Cart
+            Track Order
           </button>
         </div>
       </div>
